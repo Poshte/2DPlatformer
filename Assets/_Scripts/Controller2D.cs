@@ -29,7 +29,7 @@ public partial class Controller2D : MonoBehaviour
 
     //slope
     private float slopeAngle;
-    private const float maxClimbAngel = 50f;
+    private const float maxClimbAngel = 60f;
 
 	// Start is called before the first frame update
 	void Start()
@@ -125,6 +125,25 @@ public partial class Controller2D : MonoBehaviour
 				collisionDetector.topCollision = directionY == 1;
 			}
 		}
+
+        if (collisionDetector.climbingSlope)
+        {
+            var directionX = Mathf.Sign(velocity.x);
+            rayLength = Mathf.Abs(velocity.x) + skinWidth;
+            var rayOrigin = ((directionX < 0) ? 
+                raycastOrigin.bottomLeft : raycastOrigin.bottomRight) + Vector2.up * velocity.y;
+            var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
+
+            if (hit)
+            {
+                slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+                if (slopeAngle != collisionDetector.slopeAngel)
+                {
+					velocity.x = (hit.distance - skinWidth) * directionX;
+                    collisionDetector.slopeAngel = slopeAngle;
+				}
+			}
+        }
     }
 
     public void ClimbSlope(ref Vector3 velocity, float slopeAngle)

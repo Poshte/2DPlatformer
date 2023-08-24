@@ -128,8 +128,6 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 64
-  horizontalRayCount: 4
-  verticalRayCount: 4
 --- !u!114 &3022251667055629155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,8 +141,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  jumpHeight: 3.25
-  timeToJumpApex: 0.4
+  jumpHeight: 2.5
+  timeToJumpApex: 0.5
 --- !u!114 &3022251667055629161
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,11 +1,13 @@
-﻿public struct CollisionDetector
+﻿using UnityEngine;
+
+public struct CollisionDetector
 {
 	public bool rightCollision, leftCollision;
 	public bool topCollision, bottomCollision;
 
 	public bool climbingSlope;
 	public bool descendingSlope;
-	public float slopeAngel, OldSlopeAngel;
+	public float slopeAngle, OldSlopeAngle;
 
 	public void Reset()
 	{
@@ -13,7 +15,7 @@
 		topCollision = bottomCollision = false;
 
 		climbingSlope = descendingSlope = false;
-		OldSlopeAngel = slopeAngel;
-		slopeAngel = 0f;
+		OldSlopeAngle = slopeAngle;
+		slopeAngle = 0f;
 	}
 }

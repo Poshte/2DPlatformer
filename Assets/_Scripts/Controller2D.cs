@@ -18,7 +18,7 @@ public partial class Controller2D : RaycastController
 		base.Start();
 	}
 
-	public void Move(Vector3 velocity)
+	public void Move(Vector3 velocity, bool standingOnPlatform = false)
 	{
 		UpdateRaycastOrigin();
 		collisionDetector.Reset();
@@ -40,6 +40,9 @@ public partial class Controller2D : RaycastController
 			VerticalCollision(ref velocity);
 
 		transform.Translate(velocity);
+
+		if (standingOnPlatform)
+			collisionDetector.bottomCollision = true;
 	}
 
 	public void HorizontalCollision(ref Vector3 velocity)
@@ -57,6 +60,9 @@ public partial class Controller2D : RaycastController
 
 			if (hit)
 			{
+				if (hit.distance == 0f)
+					continue;
+
 				var slopeAngle = Vector2.Angle(Vector2.up, hit.normal);
 
 				if (i == 0 && slopeAngle <= maxClimbAngle)

@@ -9,6 +9,9 @@ public class PlatformController : RaycastController
 	[SerializeField]
 	private Vector3 move;
 
+	private List<PassengerMovement> passengerMovements;
+	private Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
+
 	public override void Start()
 	{
 		base.Start();
@@ -16,21 +19,35 @@ public class PlatformController : RaycastController
 	void Update()
 	{
 		UpdateRaycastOrigin();
-
 		var velocity = move * Time.deltaTime;
-		MovePassengers(velocity);
+		CalculatePassengerMovement(velocity);
 
+		MovePassenger(true);
 		transform.Translate(velocity);
+		MovePassenger(false);
 	}
 
-	public void MovePassengers(Vector3 velocity)
+	public void MovePassenger(bool isBeforePlatformMove)
+	{
+		foreach (var passenger in passengerMovements)
+		{
+			if (!passengerDictionary.ContainsKey(passenger.transform))
+				passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
+			 
+			if (passenger.moveBeforePlatform == isBeforePlatformMove)
+				passengerDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
+		}
+	}
+
+	public void CalculatePassengerMovement(Vector3 velocity)
 	{
 		var movedPassengers = new HashSet<Transform>();
+		passengerMovements = new List<PassengerMovement>();
 
 		var directionX = Mathf.Sign(velocity.x);
 		var directionY = Mathf.Sign(velocity.y);
 
-		//vertically moving platform
+		//vertically moving platform (passenger being pushed up/down by the platform)
 		if (velocity.y != 0f)
 		{
 			var rayLength = Mathf.Abs(velocity.y) + skinWidth;
@@ -48,12 +65,13 @@ public class PlatformController : RaycastController
 					var pushX = (velocity.y >= 0) ? velocity.x : 0f;
 					var pushY = velocity.y - (hit.distance - skinWidth) * directionY;
 
-					hit.transform.Translate(new Vector3(pushX, pushY));
+					passengerMovements.Add(new PassengerMovement
+						(hit.transform, new Vector3(pushX, pushY), (directionY > 0), true));
 				}
 			}
 		}
 
-		//horizontally moving platform
+		//passenger being pushed by a horizontally moving platform
 		if (velocity.x != 0f)
 		{
 			var rayLength = Mathf.Abs(velocity.x) + skinWidth;
@@ -69,9 +87,10 @@ public class PlatformController : RaycastController
 					movedPassengers.Add(hit.transform);
 
 					float pushX = velocity.x - (hit.distance - skinWidth) * directionX;
-					float pushY = 0f;
+					float pushY = -skinWidth;
 
-					hit.transform.Translate(new Vector3(pushX, pushY));
+					passengerMovements.Add(new PassengerMovement
+						(hit.transform, new Vector3(pushX, pushY), false, true));
 				}
 			}
 		}
@@ -93,7 +112,8 @@ public class PlatformController : RaycastController
 					var pushX = velocity.x;
 					var pushY = velocity.y;
 
-					hit.transform.Translate(new Vector3(pushX, pushY));
+					passengerMovements.Add(new PassengerMovement
+						(hit.transform, new Vector3(pushX, pushY), true, false));
 				}
 			}
 		}

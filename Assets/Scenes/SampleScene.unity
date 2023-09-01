@@ -537,6 +537,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -53.16}
+--- !u!1 &1738845388 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3022251667055629152, guid: 79363c866c094954081e92b8ac3327f5, type: 3}
+  m_PrefabInstance: {fileID: 3022251666635201841}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2033005854
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +646,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033005854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.09, y: 4.23, z: 0}
+  m_LocalPosition: {x: 3.71, y: 1.12, z: 1}
   m_LocalScale: {x: 2, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -668,7 +673,15 @@ MonoBehaviour:
   passengerMask:
     serializedVersion: 2
     m_Bits: 8
-  move: {x: 0, y: -1, z: 0}
+  playerObject: {fileID: 1738845388}
+  localWaypoints:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 5, z: 0}
+  - {x: -9.16, y: 2.19, z: 0}
+  platformSpeed: 2
+  isCyclic: 0
+  waitTime: 0.5
+  easeAmount: 1
 --- !u!1001 &3022251666635201841
 PrefabInstance:
   m_ObjectHideFlags: 0

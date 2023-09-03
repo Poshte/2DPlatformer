@@ -23,11 +23,10 @@ public partial class Controller2D : RaycastController
 		UpdateRaycastOrigin();
 		collisionDetector.Reset();
 
-		//if (collisionDetector.bottomCollision)
-		//{
-		//    collisionDetector.OldVelocity = velocity;
-		//}
-		velocityOld = velocity;
+		if (collisionDetector.bottomCollision)
+		{
+			velocityOld = velocity;
+		}
 
 
 		if (velocity.y < 0)

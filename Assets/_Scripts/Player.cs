@@ -28,6 +28,22 @@ public class Player : MonoBehaviour
 	private float jumpVelocity;
 	private float gravity;
 
+	//wall jumping
+	[SerializeField]
+	private float maxWallSlidingSpeed;
+	[SerializeField]
+	private Vector2 wallJumpFall;
+	[SerializeField]
+	private Vector2 wallJumpClimb;
+	[SerializeField]
+	private Vector2 wallJumpLeap;
+
+	private int wallDirection; 
+	private int inputDirection;
+	private bool wallSliding;
+	private readonly float wallStickBuffer = 1f;
+	private float wallStick;
+
 	private Vector3 velocity;
 
 	// Start is called before the first frame update
@@ -42,9 +58,6 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (controller.collisionDetector.topCollision || controller.collisionDetector.bottomCollision)
-			velocity.y = 0f;
-
 		var target = horizontalInput.x * moveSpeed;
 
 		velocity.x = Mathf.SmoothDamp(velocity.x,
@@ -52,6 +65,63 @@ public class Player : MonoBehaviour
 			ref velocityXSmoothing,
 			(controller.collisionDetector.bottomCollision) ? accelerationTimeGrounded : accelerationTimeAirborne);
 
+
+		wallSliding = false;
+
+		if (horizontalInput.x > 0)
+		{
+			inputDirection = 1;
+		}
+		else if (horizontalInput.x < 0)
+		{
+			inputDirection = -1;
+		}
+		else
+		{
+			inputDirection = 0;
+		}
+
+		if ((controller.collisionDetector.leftCollision || controller.collisionDetector.rightCollision) && !controller.collisionDetector.bottomCollision && velocity.y < 0)
+		{
+			wallSliding = true;
+			wallDirection = (controller.collisionDetector.leftCollision) ? -1 : 1;
+
+			if (velocity.y < -maxWallSlidingSpeed && inputDirection == wallDirection)
+			{
+				velocity.y = -maxWallSlidingSpeed;
+			}
+
+			//	if ()
+			//	{
+			//		velocity.x = 0f;
+			//		velocityXSmoothing = 0f;
+
+			//		if (inputDirection != 0 && inputDirection != wallDirection)
+			//		{
+			//			wallUnstick -= Time.deltaTime;
+			//		}
+			//		else
+			//		{
+			//			wallUnstick = wallStickTime;
+			//		}
+			//	}
+			//	else
+			//	{
+			//		wallUnstick = wallStickTime;
+			//	}
+		}
+		if (wallSliding)
+		{
+			wallStick = wallStickBuffer;
+		}
+		else
+		{
+			wallStick = -Time.deltaTime;
+		}
+
+		if (controller.collisionDetector.topCollision || controller.collisionDetector.bottomCollision)
+			velocity.y = 0f;
+		
 		velocity.y += gravity * Time.deltaTime;
 		controller.Move(velocity * Time.deltaTime);
 	}
@@ -63,10 +133,34 @@ public class Player : MonoBehaviour
 
 	public void Jump(InputAction.CallbackContext context)
 	{
+		//regular jumping
 		if (context.performed && controller.collisionDetector.bottomCollision)
 		{
 			velocity.y = jumpVelocity;
-			controller.Move(velocity * Time.deltaTime);
 		}
+		//wall jumping
+		else if (context.performed && wallSliding/*(controller.collisionDetector.leftCollision || controller.collisionDetector.rightCollision)*/)
+		{
+			//falling from wall
+			if (inputDirection == 0)
+			{
+				velocity.x = -wallDirection * wallJumpFall.x;
+				velocity.y = wallJumpFall.y;
+			}
+			//climbing wall
+			else if (wallDirection == inputDirection)
+			{
+				velocity.x = -wallDirection * wallJumpClimb.x;
+				velocity.y = wallJumpClimb.y;
+			}
+		}
+		//leaping between walls
+		if (context.performed && wallStick > 0 && inputDirection == -wallDirection)
+		{
+			velocity.x = -wallDirection * wallJumpLeap.x;
+			velocity.y = wallJumpLeap.y;
+		}
+
+		controller.Move(velocity * Time.deltaTime);
 	}
 }

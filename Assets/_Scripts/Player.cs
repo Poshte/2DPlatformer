@@ -22,10 +22,13 @@ public class Player : MonoBehaviour
 
 	//jumping
 	[SerializeField]
-	private float jumpHeight;
+	private float maxJumpHeight;
+	[SerializeField]
+	private float minJumpHeight;
 	[SerializeField]
 	private float timeToJumpApex;
-	private float jumpVelocity;
+	private float maxJumpVelocity;
+	private float minJumpVelocity;
 	private float gravity;
 
 	//wall jumping
@@ -50,9 +53,11 @@ public class Player : MonoBehaviour
 	void Start()
 	{
 		controller = GetComponent<Controller2D>();
-		gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-		jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-		Debug.Log("Gravity: " + gravity + " Jump Velocity: " + jumpVelocity);
+
+		gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+		minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
+		Debug.Log("Gravity: " + gravity + " Jump Velocity: " + maxJumpVelocity);
 	}
 
 	// Update is called once per frame
@@ -133,10 +138,14 @@ public class Player : MonoBehaviour
 
 	public void Jump(InputAction.CallbackContext context)
 	{
-		//regular jumping
+		//regular jumping max
 		if (context.performed && controller.collisionDetector.bottomCollision)
 		{
-			velocity.y = jumpVelocity;
+			velocity.y = maxJumpVelocity;
+		}
+		else if (context.canceled && velocity.y > minJumpVelocity)
+		{
+			velocity.y = minJumpVelocity;
 		}
 		//wall jumping
 		else if (context.performed && wallSliding/*(controller.collisionDetector.leftCollision || controller.collisionDetector.rightCollision)*/)

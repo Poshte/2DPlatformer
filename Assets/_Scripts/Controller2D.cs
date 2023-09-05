@@ -18,7 +18,7 @@ public partial class Controller2D : RaycastController
 		base.Start();
 	}
 
-	public void Move(Vector3 velocity, bool standingOnPlatform = false)
+    public void Move(Vector3 velocity, bool standingOnPlatform = false)
 	{
 		UpdateRaycastOrigin();
 		collisionDetector.Reset();
@@ -106,6 +106,7 @@ public partial class Controller2D : RaycastController
 
 		for (int i = 0; i < verticalRayCount; i++)
 		{
+			
 			var rayOrigin = (directionY < 0) ? raycastOrigin.bottomLeft : raycastOrigin.topLeft;
 			rayOrigin += Vector2.right * (verticalRaySpace * i + velocity.x);
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
@@ -114,7 +115,12 @@ public partial class Controller2D : RaycastController
 
 			if (hit)
 			{
-				velocity.y = (hit.distance - skinWidth) * directionY;
+                if (hit.collider.tag == "Hollow" && (directionY == 1 || hit.distance == 0))
+                {
+                    continue;
+                }
+                
+                velocity.y = (hit.distance - skinWidth) * directionY;
 				rayLength = hit.distance;
 
 				if (collisionDetector.climbingSlope)

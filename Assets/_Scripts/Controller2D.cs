@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public partial class Controller2D : RaycastController
 {
@@ -13,21 +14,25 @@ public partial class Controller2D : RaycastController
 	[SerializeField]
 	private LayerMask collisionMask;
 
-	public override void Start()
+	private bool jumpDown;
+
+    public override void Start()
 	{
 		base.Start();
 	}
-
-    public void Move(Vector3 velocity, bool standingOnPlatform = false)
+	//public void Move(Vector3 velocity, bool standingOnPlatform = false)
+	//{
+	//	Move(velocity, null, standingOnPlatform);
+	//}
+    public void Move(Vector3 velocity, bool downCommand = false, bool standingOnPlatform = false)
 	{
 		UpdateRaycastOrigin();
 		collisionDetector.Reset();
 
-		if (collisionDetector.bottomCollision)
-		{
-			velocityOld = velocity;
-		}
+        jumpDown = downCommand;
 
+        if (collisionDetector.bottomCollision)
+			velocityOld = velocity;
 
 		if (velocity.y < 0)
 			DescendSlope(ref velocity);
@@ -115,19 +120,25 @@ public partial class Controller2D : RaycastController
 
 			if (hit)
 			{
-                if (hit.collider.tag == "Hollow" && (directionY == 1 || hit.distance == 0))
-                {
+                if (hit.collider.tag == "Hollow" && directionY == 1)
+                    continue;
+
+				if (jumpDown)
+				{
                     continue;
                 }
-                
-                velocity.y = (hit.distance - skinWidth) * directionY;
-				rayLength = hit.distance;
 
-				if (collisionDetector.climbingSlope)
-					velocity.x = velocity.y / Mathf.Tan(collisionDetector.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+                if (hit.distance != 0f) //this is a custom change
+				{
+                    velocity.y = (hit.distance - skinWidth) * directionY;
+                    rayLength = hit.distance;
 
-				collisionDetector.bottomCollision = directionY == -1;
-				collisionDetector.topCollision = directionY == 1;
+                    if (collisionDetector.climbingSlope)
+                        velocity.x = velocity.y / Mathf.Tan(collisionDetector.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+
+                    collisionDetector.bottomCollision = directionY == -1;
+                    collisionDetector.topCollision = directionY == 1;
+                }
 			}
 		}
 

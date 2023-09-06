@@ -131,7 +131,7 @@ public class PlatformController : RaycastController
 				rayOrigin += Vector2.right * (verticalRaySpace * i);
 				var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, passengerMask);
 
-				if (hit && !movedPassengers.Contains(hit.transform))
+				if (hit && !movedPassengers.Contains(hit.transform) && hit.distance != 0f)
 				{
 					movedPassengers.Add(hit.transform);
 
@@ -155,7 +155,7 @@ public class PlatformController : RaycastController
 				rayOrigin += Vector2.up * (horizontalRaySpace * i);
 				var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, passengerMask);
 
-				if (hit && !movedPassengers.Contains(hit.transform))
+				if (hit && !movedPassengers.Contains(hit.transform) && hit.distance != 0f)
 				{
 					movedPassengers.Add(hit.transform);
 
@@ -178,7 +178,7 @@ public class PlatformController : RaycastController
 				var rayOrigin = raycastOrigin.topLeft + Vector2.right * (verticalRaySpace * i);
 				var hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
 
-				if (hit && !movedPassengers.Contains(hit.transform))
+				if (hit && !movedPassengers.Contains(hit.transform) && hit.distance != 0f)
 				{
 					movedPassengers.Add(hit.transform);
 

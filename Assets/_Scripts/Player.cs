@@ -105,10 +105,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        //top and bottom collisions
-        if (controller.collisionDetector.topCollision || controller.collisionDetector.bottomCollision)
-            velocity.y = 0f;
-
         //falling down through a platform
         if (playerInput.y == -1)
         {
@@ -130,8 +126,13 @@ public class Player : MonoBehaviour
         else
             coyoteCounter -= Time.deltaTime;
 
+        //manage gravity and pass final velocity to Move method
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime, isCommandButtonDown);
+
+        //top and bottom collisions
+        if (controller.collisionDetector.topCollision || controller.collisionDetector.bottomCollision)
+            velocity.y = 0f;
     }
 
     public void Movement(InputAction.CallbackContext context)

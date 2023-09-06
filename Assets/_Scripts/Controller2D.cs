@@ -119,7 +119,7 @@ public partial class Controller2D : RaycastController
                 if (hit.collider.tag == "Hollow" && directionY == 1)
                     continue;
 
-				if (jumpDown)
+				if (hit.collider.tag != "Solid" && jumpDown)
 				{
                     continue;
                 }

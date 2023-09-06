@@ -20,10 +20,7 @@ public partial class Controller2D : RaycastController
 	{
 		base.Start();
 	}
-	//public void Move(Vector3 velocity, bool standingOnPlatform = false)
-	//{
-	//	Move(velocity, null, standingOnPlatform);
-	//}
+
     public void Move(Vector3 velocity, bool downCommand = false, bool standingOnPlatform = false)
 	{
 		UpdateRaycastOrigin();
@@ -111,7 +108,6 @@ public partial class Controller2D : RaycastController
 
 		for (int i = 0; i < verticalRayCount; i++)
 		{
-			
 			var rayOrigin = (directionY < 0) ? raycastOrigin.bottomLeft : raycastOrigin.topLeft;
 			rayOrigin += Vector2.right * (verticalRaySpace * i + velocity.x);
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);

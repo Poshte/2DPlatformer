@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Android;
 
@@ -107,7 +108,7 @@ public class PlatformController : RaycastController
 				passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
 			 
 			if (passenger.moveBeforePlatform == isBeforePlatformMove)
-				passengerDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
+				passengerDictionary[passenger.transform].Move(passenger.velocity, downCommand: false, passenger.standingOnPlatform);
 		}
 	}
 

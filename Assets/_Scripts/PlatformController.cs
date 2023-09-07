@@ -112,7 +112,7 @@ public class PlatformController : RaycastController
 		}
 	}
 
-	public void CalculatePassengerMovement(Vector3 velocity)
+	public void CalculatePassengerMovement(Vector2 velocity)
 	{
 		var movedPassengers = new HashSet<Transform>();
 		passengerMovements = new List<PassengerMovement>();
@@ -139,7 +139,7 @@ public class PlatformController : RaycastController
 					var pushY = velocity.y - (hit.distance - skinWidth) * directionY;
 
 					passengerMovements.Add(new PassengerMovement
-						(hit.transform, new Vector3(pushX, pushY), (directionY > 0), true));
+						(hit.transform, new Vector2(pushX, pushY), (directionY > 0), true));
 				}
 			}
 		}
@@ -163,7 +163,7 @@ public class PlatformController : RaycastController
 					float pushY = -skinWidth;
 
 					passengerMovements.Add(new PassengerMovement
-						(hit.transform, new Vector3(pushX, pushY), false, true));
+						(hit.transform, new Vector2(pushX, pushY), false, true));
 				}
 			}
 		}
@@ -186,7 +186,7 @@ public class PlatformController : RaycastController
 					var pushY = velocity.y;
 
 					passengerMovements.Add(new PassengerMovement
-						(hit.transform, new Vector3(pushX, pushY), true, false));
+						(hit.transform, new Vector2(pushX, pushY), true, false));
 				}
 			}
 		}
@@ -207,4 +207,20 @@ public class PlatformController : RaycastController
 			}
 		}
 	}
+}
+
+public readonly struct PassengerMovement
+{
+    public readonly Transform transform;
+    public readonly Vector2 velocity;
+    public readonly bool standingOnPlatform;
+    public readonly bool moveBeforePlatform;
+
+    public PassengerMovement(Transform transform, Vector2 velocity, bool standingOnPlatform, bool moveBeforePlatform)
+    {
+        this.transform = transform;
+        this.velocity = velocity;
+        this.standingOnPlatform = standingOnPlatform;
+        this.moveBeforePlatform = moveBeforePlatform;
+    }
 }

@@ -6,22 +6,24 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class RaycastController : MonoBehaviour
 {
-	//rays
-	public const float skinWidth = 0.015f;
-	public int horizontalRayCount = 4;
-	public int verticalRayCount = 4;
-
-	[HideInInspector]
-	public float horizontalRaySpace;
-	[HideInInspector]
-	public float verticalRaySpace;
-
+	//dependencies
 	[HideInInspector]
 	public BoxCollider2D boxCollider;
 	public RaycastOrigin raycastOrigin;
 
+	//rays
+	public const float skinWidth = 0.015f;
+	private const float spaceBetweenRays = 0.1f;
 
-	// Start is called before the first frame update
+    [HideInInspector]
+	public int horizontalRayCount;
+	[HideInInspector]
+    public int verticalRayCount;
+    [HideInInspector]
+	public float horizontalRaySpace;
+	[HideInInspector]
+	public float verticalRaySpace;
+
 	public virtual void Start()
 	{
 		boxCollider = GetComponent<BoxCollider2D>();
@@ -44,10 +46,19 @@ public class RaycastController : MonoBehaviour
 		var bounds = boxCollider.bounds;
 		bounds.Expand(skinWidth * -2);
 
-		horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue);
-		verticalRayCount = Mathf.Clamp(verticalRayCount, 2, int.MaxValue);
+		var height = bounds.size.y;
+		var width = bounds.size.x;
 
-		horizontalRaySpace = bounds.size.y / (horizontalRayCount - 1);
-		verticalRaySpace = bounds.size.x / (verticalRayCount - 1);
-	}
+		horizontalRayCount = Mathf.RoundToInt(height / spaceBetweenRays);
+        verticalRayCount = Mathf.RoundToInt(width / spaceBetweenRays);
+
+        horizontalRaySpace = height / (horizontalRayCount - 1);
+        verticalRaySpace = width / (verticalRayCount - 1);
+
+    }
+}
+public struct RaycastOrigin
+{
+    public Vector2 topLeft, topRight;
+    public Vector2 bottomLeft, bottomRight;
 }

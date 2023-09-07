@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     //dependencies
-    private Controller2D controller;
+    private Controller2D controller2D;
 
     //movement
     private Vector2 playerInput;
@@ -16,8 +16,8 @@ public class Player : MonoBehaviour
     private float velocityXSmoothing;
 
     //smooth time acceleration
-    private readonly float accelerationTimeAirborne = 0.2f;
-    private readonly float accelerationTimeGrounded = 0.1f;
+    private const float accelerationTimeAirborne = 0.2f;
+    private const float accelerationTimeGrounded = 0.1f;
 
     //jumping
     [SerializeField]
@@ -44,41 +44,77 @@ public class Player : MonoBehaviour
 
     //falling down through a platform
     private bool isCommandButtonDown;
-    private readonly float commandButtonHoldDuration = 1f;
+    private const float commandButtonHoldDuration = 0.5f;
     private float commandButtonTimer;
 
     //jump buffer
-    private readonly float jumpBuffer = 0.5f;
+    private const float jumpBuffer = 0.5f;
     private float bufferCounter;
 
     //coyote time
-    private readonly float coyoteTime = 0.1f;
+    private const float coyoteTime = 0.1f;
     private float coyoteCounter;
 
     private float gravity;
-    private Vector3 velocity;
+    private Vector2 velocity;
 
     void Start()
     {
-        controller = GetComponent<Controller2D>();
+        controller2D = GetComponent<Controller2D>();
 
         //math calculations
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-        Debug.Log("Gravity: " + gravity + " Jump Velocity: " + maxJumpVelocity);
+        Debug.Log("Gravity: " + gravity + " Max Jump Velocity: " + maxJumpVelocity + " Min Jump Velocity: " + minJumpVelocity);
     }
 
     void Update()
     {
-        //horizontal input and velocity
+        CalculateVelocity();
+        FallThroughPlatform();
+        HandleWallSliding();
+
+        //manage coyote time
+        if (controller2D.collisionDetector.bottomCollision)
+            coyoteCounter = coyoteTime;
+        else
+            coyoteCounter -= Time.deltaTime;
+
+        controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
+
+        //top and bottom collisions
+        if (controller2D.collisionDetector.topCollision || controller2D.collisionDetector.bottomCollision)
+            velocity.y = 0f;
+    }
+
+    public void CalculateVelocity()
+    {
         var target = playerInput.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x,
             target,
             ref velocityXSmoothing,
-            (controller.collisionDetector.bottomCollision) ? accelerationTimeGrounded : accelerationTimeAirborne);
-
-        //wall sliding prerequisites
+            (controller2D.collisionDetector.bottomCollision) ? accelerationTimeGrounded : accelerationTimeAirborne);
+        velocity.y += gravity * Time.deltaTime;
+    }
+    public void FallThroughPlatform()
+    {
+        if (playerInput.y == -1)
+        {
+            commandButtonTimer += Time.deltaTime;
+            if (commandButtonTimer >= commandButtonHoldDuration)
+            {
+                isCommandButtonDown = true;
+            }
+        }
+        else
+        {
+            isCommandButtonDown = false;
+            commandButtonTimer = 0f;
+        }
+    }
+    public void HandleWallSliding()
+    {
         wallSliding = false;
         if (playerInput.x > 0)
         {
@@ -93,61 +129,30 @@ public class Player : MonoBehaviour
             inputDirection = 0;
         }
 
-        //wall sliding logic
-        if ((controller.collisionDetector.leftCollision || controller.collisionDetector.rightCollision) && !controller.collisionDetector.bottomCollision && velocity.y < 0)
+        if ((controller2D.collisionDetector.leftCollision || controller2D.collisionDetector.rightCollision) && !controller2D.collisionDetector.bottomCollision && velocity.y < 0)
         {
             wallSliding = true;
-            wallDirection = (controller.collisionDetector.leftCollision) ? -1 : 1;
+            wallDirection = (controller2D.collisionDetector.leftCollision) ? -1 : 1;
 
             if (velocity.y < -maxWallSlidingSpeed && inputDirection == wallDirection)
             {
                 velocity.y = -maxWallSlidingSpeed;
             }
         }
-
-        //falling down through a platform
-        if (playerInput.y == -1)
-        {
-            commandButtonTimer += Time.deltaTime;
-            if (commandButtonTimer >= commandButtonHoldDuration)
-            {
-                isCommandButtonDown = true;
-            }
-        }
-        else
-        {
-            isCommandButtonDown = false;
-            commandButtonTimer = 0f;
-        }
-
-        //manage coyote time
-        if (controller.collisionDetector.bottomCollision)
-            coyoteCounter = coyoteTime;
-        else
-            coyoteCounter -= Time.deltaTime;
-
-        //manage gravity and pass final velocity to Move method
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime, isCommandButtonDown);
-
-        //top and bottom collisions
-        if (controller.collisionDetector.topCollision || controller.collisionDetector.bottomCollision)
-            velocity.y = 0f;
     }
-
-    public void Movement(InputAction.CallbackContext context)
+    public void GetMovementInput(Vector2 tempInput)
     {
-        playerInput = context.ReadValue<Vector2>();
+        playerInput = tempInput;
     }
-
-    public void Jump(InputAction.CallbackContext context)
+    public void GetJumpInput(bool performed, bool canceled)
     {
         //manage buffer
-        if (context.performed)
+        if (performed)
             bufferCounter = jumpBuffer;
         else
             bufferCounter -= Time.deltaTime;
 
+        
         //regular jumping max
         if (bufferCounter > 0f && coyoteCounter > 0f)
         {
@@ -155,7 +160,7 @@ public class Player : MonoBehaviour
             bufferCounter = 0f;
         }
         //regular jumping min
-        else if (context.canceled && velocity.y > minJumpVelocity)
+        else if (canceled && velocity.y > minJumpVelocity)
         {
             velocity.y = minJumpVelocity;
         }
@@ -182,6 +187,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        controller.Move(velocity * Time.deltaTime);
+        controller2D.Move(velocity * Time.deltaTime);
     }
 }

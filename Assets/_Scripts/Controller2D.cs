@@ -9,7 +9,7 @@ public partial class Controller2D : RaycastController
 	private const float maxClimbAngle = 75f;
 	private const float maxDescendAngle = 75f;
 
-	private Vector3 velocityOld;
+	private Vector2 velocityOld;
 
 	[SerializeField]
 	private LayerMask collisionMask;
@@ -21,7 +21,7 @@ public partial class Controller2D : RaycastController
 		base.Start();
 	}
 
-    public void Move(Vector3 velocity, bool downCommand = false, bool standingOnPlatform = false)
+    public void Move(Vector2 velocity, bool downCommand = false, bool standingOnPlatform = false)
 	{
 		UpdateRaycastOrigin();
 		collisionDetector.Reset();
@@ -46,7 +46,7 @@ public partial class Controller2D : RaycastController
 			collisionDetector.bottomCollision = true;
 	}
 
-	public void HorizontalCollision(ref Vector3 velocity)
+	public void HorizontalCollision(ref Vector2 velocity)
 	{
 		var directionX = Mathf.Sign(velocity.x);
 		var rayLength = Mathf.Abs(velocity.x) + skinWidth;
@@ -57,7 +57,7 @@ public partial class Controller2D : RaycastController
 			rayOrigin += Vector2.up * (horizontalRaySpace * i);
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
-			Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+			Debug.DrawRay(rayOrigin, Vector2.right * directionX, Color.red);
 
 			if (hit)
 			{
@@ -101,7 +101,7 @@ public partial class Controller2D : RaycastController
 		}
 	}
 
-	public void VerticalCollision(ref Vector3 velocity)
+	public void VerticalCollision(ref Vector2 velocity)
 	{
 		var directionY = Mathf.Sign(velocity.y);
 		var rayLength = Mathf.Abs(velocity.y) + skinWidth;
@@ -112,7 +112,7 @@ public partial class Controller2D : RaycastController
 			rayOrigin += Vector2.right * (verticalRaySpace * i + velocity.x);
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
 
-			Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+			Debug.DrawRay(rayOrigin, Vector2.up * directionY, Color.red);
 
 			if (hit)
 			{
@@ -159,7 +159,7 @@ public partial class Controller2D : RaycastController
 		}
 	}
 
-	public void ClimbSlope(ref Vector3 velocity, float slopeAngle)
+	public void ClimbSlope(ref Vector2 velocity, float slopeAngle)
 	{
 		var moveDistance = Mathf.Abs(velocity.x);
 		var climbVelocityY = Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * moveDistance;
@@ -174,7 +174,7 @@ public partial class Controller2D : RaycastController
 		}
 	}
 
-	public void DescendSlope(ref Vector3 velocity)
+	public void DescendSlope(ref Vector2 velocity)
 	{
 		var directionX = Mathf.Sign(velocity.x);
 		var rayOrigin = (directionX < 0) ? raycastOrigin.bottomRight : raycastOrigin.bottomLeft;
@@ -200,4 +200,24 @@ public partial class Controller2D : RaycastController
 			}
 		}
 	}
+}
+
+public struct CollisionDetector
+{
+    public bool rightCollision, leftCollision;
+    public bool topCollision, bottomCollision;
+
+    public bool climbingSlope;
+    public bool descendingSlope;
+    public float slopeAngle, OldSlopeAngle;
+
+    public void Reset()
+    {
+        rightCollision = leftCollision = false;
+        topCollision = bottomCollision = false;
+
+        climbingSlope = descendingSlope = false;
+        OldSlopeAngle = slopeAngle;
+        slopeAngle = 0f;
+    }
 }

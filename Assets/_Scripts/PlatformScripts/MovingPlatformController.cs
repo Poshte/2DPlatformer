@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Android;
 
-public class PlatformController : RaycastController
+public class MovingPlatformController : RaycastController
 {
 	//dependencies
 	[SerializeField]

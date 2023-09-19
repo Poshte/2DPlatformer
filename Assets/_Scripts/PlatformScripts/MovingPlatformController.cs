@@ -1,19 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Android;
 
 public class MovingPlatformController : RaycastController
 {
 	//dependencies
 	[SerializeField]
 	private LayerMask passengerMask;
-
 	[SerializeField]
 	private GameObject playerObject;
 	private Controller2D controller2D;
+
+	private ColorService colorService;
+
 
 	//waypoints
 	[SerializeField]
@@ -36,15 +35,31 @@ public class MovingPlatformController : RaycastController
 	[Range(0, 2)]
 	private float easeAmount;
 
+	[SerializeField]
+	private bool isDormant;
+	private bool isOnTop;
+
 	//lists
 	private List<PassengerMovement> passengerMovements;
 	private Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
 
+	public override void Awake()
+	{
+		base.Awake();
+
+		controller2D = playerObject.GetComponent<Controller2D>();
+
+		colorService = new ColorService();
+
+		//if (GetComponent<ColorService>() != null)
+		//{
+		//	colorService = GetComponent<ColorService>();
+		//}
+	}
+
 	public override void Start()
 	{
 		base.Start();
-
-		controller2D = playerObject.GetComponent<Controller2D>(); 
 
 		globalWaypoints = new Vector3[localWaypoints.Length];
 		for (int i = 0; i < localWaypoints.Length; i++)
@@ -52,15 +67,25 @@ public class MovingPlatformController : RaycastController
 			globalWaypoints[i] = localWaypoints[i] + transform.position;
 		}
 	}
+
 	void Update()
 	{
 		UpdateRaycastOrigin();
-		var velocity = CalculatePlatformMovement();
-		CalculatePassengerMovement(velocity);
 
-		MovePassenger(true);
-		transform.Translate(velocity);
-		MovePassenger(false);
+		if (isDormant && !isOnTop)
+		{
+			DetectPlayer();
+			return;
+		}
+		else
+		{
+			var velocity = CalculatePlatformMovement();
+			CalculatePassengerMovement(velocity);
+
+			MovePassenger(true);
+			transform.Translate(velocity);
+			MovePassenger(false);
+		}
 	}
 
 	public float Ease(float x)
@@ -106,7 +131,7 @@ public class MovingPlatformController : RaycastController
 		{
 			if (!passengerDictionary.ContainsKey(passenger.transform))
 				passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
-			 
+
 			if (passenger.moveBeforePlatform == isBeforePlatformMove)
 				passengerDictionary[passenger.transform].Move(passenger.velocity, downCommand: false, passenger.standingOnPlatform);
 		}
@@ -125,10 +150,10 @@ public class MovingPlatformController : RaycastController
 		{
 			var rayLength = Mathf.Abs(velocity.y) + skinWidth;
 
-			for (int i = 0; i < verticalRayCount; i++)
+			for (int i = 0; i < VerticalRayCount; i++)
 			{
-				var rayOrigin = (directionY < 0) ? raycastOrigin.bottomLeft : raycastOrigin.topLeft;
-				rayOrigin += Vector2.right * (verticalRaySpace * i);
+				var rayOrigin = (directionY < 0) ? RaycastOrigin.bottomLeft : RaycastOrigin.topLeft;
+				rayOrigin += Vector2.right * (VerticalRaySpace * i);
 				var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, passengerMask);
 
 				if (hit && !movedPassengers.Contains(hit.transform) && hit.distance != 0f)
@@ -149,10 +174,10 @@ public class MovingPlatformController : RaycastController
 		{
 			var rayLength = Mathf.Abs(velocity.x) + skinWidth;
 
-			for (int i = 0; i < horizontalRayCount; i++)
+			for (int i = 0; i < HorizontalRayCount; i++)
 			{
-				var rayOrigin = (directionX < 0) ? raycastOrigin.bottomLeft : raycastOrigin.bottomRight;
-				rayOrigin += Vector2.up * (horizontalRaySpace * i);
+				var rayOrigin = (directionX < 0) ? RaycastOrigin.bottomLeft : RaycastOrigin.bottomRight;
+				rayOrigin += Vector2.up * (HorizontalRaySpace * i);
 				var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, passengerMask);
 
 				if (hit && !movedPassengers.Contains(hit.transform) && hit.distance != 0f)
@@ -173,9 +198,9 @@ public class MovingPlatformController : RaycastController
 		{
 			var rayLength = skinWidth * 2;
 
-			for (int i = 0; i < verticalRayCount; i++)
+			for (int i = 0; i < VerticalRayCount; i++)
 			{
-				var rayOrigin = raycastOrigin.topLeft + Vector2.right * (verticalRaySpace * i);
+				var rayOrigin = RaycastOrigin.topLeft + Vector2.right * (VerticalRaySpace * i);
 				var hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
 
 				if (hit && !movedPassengers.Contains(hit.transform) && hit.distance != 0f)
@@ -188,6 +213,27 @@ public class MovingPlatformController : RaycastController
 					passengerMovements.Add(new PassengerMovement
 						(hit.transform, new Vector2(pushX, pushY), true, false));
 				}
+			}
+		}
+	}
+
+	//for detecting player on a dormant platform
+	public void DetectPlayer()
+	{
+		for (int i = 0; i < VerticalRayCount; i++)
+		{
+			var rayOrigin = RaycastOrigin.topLeft;
+			rayOrigin += Vector2.right * (VerticalRaySpace * i);
+			var hit = Physics2D.Raycast(rayOrigin, Vector2.up, skinWidth, passengerMask);
+			if (hit)
+			{
+				isOnTop = true;
+
+				var renderer = GetComponent<Renderer>();
+				var startColor = new Color32(159, 158, 11, 255);
+				var endColor = new Color32(93, 180, 26, 255);
+
+				StartCoroutine(colorService.ChangeColor(renderer, startColor, endColor, 1.5f));
 			}
 		}
 	}
@@ -211,16 +257,16 @@ public class MovingPlatformController : RaycastController
 
 public readonly struct PassengerMovement
 {
-    public readonly Transform transform;
-    public readonly Vector2 velocity;
-    public readonly bool standingOnPlatform;
-    public readonly bool moveBeforePlatform;
+	public readonly Transform transform;
+	public readonly Vector2 velocity;
+	public readonly bool standingOnPlatform;
+	public readonly bool moveBeforePlatform;
 
-    public PassengerMovement(Transform transform, Vector2 velocity, bool standingOnPlatform, bool moveBeforePlatform)
-    {
-        this.transform = transform;
-        this.velocity = velocity;
-        this.standingOnPlatform = standingOnPlatform;
-        this.moveBeforePlatform = moveBeforePlatform;
-    }
+	public PassengerMovement(Transform transform, Vector2 velocity, bool standingOnPlatform, bool moveBeforePlatform)
+	{
+		this.transform = transform;
+		this.velocity = velocity;
+		this.standingOnPlatform = standingOnPlatform;
+		this.moveBeforePlatform = moveBeforePlatform;
+	}
 }

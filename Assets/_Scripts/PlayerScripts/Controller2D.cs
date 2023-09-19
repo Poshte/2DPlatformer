@@ -1,13 +1,12 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public partial class Controller2D : RaycastController
+public class Controller2D : RaycastController
 {
 	//dependencies
 	public CollisionDetector collisionDetector;
 
-	private const float maxClimbAngle = 75f;
-	private const float maxDescendAngle = 75f;
+	private const float maxClimbAngle = 60f;
+	private const float maxDescendAngle = 60f;
 
 	private Vector2 velocityOld;
 
@@ -16,19 +15,19 @@ public partial class Controller2D : RaycastController
 
 	private bool jumpDown;
 
-    public override void Start()
+	public override void Start()
 	{
 		base.Start();
 	}
 
-    public void Move(Vector2 velocity, bool downCommand = false, bool standingOnPlatform = false)
+	public void Move(Vector2 velocity, bool downCommand = false, bool standingOnPlatform = false)
 	{
 		UpdateRaycastOrigin();
 		collisionDetector.Reset();
 
-        jumpDown = downCommand;
+		jumpDown = downCommand;
 
-        if (collisionDetector.bottomCollision)
+		if (collisionDetector.bottomCollision)
 			velocityOld = velocity;
 
 		if (velocity.y < 0)
@@ -51,10 +50,10 @@ public partial class Controller2D : RaycastController
 		var directionX = Mathf.Sign(velocity.x);
 		var rayLength = Mathf.Abs(velocity.x) + skinWidth;
 
-		for (int i = 0; i < horizontalRayCount; i++)
+		for (int i = 0; i < HorizontalRayCount; i++)
 		{
-			var rayOrigin = (directionX < 0) ? raycastOrigin.bottomLeft : raycastOrigin.bottomRight;
-			rayOrigin += Vector2.up * (horizontalRaySpace * i);
+			var rayOrigin = (directionX < 0) ? RaycastOrigin.bottomLeft : RaycastOrigin.bottomRight;
+			rayOrigin += Vector2.up * (HorizontalRaySpace * i);
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX, Color.red);
@@ -106,35 +105,41 @@ public partial class Controller2D : RaycastController
 		var directionY = Mathf.Sign(velocity.y);
 		var rayLength = Mathf.Abs(velocity.y) + skinWidth;
 
-		for (int i = 0; i < verticalRayCount; i++)
+		for (int i = 0; i < VerticalRayCount; i++)
 		{
-			var rayOrigin = (directionY < 0) ? raycastOrigin.bottomLeft : raycastOrigin.topLeft;
-			rayOrigin += Vector2.right * (verticalRaySpace * i + velocity.x);
+			var rayOrigin = (directionY < 0) ? RaycastOrigin.bottomLeft : RaycastOrigin.topLeft;
+			rayOrigin += Vector2.right * (VerticalRaySpace * i + velocity.x);
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
 
 			Debug.DrawRay(rayOrigin, Vector2.up * directionY, Color.red);
 
 			if (hit)
 			{
-                if (hit.collider.tag == "Hollow" && directionY == 1)
-                    continue;
+				if (hit.collider.tag == "Hollow" && directionY == 1)
+					continue;
 
 				if (hit.collider.tag != "Solid" && jumpDown)
 				{
-                    continue;
-                }
+					continue;
+				}
 
-                if (hit.distance != 0f) //this is a custom change
+
+				//if (hit.collider.tag == "Dormant")
+				//{
+				//	special.EnableMove();
+				//}
+
+				if (hit.distance != 0f) //this is a custom change
 				{
-                    velocity.y = (hit.distance - skinWidth) * directionY;
-                    rayLength = hit.distance;
+					velocity.y = (hit.distance - skinWidth) * directionY;
+					rayLength = hit.distance;
 
-                    if (collisionDetector.climbingSlope)
-                        velocity.x = velocity.y / Mathf.Tan(collisionDetector.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+					if (collisionDetector.climbingSlope)
+						velocity.x = velocity.y / Mathf.Tan(collisionDetector.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
 
-                    collisionDetector.bottomCollision = directionY == -1;
-                    collisionDetector.topCollision = directionY == 1;
-                }
+					collisionDetector.bottomCollision = directionY == -1;
+					collisionDetector.topCollision = directionY == 1;
+				}
 			}
 		}
 
@@ -143,7 +148,7 @@ public partial class Controller2D : RaycastController
 			var directionX = Mathf.Sign(velocity.x);
 			rayLength = Mathf.Abs(velocity.x) + skinWidth;
 			var rayOrigin = ((directionX < 0) ?
-				raycastOrigin.bottomLeft : raycastOrigin.bottomRight) + Vector2.up * velocity.y;
+				RaycastOrigin.bottomLeft : RaycastOrigin.bottomRight) + Vector2.up * velocity.y;
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
 			if (hit)
@@ -177,7 +182,7 @@ public partial class Controller2D : RaycastController
 	public void DescendSlope(ref Vector2 velocity)
 	{
 		var directionX = Mathf.Sign(velocity.x);
-		var rayOrigin = (directionX < 0) ? raycastOrigin.bottomRight : raycastOrigin.bottomLeft;
+		var rayOrigin = (directionX < 0) ? RaycastOrigin.bottomRight : RaycastOrigin.bottomLeft;
 		var hit = Physics2D.Raycast(rayOrigin, Vector2.down, Mathf.Infinity, collisionMask);
 
 		if (hit)
@@ -204,20 +209,20 @@ public partial class Controller2D : RaycastController
 
 public struct CollisionDetector
 {
-    public bool rightCollision, leftCollision;
-    public bool topCollision, bottomCollision;
+	public bool rightCollision, leftCollision;
+	public bool topCollision, bottomCollision;
 
-    public bool climbingSlope;
-    public bool descendingSlope;
-    public float slopeAngle, OldSlopeAngle;
+	public bool climbingSlope;
+	public bool descendingSlope;
+	public float slopeAngle, OldSlopeAngle;
 
-    public void Reset()
-    {
-        rightCollision = leftCollision = false;
-        topCollision = bottomCollision = false;
+	public void Reset()
+	{
+		rightCollision = leftCollision = false;
+		topCollision = bottomCollision = false;
 
-        climbingSlope = descendingSlope = false;
-        OldSlopeAngle = slopeAngle;
-        slopeAngle = 0f;
-    }
+		climbingSlope = descendingSlope = false;
+		OldSlopeAngle = slopeAngle;
+		slopeAngle = 0f;
+	}
 }

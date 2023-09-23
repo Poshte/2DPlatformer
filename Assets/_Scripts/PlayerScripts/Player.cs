@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     private float commandButtonTimer;
 
     //jump buffer
-    private const float jumpBuffer = 0.5f;
+    private const float jumpBuffer = 0.2f;
     private float bufferCounter;
 
     //coyote time
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
     {
         CalculateVelocity();
         FallThroughPlatform();
-        HandleWallSliding();
+        //HandleWallSliding();
 
         //manage coyote time
         if (controller2D.collisionDetector.bottomCollision)
@@ -154,6 +154,7 @@ public class Player : MonoBehaviour
             bufferCounter = jumpBuffer;
         else
             bufferCounter -= Time.deltaTime;
+
 
         //regular jumping max
         if (bufferCounter > 0f && coyoteCounter > 0f)

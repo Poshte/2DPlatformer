@@ -11,7 +11,7 @@ public class MovingPlatformController : RaycastController
 	private GameObject playerObject;
 	private Controller2D controller2D;
 
-	private ColorService colorService;
+	//private ColorService colorService;
 
 
 	//waypoints
@@ -49,7 +49,7 @@ public class MovingPlatformController : RaycastController
 
 		controller2D = playerObject.GetComponent<Controller2D>();
 
-		colorService = new ColorService();
+		//colorService = new ColorService();
 
 		//if (GetComponent<ColorService>() != null)
 		//{
@@ -86,7 +86,7 @@ public class MovingPlatformController : RaycastController
 			transform.Translate(velocity);
 			MovePassenger(false);
 		}
-	}
+    }
 
 	public float Ease(float x)
 	{
@@ -220,6 +220,8 @@ public class MovingPlatformController : RaycastController
 	//for detecting player on a dormant platform
 	public void DetectPlayer()
 	{
+		var colorService = ServiceLocator.Instance.Get<IColorService>();
+
 		for (int i = 0; i < VerticalRayCount; i++)
 		{
 			var rayOrigin = RaycastOrigin.topLeft;

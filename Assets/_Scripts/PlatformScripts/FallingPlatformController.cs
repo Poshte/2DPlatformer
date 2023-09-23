@@ -14,7 +14,7 @@ public class FallingPlatformController : RaycastController
 
 	//colors
 	private Renderer platformRenderer;
-	private ColorService colorService;
+	//private ColorService colorService;
 
 	[SerializeField]
 	private Color startColor;
@@ -26,7 +26,7 @@ public class FallingPlatformController : RaycastController
 	public override void Start()
 	{
 		base.Start();
-		colorService = new ColorService();
+		//colorService = new ColorService();
 		platformRenderer = GetComponent<Renderer>();
 	}
 
@@ -38,6 +38,8 @@ public class FallingPlatformController : RaycastController
 
 	private void DetectPlayer()
 	{
+		var colorService = ServiceLocator.Instance.Get<IColorService>();
+
 		for (int i = 0; i < VerticalRayCount; i++)
 		{
 			var rayOrigin = RaycastOrigin.topLeft;
@@ -69,14 +71,14 @@ public class FallingPlatformController : RaycastController
 		gameObject.SetActive(true);
 	}
 
-	public IEnumerator ChangeColor()
-	{
-		var tick = 0f;
-		while (platformRenderer.material.color != endColor)
-		{
-			tick += Time.deltaTime * colorChangeSpeed;
-			platformRenderer.material.color = Color.Lerp(startColor, endColor, tick);
-			yield return null;
-		}
-	}
+	//public IEnumerator ChangeColor()
+	//{
+	//	var tick = 0f;
+	//	while (platformRenderer.material.color != endColor)
+	//	{
+	//		tick += Time.deltaTime * colorChangeSpeed;
+	//		platformRenderer.material.color = Color.Lerp(startColor, endColor, tick);
+	//		yield return null;
+	//	}
+	//}
 }

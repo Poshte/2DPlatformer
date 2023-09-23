@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ColorService
+public class ColorService : IColorService
 {
 	public IEnumerator ChangeColor(Renderer renderer, Color startColor, Color endColor, float colorChangeSpeed)
 	{

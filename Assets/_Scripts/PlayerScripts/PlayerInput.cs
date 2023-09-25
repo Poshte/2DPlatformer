@@ -14,10 +14,6 @@ public class PlayerInput : MonoBehaviour
         playerScript = GetComponent<Player>();
     }
 
-    void Update()
-    {
-        
-    }
     public void Movement(InputAction.CallbackContext context)
     {
         playerScript.GetMovementInput(context.ReadValue<Vector2>());

@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         //HandleWallSliding();
 
         //manage coyote time
-        if (controller2D.collisionDetector.bottomCollision)
+        if (controller2D.info.bottomCollision)
             coyoteCounter = coyoteTime;
         else
             coyoteCounter -= Time.deltaTime;
@@ -83,9 +83,9 @@ public class Player : MonoBehaviour
         controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
 
         //top and bottom collisions
-        if (controller2D.collisionDetector.topCollision || controller2D.collisionDetector.bottomCollision)
-            if (controller2D.collisionDetector.slidingMaxSlope)
-                velocity.y += controller2D.collisionDetector.slopeNormal.y * Mathf.Abs(gravity) * Time.deltaTime;
+        if (controller2D.info.topCollision || controller2D.info.bottomCollision)
+            if (controller2D.info.slidingMaxSlope)
+                velocity.y += controller2D.info.slopeNormal.y * Mathf.Abs(gravity) * Time.deltaTime;
             else
                 velocity.y = 0f;
     }
@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
         velocity.x = Mathf.SmoothDamp(velocity.x,
             target,
             ref velocityXSmoothing,
-            (controller2D.collisionDetector.bottomCollision) ? accelerationTimeGrounded : accelerationTimeAirborne);
+            (controller2D.info.bottomCollision) ? accelerationTimeGrounded : accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
     }
     public void FallThroughPlatform()
@@ -131,10 +131,10 @@ public class Player : MonoBehaviour
             inputDirection = 0;
         }
 
-        if ((controller2D.collisionDetector.leftCollision || controller2D.collisionDetector.rightCollision) && !controller2D.collisionDetector.bottomCollision && velocity.y < 0)
+        if ((controller2D.info.leftCollision || controller2D.info.rightCollision) && !controller2D.info.bottomCollision && velocity.y < 0)
         {
             wallSliding = true;
-            wallDirection = (controller2D.collisionDetector.leftCollision) ? -1 : 1;
+            wallDirection = (controller2D.info.leftCollision) ? -1 : 1;
 
             if (velocity.y < -maxWallSlidingSpeed && inputDirection == wallDirection)
             {
@@ -159,12 +159,12 @@ public class Player : MonoBehaviour
         //regular jumping max
         if (bufferCounter > 0f && coyoteCounter > 0f)
         {
-            if (controller2D.collisionDetector.slidingMaxSlope)
+            if (controller2D.info.slidingMaxSlope)
             {
-                if (inputDirection != -Mathf.Sign(controller2D.collisionDetector.slopeNormal.x))
+                if (inputDirection != -Mathf.Sign(controller2D.info.slopeNormal.x))
                 {
-                    velocity.y = (maxJumpVelocity + 8) * controller2D.collisionDetector.slopeNormal.y;
-                    velocity.x = (maxJumpVelocity - 5) * controller2D.collisionDetector.slopeNormal.x;
+                    velocity.y = (maxJumpVelocity + 8) * controller2D.info.slopeNormal.y;
+                    velocity.x = (maxJumpVelocity - 5) * controller2D.info.slopeNormal.x;
                 }
             }
             else

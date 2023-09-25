@@ -146,7 +146,7 @@ public class MovingPlatformController : RaycastController
 		var directionY = Mathf.Sign(velocity.y);
 
 		//vertically moving platform (passenger being pushed up/down by the platform)
-		if (velocity.y > 0f && controller2D.collisionDetector.bottomCollision)
+		if (velocity.y > 0f && controller2D.info.bottomCollision)
 		{
 			var rayLength = Mathf.Abs(velocity.y) + skinWidth;
 

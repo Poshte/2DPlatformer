@@ -3,7 +3,7 @@ using UnityEngine;
 public class Controller2D : RaycastController
 {
     //dependencies
-    public CollisionDetector collisionDetector;
+    public ControllerInfos info;
 
     private const float maxSlopeAngle = 60f;
 
@@ -22,18 +22,18 @@ public class Controller2D : RaycastController
     public void Move(Vector2 velocity, bool downCommand = false, bool standingOnPlatform = false)
     {
         UpdateRaycastOrigin();
-        collisionDetector.Reset();
+        info.Reset();
 
         jumpDown = downCommand;
 
-        if (collisionDetector.bottomCollision)
+        if (info.bottomCollision)
             velocityOld = velocity;
 
         if (velocity.y < 0)
             DescendSlope(ref velocity);
 
         if (velocity.x != 0)
-            collisionDetector.faceDirection = (int)Mathf.Sign(velocity.x);
+            info.faceDirection = (int)Mathf.Sign(velocity.x);
 
         HorizontalCollision(ref velocity);
 
@@ -43,12 +43,12 @@ public class Controller2D : RaycastController
         transform.Translate(velocity);
 
         if (standingOnPlatform)
-            collisionDetector.bottomCollision = true;
+            info.bottomCollision = true;
     }
 
     public void HorizontalCollision(ref Vector2 velocity)
     {
-        float directionX = collisionDetector.faceDirection;
+        float directionX = info.faceDirection;
         var rayLength = Mathf.Abs(velocity.x) + skinWidth;
 
         for (int i = 0; i < HorizontalRayCount; i++)
@@ -68,14 +68,14 @@ public class Controller2D : RaycastController
 
                 if (i == 0 && slopeAngle <= maxSlopeAngle)
                 {
-                    if (collisionDetector.descendingSlope)
+                    if (info.descendingSlope)
                     {
-                        collisionDetector.descendingSlope = false;
+                        info.descendingSlope = false;
                         velocity = velocityOld;
                     }
 
                     var distanceToSlope = 0f;
-                    if (slopeAngle != collisionDetector.OldSlopeAngle)
+                    if (slopeAngle != info.OldSlopeAngle)
                     {
                         distanceToSlope = hit.distance - skinWidth;
                         velocity.x -= distanceToSlope * directionX;
@@ -89,13 +89,13 @@ public class Controller2D : RaycastController
                     velocity.x = (hit.distance - skinWidth) * directionX;
                     rayLength = hit.distance;
 
-                    if (collisionDetector.climbingSlope)
+                    if (info.climbingSlope)
                     {
-                        velocity.y = Mathf.Tan(collisionDetector.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
+                        velocity.y = Mathf.Tan(info.slopeAngle * Mathf.Deg2Rad) * Mathf.Abs(velocity.x);
                     }
 
-                    collisionDetector.leftCollision = directionX == -1;
-                    collisionDetector.rightCollision = directionX == 1;
+                    info.leftCollision = directionX == -1;
+                    info.rightCollision = directionX == 1;
                 }
             }
         }
@@ -129,16 +129,16 @@ public class Controller2D : RaycastController
                     velocity.y = (hit.distance - skinWidth) * directionY;
                     rayLength = hit.distance;
 
-                    if (collisionDetector.climbingSlope)
-                        velocity.x = velocity.y / Mathf.Tan(collisionDetector.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
+                    if (info.climbingSlope)
+                        velocity.x = velocity.y / Mathf.Tan(info.slopeAngle * Mathf.Deg2Rad) * Mathf.Sign(velocity.x);
 
-                    collisionDetector.bottomCollision = directionY == -1;
-                    collisionDetector.topCollision = directionY == 1;
+                    info.bottomCollision = directionY == -1;
+                    info.topCollision = directionY == 1;
                 }
             }
         }
 
-        if (collisionDetector.climbingSlope)
+        if (info.climbingSlope)
         {
             var directionX = Mathf.Sign(velocity.x);
             rayLength = Mathf.Abs(velocity.x) + skinWidth;
@@ -150,11 +150,11 @@ public class Controller2D : RaycastController
             {
                 var slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
-                if (slopeAngle != collisionDetector.slopeAngle)
+                if (slopeAngle != info.slopeAngle)
                 {
                     velocity.x = (hit.distance - skinWidth) * directionX;
-                    collisionDetector.slopeAngle = slopeAngle;
-                    collisionDetector.slopeNormal = hit.normal;
+                    info.slopeAngle = slopeAngle;
+                    info.slopeNormal = hit.normal;
                 }
             }
         }
@@ -169,10 +169,10 @@ public class Controller2D : RaycastController
         {
             velocity.y = climbVelocityY;
             velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * Mathf.Sign(velocity.x);
-            collisionDetector.bottomCollision = true;
-            collisionDetector.climbingSlope = true;
-            collisionDetector.slopeAngle = slopeAngle;
-            collisionDetector.slopeNormal = slopeNormal;
+            info.bottomCollision = true;
+            info.climbingSlope = true;
+            info.slopeAngle = slopeAngle;
+            info.slopeNormal = slopeNormal;
         }
     }
 
@@ -186,7 +186,7 @@ public class Controller2D : RaycastController
             SlideSlope(ref velocity, hitRight);
         }
 
-        if (!collisionDetector.slidingMaxSlope)
+        if (!info.slidingMaxSlope)
         {
             var directionX = Mathf.Sign(velocity.x);
             var rayOrigin = (directionX < 0) ? RaycastOrigin.bottomRight : RaycastOrigin.bottomLeft;
@@ -206,10 +206,10 @@ public class Controller2D : RaycastController
                     velocity.x = Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * moveDistance * directionX;
                     velocity.y -= descendVelocityY;
 
-                    collisionDetector.bottomCollision = true;
-                    collisionDetector.descendingSlope = true;
-                    collisionDetector.slopeAngle = slopeAngle;
-                    collisionDetector.slopeNormal = hit.normal;
+                    info.bottomCollision = true;
+                    info.descendingSlope = true;
+                    info.slopeAngle = slopeAngle;
+                    info.slopeNormal = hit.normal;
 
                 }
             }
@@ -228,15 +228,15 @@ public class Controller2D : RaycastController
                 velocity.x /= 2;
                 velocity.y /= 2;
 
-                collisionDetector.slopeAngle = slopeAngle;
-                collisionDetector.slopeNormal = hit.normal;
-                collisionDetector.slidingMaxSlope = true;
+                info.slopeAngle = slopeAngle;
+                info.slopeNormal = hit.normal;
+                info.slidingMaxSlope = true;
             }
         }
     }
 }
 
-public struct CollisionDetector
+public struct ControllerInfos
 {
     public bool rightCollision, leftCollision;
     public bool topCollision, bottomCollision;

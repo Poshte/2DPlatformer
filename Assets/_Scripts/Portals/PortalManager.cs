@@ -1,96 +1,162 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PortalManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject playerPrefab;
-
+    //portal objects
     [SerializeField]
     private GameObject bluePortal;
     [SerializeField]
     private GameObject orangePortal;
 
-    [SerializeField]
+    //controllers
+    private Transform blueController;
+    private Transform orangeController;
+    //controllers original position
+    private Vector3 originalBlueController;
+    private Vector3 originalOrangeController;
+
+    //triggers
+    private GameObject leftBlueTrigger;
+    private GameObject rightBlueTrigger;
+    private GameObject leftOrangeTrigger;
+    private GameObject rightOrangeTrigger;
+
+    //spawn points
     private Transform blueSpawnPoint;
-    [SerializeField]
     private Transform orangeSpawnPoint;
+    //spawn points original position
+    private Vector3 originalBlueSpawnPoint;
+    private Vector3 originalOrangeSpawnPoint;
 
-    private Controller2D controller2D;
+    //portal sprites
+    private Transform leftBlueSprite;
+    private Transform righttBlueSprite;
+    private Transform leftOrangeSprite;
+    private Transform rightOrangeSprite;
 
-    private float enterDirection;
-    private float exitDirection;
+    //curtain sprites
+    private SpriteRenderer leftBlueCurtain;
+    private SpriteRenderer rightBlueCurtain;
+    private SpriteRenderer leftOrangeCurtain;
+    private SpriteRenderer rightOrangeCurtain;
 
-    void Start()
+    //lists of children
+    private List<Transform> blueChildren;
+    private List<Transform> orangeChildren;
+
+
+    private void Awake()
     {
-    }
+        blueChildren = bluePortal.transform.GetAllChildren();
+        orangeChildren = orangePortal.transform.GetAllChildren();
 
-    private void Update()
-    {
-        //Debug.Log("entered direction: " + enterDirection + " exit direction: " + exitDirection);
+        blueController = blueChildren[0];
+        orangeController = orangeChildren[0];
+        originalBlueController = blueController.position;
+        originalOrangeController = orangeController.position;
+
+        leftBlueSprite = blueChildren[1];
+        leftOrangeSprite = orangeChildren[1];
+        righttBlueSprite = blueChildren[2];
+        rightOrangeSprite = orangeChildren[2];
+
+        blueSpawnPoint = blueChildren[3];
+        orangeSpawnPoint = orangeChildren[3];
+        originalBlueSpawnPoint = blueChildren[3].position;
+        originalOrangeSpawnPoint = orangeChildren[3].position;
+
+        leftBlueTrigger = blueChildren[4].gameObject;
+        leftOrangeTrigger = orangeChildren[4].gameObject;
+        rightBlueTrigger = blueChildren[5].gameObject;
+        rightOrangeTrigger = orangeChildren[5].gameObject;
+
+        leftBlueCurtain = leftBlueTrigger.GetComponentInChildren<SpriteRenderer>();
+        rightBlueCurtain = rightBlueTrigger.GetComponentInChildren<SpriteRenderer>();
+        leftOrangeCurtain = leftOrangeTrigger.GetComponentInChildren<SpriteRenderer>();
+        rightOrangeCurtain = rightOrangeTrigger.GetComponentInChildren<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        controller2D = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
-
-        enterDirection = controller2D.info.faceDirection;
-
         if (collision.gameObject.name == "Player")
         {
-            //if player enters blue portal
-            if (gameObject.name == "Blue Portal")
+            //player entering from left blue or right orange side
+            if (ReferenceEquals(gameObject, leftBlueTrigger) || ReferenceEquals(gameObject, rightOrangeTrigger))
             {
-                //disable orange collider
-                DisableCollider(orangePortal.GetComponent<Collider2D>());
-
-                //create clone at orange portal
-                CreateClone(orangeSpawnPoint.position);
+                AdjustCurtains(false);
+                AdjustControllers(false);
+                AdjustPortals(false);
+                AdjustSpawnPoints(false);
             }
-            //if player enters orange portal
-            else if (gameObject.name == "Orange Portal")
+            //player entering from right blue or left orange side
+            else if (ReferenceEquals(gameObject, rightBlueTrigger) || ReferenceEquals(gameObject, leftOrangeTrigger))
             {
-                //disable blue collider
-                DisableCollider(bluePortal.GetComponent<Collider2D>());
-
-                //create clone at blue portal
-                CreateClone(blueSpawnPoint.position);
+                AdjustCurtains(true);
+                AdjustControllers(true);
+                AdjustPortals(true);
+                AdjustSpawnPoints(true);
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void AdjustPortals(bool reversed)
     {
-        exitDirection = controller2D.info.faceDirection;
+        var rotationFactor = reversed ? -1f : 1f;
 
-        //if player exit portal without teleporting
-        if (enterDirection != exitDirection)
-        {
-            Destroy(GameObject.Find("Clone"));
-        }
-        //if player teleports with portal
-        else
-        {
-            Destroy(collision.gameObject);
-            EnableColliders();
-            GameObject.Find("Clone").name = "Player";
-        }
+        var tempLeftBlue = leftBlueSprite.transform.position;
+        var tempRightBlue = righttBlueSprite.transform.position;
+        var tempLeftOrange = leftOrangeSprite.transform.position;
+        var tempRightOrange = rightOrangeSprite.transform.position;
+
+        tempLeftBlue.z = rotationFactor;
+        tempRightBlue.z = -rotationFactor;
+        tempLeftOrange.z = -rotationFactor;
+        tempRightOrange.z = rotationFactor;
+
+        leftBlueSprite.transform.position = tempLeftBlue;
+        righttBlueSprite.transform.position = tempRightBlue;
+        leftOrangeSprite.transform.position = tempLeftOrange;
+        rightOrangeSprite.transform.position = tempRightOrange;
     }
 
-    public void CreateClone(Vector3 spawnPoint)
+    private void AdjustCurtains(bool reversed)
     {
-        var clone = Instantiate(playerPrefab, spawnPoint, Quaternion.identity);
-        clone.name = "Clone";
+        var tempBool = !reversed;
+
+        rightBlueCurtain.enabled = tempBool;
+        leftOrangeCurtain.enabled = tempBool;
+
+        leftBlueCurtain.enabled = !tempBool;
+        rightOrangeCurtain.enabled = !tempBool;
     }
 
-    public void DisableCollider(Collider2D collider)
+    private void AdjustSpawnPoints(bool reversed)
     {
-        collider.enabled = false;
+        var tempHeightControl = 0.7f;
+        var tempWidthControl = reversed ? -1f : 1f;
+
+        var blueTemp = originalBlueSpawnPoint;
+        blueTemp.x += tempWidthControl;
+        blueTemp.y -= tempHeightControl;
+        blueSpawnPoint.position = blueTemp;
+
+        var orangeTemp = originalOrangeSpawnPoint;
+        orangeTemp.x -= tempWidthControl;
+        orangeTemp.y -= tempHeightControl;
+        orangeSpawnPoint.position = orangeTemp;
     }
 
-    public void EnableColliders()
+    private void AdjustControllers(bool reversed)
     {
-        bluePortal.GetComponent<Collider2D>().enabled = true;
-        orangePortal.GetComponent<Collider2D>().enabled = true;
-    }
+        var tempWidthControl = reversed ? -0.5f : 0.5f;
 
+        var blueTemp = originalBlueController;
+        blueTemp.x += tempWidthControl;
+        blueController.position = blueTemp;
+
+        var orangeTemp = originalOrangeController;
+        orangeTemp.x -= tempWidthControl;
+        orangeController.position = orangeTemp;
+    }
 }

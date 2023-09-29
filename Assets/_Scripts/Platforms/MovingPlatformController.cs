@@ -9,10 +9,7 @@ public class MovingPlatformController : RaycastController
 	private LayerMask passengerMask;
 	[SerializeField]
 	private GameObject playerObject;
-	private Controller2D controller2D;
-
-	//private ColorService colorService;
-
+	//private Controller2D controller2D;
 
 	//waypoints
 	[SerializeField]
@@ -40,21 +37,14 @@ public class MovingPlatformController : RaycastController
 	private bool isOnTop;
 
 	//lists
-	private List<PassengerMovement> passengerMovements;
+	private List<PassengerMovement> passengerMovements = new List<PassengerMovement>();
 	private Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
 
 	public override void Awake()
 	{
 		base.Awake();
 
-		controller2D = playerObject.GetComponent<Controller2D>();
-
-		//colorService = new ColorService();
-
-		//if (GetComponent<ColorService>() != null)
-		//{
-		//	colorService = GetComponent<ColorService>();
-		//}
+		//controller2D = playerObject.GetComponent<Controller2D>();
 	}
 
 	public override void Start()
@@ -140,13 +130,13 @@ public class MovingPlatformController : RaycastController
 	public void CalculatePassengerMovement(Vector2 velocity)
 	{
 		var movedPassengers = new HashSet<Transform>();
-		passengerMovements = new List<PassengerMovement>();
+		//passengerMovements = new List<PassengerMovement>();
 
 		var directionX = Mathf.Sign(velocity.x);
 		var directionY = Mathf.Sign(velocity.y);
 
 		//vertically moving platform (passenger being pushed up/down by the platform)
-		if (velocity.y > 0f && controller2D.info.bottomCollision)
+		if (velocity.y > 0f/* && controller2D.info.bottomCollision*/)//this bottom collision check was causing a bug
 		{
 			var rayLength = Mathf.Abs(velocity.y) + skinWidth;
 

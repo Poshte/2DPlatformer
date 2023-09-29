@@ -127,11 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a733a297f3bac14abcf33ac8f51b9b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider: {fileID: 0}
-  horizontalRayCount: 10
-  verticalRayCount: 10
-  horizontalRaySpace: 0
-  verticalRaySpace: 0
   collisionMask:
     serializedVersion: 2
     m_Bits: 64

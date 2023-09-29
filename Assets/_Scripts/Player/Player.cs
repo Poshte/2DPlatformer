@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     private Vector2 wallJumpLeap;
     private int wallDirection;
     private int inputDirection;
-    private bool wallSliding;
+    //private bool wallSliding;
 
     //falling down through a platform
     private bool isCommandButtonDown;
@@ -65,7 +65,6 @@ public class Player : MonoBehaviour
         gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
-        Debug.Log("Gravity: " + gravity + " Max Jump Velocity: " + maxJumpVelocity + " Min Jump Velocity: " + minJumpVelocity);
     }
 
     void Update()
@@ -115,33 +114,33 @@ public class Player : MonoBehaviour
             commandButtonTimer = 0f;
         }
     }
-    public void HandleWallSliding()
-    {
-        wallSliding = false;
-        if (playerInput.x > 0)
-        {
-            inputDirection = 1;
-        }
-        else if (playerInput.x < 0)
-        {
-            inputDirection = -1;
-        }
-        else
-        {
-            inputDirection = 0;
-        }
+    //public void HandleWallSliding()
+    //{
+    //    wallSliding = false;
+    //    if (playerInput.x > 0)
+    //    {
+    //        inputDirection = 1;
+    //    }
+    //    else if (playerInput.x < 0)
+    //    {
+    //        inputDirection = -1;
+    //    }
+    //    else
+    //    {
+    //        inputDirection = 0;
+    //    }
 
-        if ((controller2D.info.leftCollision || controller2D.info.rightCollision) && !controller2D.info.bottomCollision && velocity.y < 0)
-        {
-            wallSliding = true;
-            wallDirection = (controller2D.info.leftCollision) ? -1 : 1;
+    //    if ((controller2D.info.leftCollision || controller2D.info.rightCollision) && !controller2D.info.bottomCollision && velocity.y < 0)
+    //    {
+    //        wallSliding = true;
+    //        wallDirection = (controller2D.info.leftCollision) ? -1 : 1;
 
-            if (velocity.y < -maxWallSlidingSpeed && inputDirection == wallDirection)
-            {
-                velocity.y = -maxWallSlidingSpeed;
-            }
-        }
-    }
+    //        if (velocity.y < -maxWallSlidingSpeed && inputDirection == wallDirection)
+    //        {
+    //            velocity.y = -maxWallSlidingSpeed;
+    //        }
+    //    }
+    //}
     public void GetMovementInput(Vector2 tempInput)
     {
         playerInput = tempInput;

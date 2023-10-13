@@ -37,7 +37,7 @@ public class MovingPlatformController : RaycastController
 	private bool isOnTop;
 
 	//lists
-	private List<PassengerMovement> passengerMovements = new List<PassengerMovement>();
+	private List<PassengerMovement> passengerMovements;
 	private Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
 
 	public override void Awake()
@@ -130,7 +130,7 @@ public class MovingPlatformController : RaycastController
 	public void CalculatePassengerMovement(Vector2 velocity)
 	{
 		var movedPassengers = new HashSet<Transform>();
-		//passengerMovements = new List<PassengerMovement>();
+		passengerMovements = new List<PassengerMovement>();
 
 		var directionX = Mathf.Sign(velocity.x);
 		var directionY = Mathf.Sign(velocity.y);

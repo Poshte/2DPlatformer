@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Controller2D))]
@@ -25,7 +27,8 @@ public class Player : MonoBehaviour
 	private float timeToJumpApex;
 	private float maxJumpVelocity;
 	private float minJumpVelocity;
-
+	private const float slidingJumpY = 8f;
+	private const float slidingJumpX = -2f;
 	//wall jumping
 	[SerializeField]
 	private float maxWallSlidingSpeed;
@@ -69,6 +72,14 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
+		//manage input direction
+		if (playerInput.x > 0)
+			inputDirection = 1;
+		else if (playerInput.x < 0)
+			inputDirection = -1;
+		else
+			inputDirection = 0;
+
 		CalculateVelocity();
 		FallThroughPlatform();
 		//HandleWallSliding();
@@ -98,6 +109,7 @@ public class Player : MonoBehaviour
 			(controller2D.info.bottomCollision) ? accelerationTimeGrounded : accelerationTimeAirborne);
 		velocity.y += gravity * Time.deltaTime;
 	}
+
 	public void FallThroughPlatform()
 	{
 		if (playerInput.y == -1)
@@ -114,22 +126,11 @@ public class Player : MonoBehaviour
 			commandButtonTimer = 0f;
 		}
 	}
+
 	//public void HandleWallSliding()
 	//{
 	//    wallSliding = false;
-	//    if (playerInput.x > 0)
-	//    {
-	//        inputDirection = 1;
-	//    }
-	//    else if (playerInput.x < 0)
-	//    {
-	//        inputDirection = -1;
-	//    }
-	//    else
-	//    {
-	//        inputDirection = 0;
-	//    }
-
+	//    
 	//    if ((controller2D.info.leftCollision || controller2D.info.rightCollision) && !controller2D.info.bottomCollision && velocity.y < 0)
 	//    {
 	//        wallSliding = true;
@@ -141,29 +142,29 @@ public class Player : MonoBehaviour
 	//        }
 	//    }
 	//}
-	public void GetMovementInput(Vector2 tempInput)
+
+	public void GetMovementInput(Vector2 movementInput)
 	{
-		playerInput = tempInput;
+		playerInput = movementInput;
 	}
 
 	public void GetJumpInput(bool performed, bool canceled)
 	{
 		//manage buffer
-		if (performed)
+		if (performed && coyoteCounter > 0f)
 			bufferCounter = jumpBuffer;
 		else
 			bufferCounter -= Time.deltaTime;
-
-
+		
 		//regular jumping max
-		if (bufferCounter > 0f && coyoteCounter > 0f)
+		if (bufferCounter > 0f)
 		{
 			if (controller2D.info.slidingMaxSlope)
 			{
 				if (inputDirection != -Mathf.Sign(controller2D.info.slopeNormal.x))
 				{
-					velocity.y = (maxJumpVelocity + 8) * controller2D.info.slopeNormal.y;
-					velocity.x = (maxJumpVelocity - 5) * controller2D.info.slopeNormal.x;
+					velocity.y = (maxJumpVelocity + slidingJumpY) * controller2D.info.slopeNormal.y;
+					velocity.x = (maxJumpVelocity + slidingJumpX) * controller2D.info.slopeNormal.x;
 				}
 			}
 			else

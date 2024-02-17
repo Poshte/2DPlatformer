@@ -70,15 +70,4 @@ public class FallingPlatformController : RaycastController
 		//it could potentially be better to destroy the game object and reintialize it.
 		gameObject.SetActive(true);
 	}
-
-	//public IEnumerator ChangeColor()
-	//{
-	//	var tick = 0f;
-	//	while (platformRenderer.material.color != endColor)
-	//	{
-	//		tick += Time.deltaTime * colorChangeSpeed;
-	//		platformRenderer.material.color = Color.Lerp(startColor, endColor, tick);
-	//		yield return null;
-	//	}
-	//}
 }

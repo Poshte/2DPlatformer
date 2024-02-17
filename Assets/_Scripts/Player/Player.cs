@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
 	private float commandButtonTimer;
 
 	//jump buffer
-	private const float jumpBuffer = 0.2f;
+	private const float jumpBuffer = 2f;
 	private float bufferCounter;
 
 	//coyote time
@@ -57,6 +57,9 @@ public class Player : MonoBehaviour
 
 	private float gravity;
 	private Vector2 velocity;
+
+	private const int jumpsAllowed = 1;
+	private int jumpCounter;
 
 	void Awake()
 	{
@@ -86,9 +89,16 @@ public class Player : MonoBehaviour
 
 		//manage coyote time
 		if (controller2D.info.bottomCollision)
+		{
 			coyoteCounter = coyoteTime;
+			jumpCounter = 0;
+		}
 		else
 			coyoteCounter -= Time.deltaTime;
+
+
+		//bufferCounter -= Time.deltaTime;
+
 
 		controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
 
@@ -150,14 +160,11 @@ public class Player : MonoBehaviour
 
 	public void GetJumpInput(bool performed, bool canceled)
 	{
-		//manage buffer
-		if (performed && coyoteCounter > 0f)
+		if (performed)
 			bufferCounter = jumpBuffer;
-		else
-			bufferCounter -= Time.deltaTime;
-		
+
 		//regular jumping max
-		if (bufferCounter > 0f)
+		if (bufferCounter > 0f && coyoteCounter > 0f && jumpCounter < jumpsAllowed)
 		{
 			if (controller2D.info.slidingMaxSlope)
 			{
@@ -172,12 +179,18 @@ public class Player : MonoBehaviour
 				velocity.y = maxJumpVelocity;
 			}
 
+			controller2D.info.bottomCollision = false;
 			bufferCounter = 0f;
+			jumpCounter++;
 		}
 		//regular jumping min
-		else if (canceled && velocity.y > minJumpVelocity /*&& coyoteCounter > 0f*/)
+		else if (canceled && velocity.y > minJumpVelocity && jumpCounter < jumpsAllowed /*&& coyoteCounter > 0f*/)
 		{
 			velocity.y = minJumpVelocity;
+
+			controller2D.info.bottomCollision = false;
+			bufferCounter = 0f;
+			jumpCounter++;
 		}
 		////wall jumping
 		//else if (bufferCounter > 0f && wallSliding)

@@ -113,10 +113,7 @@ public class Player : MonoBehaviour
 	public void CalculateVelocity()
 	{
 		var target = playerInput.x * moveSpeed;
-		velocity.x = Mathf.SmoothDamp(velocity.x,
-			target,
-			ref velocityXSmoothing,
-			(controller2D.info.bottomCollision) ? accelerationTimeGrounded : accelerationTimeAirborne);
+		velocity.x = Mathf.SmoothDamp(velocity.x, target, ref velocityXSmoothing, controller2D.info.bottomCollision ? accelerationTimeGrounded : accelerationTimeAirborne);
 		velocity.y += gravity * Time.deltaTime;
 	}
 
@@ -216,5 +213,10 @@ public class Player : MonoBehaviour
 		//}
 
 		controller2D.Move(velocity * Time.deltaTime);
+	}
+
+	public Vector2 GetPlayerVelocity()
+	{
+		return velocity;
 	}
 }

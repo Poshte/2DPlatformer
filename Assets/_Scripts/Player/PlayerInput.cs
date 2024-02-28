@@ -9,9 +9,14 @@ public class PlayerInput : MonoBehaviour
 {
     private Player playerScript;
 
-    void Start()
-    {
+	private void Awake()
+	{
         playerScript = GetComponent<Player>();
+	}
+
+	void Start()
+    {
+
     }
 
     public void Movement(InputAction.CallbackContext context)

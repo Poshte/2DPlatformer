@@ -14,7 +14,6 @@ public class FallingPlatformController : RaycastController
 
 	//colors
 	private Renderer platformRenderer;
-	//private ColorService colorService;
 
 	[SerializeField]
 	private Color startColor;
@@ -22,12 +21,12 @@ public class FallingPlatformController : RaycastController
 	private Color endColor;
 	[SerializeField]
 	private float colorChangeSpeed;
-
+	private IColorService colorService;
 	public override void Start()
 	{
 		base.Start();
-		//colorService = new ColorService();
 		platformRenderer = GetComponent<Renderer>();
+		colorService = ServiceLocator.Instance.Get<IColorService>();
 	}
 
 	void Update()
@@ -38,21 +37,16 @@ public class FallingPlatformController : RaycastController
 
 	private void DetectPlayer()
 	{
-		var colorService = ServiceLocator.Instance.Get<IColorService>();
-
 		for (int i = 0; i < VerticalRayCount; i++)
 		{
 			var rayOrigin = RaycastOrigin.topLeft;
 			rayOrigin += Vector2.right * (VerticalRaySpace * i);
-			var hits = Physics2D.RaycastAll(rayOrigin, Vector2.up, skinWidth, playerMask);
-			foreach (var hit in hits)
+			var hit = Physics2D.Raycast(rayOrigin, Vector2.up, skinWidth, playerMask);
+
+			if (hit)
 			{
-
 				StartCoroutine(colorService.ChangeColor(platformRenderer, startColor, endColor, 1.5f));
-
-				//StartCoroutine(ChangeColor());
 				Invoke(nameof(Fall), fallDelay);
-				break;
 			}
 		}
 	}

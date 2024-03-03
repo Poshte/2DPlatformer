@@ -1,2 +1,2 @@
 # 2DPlatformer
-A 2D Platformer without using Rigidbody
+A 2D Platformer with custom physics system in Unity

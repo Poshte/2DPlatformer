@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Controller2D))]
@@ -9,9 +7,8 @@ public class Player : MonoBehaviour
 	private Controller2D controller2D;
 
 	//movement
+	[SerializeField] private float moveSpeed = 5f;
 	private Vector2 playerInput;
-	[SerializeField]
-	private float moveSpeed = 5f;
 	private float velocityXSmoothing;
 
 	//smooth time acceleration
@@ -19,27 +16,21 @@ public class Player : MonoBehaviour
 	private const float accelerationTimeGrounded = 0.1f;
 
 	//jumping
-	[SerializeField]
-	private float maxJumpHeight;
-	[SerializeField]
-	private float minJumpHeight;
-	[SerializeField]
-	private float timeToJumpApex;
+	[SerializeField] private float maxJumpHeight;
+	[SerializeField] private float minJumpHeight;
+	[SerializeField] private float timeToJumpApex;
 	private float maxJumpVelocity;
 	private float minJumpVelocity;
 	private const float slidingJumpY = 8f;
 	private const float slidingJumpX = -2f;
-	//wall jumping
-	[SerializeField]
-	private float maxWallSlidingSpeed;
-	[SerializeField]
-	private Vector2 wallJumpFall;
-	[SerializeField]
-	private Vector2 wallJumpClimb;
-	[SerializeField]
-	private Vector2 wallJumpLeap;
-	private int wallDirection;
 	private int inputDirection;
+
+	//wall jumping
+	[SerializeField] private float maxWallSlidingSpeed;
+	[SerializeField] private Vector2 wallJumpFall;
+	[SerializeField] private Vector2 wallJumpClimb;
+	[SerializeField] private Vector2 wallJumpLeap;
+	private int wallDirection;
 	//private bool wallSliding;
 
 	//falling down through a platform

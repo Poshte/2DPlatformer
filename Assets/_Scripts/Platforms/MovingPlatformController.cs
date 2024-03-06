@@ -5,40 +5,33 @@ using UnityEngine;
 public class MovingPlatformController : RaycastController
 {
 	//dependencies
-	[SerializeField]
-	private LayerMask passengerMask;
-	[SerializeField]
-	private GameObject playerObject;
+	[SerializeField] private LayerMask passengerMask;
+	[SerializeField] private GameObject playerObject;
+
 	//private Controller2D controller2D;
 
 	//waypoints
-	[SerializeField]
-	private Vector3[] localWaypoints;
+	[SerializeField] private Vector3[] localWaypoints;
 	private Vector3[] globalWaypoints;
-
 	private int startingWaypointIndex;
 	private float percentBetweenWaypoints;
 
-	[SerializeField]
-	private float platformSpeed;
-	[SerializeField]
-	private bool isCyclic;
-
-	[SerializeField]
-	private float waitTime;
+	//platform controllers
+	[SerializeField] private float platformSpeed;
+	[SerializeField] private bool isCyclic;
+	[SerializeField] private float waitTime;
 	private float moveTime;
 
 	[SerializeField]
 	[Range(0, 2)]
 	private float easeAmount;
 
-	[SerializeField]
-	private bool isDormant;
-	private bool isOnTop;
+	//dormant platform
+	[SerializeField] private bool isDormant;
 
 	//lists
 	private List<PassengerMovement> passengerMovements;
-	private Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
+	private readonly Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
 
 	public override void Awake()
 	{
@@ -62,7 +55,7 @@ public class MovingPlatformController : RaycastController
 	{
 		UpdateRaycastOrigin();
 
-		if (isDormant && !isOnTop)
+		if (isDormant)
 		{
 			DetectPlayer();
 			return;
@@ -76,7 +69,7 @@ public class MovingPlatformController : RaycastController
 			transform.Translate(velocity);
 			MovePassenger(false);
 		}
-    }
+	}
 
 	public float Ease(float x)
 	{
@@ -219,11 +212,10 @@ public class MovingPlatformController : RaycastController
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.up, skinWidth, passengerMask);
 			if (hit)
 			{
-				isOnTop = true;
-
 				var renderer = GetComponent<Renderer>();
 				var startColor = new Color32(159, 158, 11, 255);
 				var endColor = new Color32(93, 180, 26, 255);
+				isDormant = false;
 
 				StartCoroutine(colorService.ChangeColor(renderer, startColor, endColor, 1.5f));
 			}

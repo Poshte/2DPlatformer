@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InputRelatedObject : MonoBehaviour
 {
+	//control speed of the objects
+	[SerializeField] private float horizontalFactor;
+	[SerializeField] private float verticalFactor;
+
 	private Player playerScript;
-	[SerializeField]
-	private float horizontalFactor;
-	[SerializeField]
-	private float verticalFactor;
 
 	private void Awake()
 	{

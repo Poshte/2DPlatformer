@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class TransformExtensions
 {
-    public static List<Transform> GetAllChildren(this Transform tran/*, GameObject parent*/)
+    public static List<Transform> GetAllChildren(this Transform tran)
     {
         var children = new List<Transform>();
         for (int i = 0; i < tran.childCount; i++)

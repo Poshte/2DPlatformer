@@ -1,27 +1,24 @@
-using System.Collections;
 using UnityEngine;
 
 public class FallingPlatformController : RaycastController
 {
-	[SerializeField]
-	private LayerMask playerMask;
+	[SerializeField] private LayerMask playerMask;
 
 	//falling
-	[SerializeField]
-	private float fallDelay;
-	[SerializeField]
-	private float respawnDelay;
+	[SerializeField] private float fallDelay;
+	[SerializeField] private float respawnDelay;
 
 	//colors
+	[SerializeField] private Color startColor;
+	[SerializeField] private Color endColor;
+	[SerializeField] private float colorChangeSpeed;
+
+	//dependencies
 	private Renderer platformRenderer;
 
-	[SerializeField]
-	private Color startColor;
-	[SerializeField]
-	private Color endColor;
-	[SerializeField]
-	private float colorChangeSpeed;
+	//services
 	private IColorService colorService;
+
 	public override void Start()
 	{
 		base.Start();
@@ -41,6 +38,9 @@ public class FallingPlatformController : RaycastController
 		{
 			var rayOrigin = RaycastOrigin.topLeft;
 			rayOrigin += Vector2.right * (VerticalRaySpace * i);
+			
+			//another approach is to use raycastall
+			//and put the result in a loop
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.up, skinWidth, playerMask);
 
 			if (hit)

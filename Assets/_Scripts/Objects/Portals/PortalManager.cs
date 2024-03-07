@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PortalManager : MonoBehaviour
@@ -10,6 +11,7 @@ public class PortalManager : MonoBehaviour
 	//controllers
 	private Transform blueController;
 	private Transform orangeController;
+
 	//controllers original position
 	private Vector3 originalBlueController;
 	private Vector3 originalOrangeController;
@@ -23,6 +25,7 @@ public class PortalManager : MonoBehaviour
 	//spawn points
 	private Transform blueSpawnPoint;
 	private Transform orangeSpawnPoint;
+
 	//spawn points original position
 	private Vector3 originalBlueSpawnPoint;
 	private Vector3 originalOrangeSpawnPoint;
@@ -39,10 +42,15 @@ public class PortalManager : MonoBehaviour
 	private SpriteRenderer leftOrangeCurtain;
 	private SpriteRenderer rightOrangeCurtain;
 
+	//curtain colliders
+	private BoxCollider2D blueCollider;
+	private BoxCollider2D orangeCollider;
+	private Vector2 blueColliderOffset;
+	private Vector2 orangeColliderOffset;
+
 	//lists of children
 	private List<Transform> blueChildren;
 	private List<Transform> orangeChildren;
-
 
 	private void Awake()
 	{
@@ -73,27 +81,57 @@ public class PortalManager : MonoBehaviour
 		rightBlueCurtain = rightBlueTrigger.GetComponentInChildren<SpriteRenderer>();
 		leftOrangeCurtain = leftOrangeTrigger.GetComponentInChildren<SpriteRenderer>();
 		rightOrangeCurtain = rightOrangeTrigger.GetComponentInChildren<SpriteRenderer>();
+
+		blueCollider = leftBlueCurtain.GetComponent<BoxCollider2D>();
+		orangeCollider = leftOrangeCurtain.GetComponent<BoxCollider2D>();
+
+		blueColliderOffset = blueCollider.offset;
+		orangeColliderOffset = orangeCollider.offset;
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.gameObject.name == "Player")
 		{
-			//player entering from left blue or right orange side
-			if (ReferenceEquals(gameObject, leftBlueTrigger) || ReferenceEquals(gameObject, rightOrangeTrigger))
+			//player entering from left blue portal
+			if (ReferenceEquals(gameObject, leftBlueTrigger))
 			{
 				AdjustCurtains(false);
 				AdjustControllers(false);
 				AdjustPortals(false);
 				AdjustSpawnPoints(false);
+
+				AdjustColliders(true);
 			}
-			//player entering from right blue or left orange side
-			else if (ReferenceEquals(gameObject, rightBlueTrigger) || ReferenceEquals(gameObject, leftOrangeTrigger))
+			//player entering from right blue portal
+			else if (ReferenceEquals(gameObject, rightBlueTrigger))
 			{
 				AdjustCurtains(true);
 				AdjustControllers(true);
 				AdjustPortals(true);
 				AdjustSpawnPoints(true);
+
+				AdjustColliders(false);
+			}
+			//player entering from right orange portal
+			else if (ReferenceEquals(gameObject, rightOrangeTrigger))
+			{
+				AdjustCurtains(false);
+				AdjustControllers(false);
+				AdjustPortals(false);
+				AdjustSpawnPoints(false);
+
+				AdjustColliders(true);
+			}
+			//player entering from left orange portal
+			else if (ReferenceEquals(gameObject, leftOrangeTrigger))
+			{
+				AdjustCurtains(true);
+				AdjustControllers(true);
+				AdjustPortals(true);
+				AdjustSpawnPoints(true);
+
+				AdjustColliders(false);
 			}
 		}
 	}
@@ -120,13 +158,24 @@ public class PortalManager : MonoBehaviour
 
 	private void AdjustCurtains(bool reversed)
 	{
-		var tempBool = !reversed;
+		rightBlueCurtain.enabled = !reversed;
+		leftOrangeCurtain.enabled = !reversed;
 
-		rightBlueCurtain.enabled = tempBool;
-		leftOrangeCurtain.enabled = tempBool;
+		leftBlueCurtain.enabled = reversed;
+		rightOrangeCurtain.enabled = reversed;
+	}
 
-		leftBlueCurtain.enabled = !tempBool;
-		rightOrangeCurtain.enabled = !tempBool;
+	private void AdjustColliders(bool reversed)
+	{
+		var offsetControl = reversed ? 0.8f : -0.8f;
+
+		var temp = blueColliderOffset;
+		temp.x += offsetControl;
+		blueCollider.offset = temp;
+
+		temp = orangeColliderOffset;
+		temp.x -= offsetControl;
+		orangeCollider.offset = temp;
 	}
 
 	private void AdjustSpawnPoints(bool reversed)
@@ -134,27 +183,27 @@ public class PortalManager : MonoBehaviour
 		var tempHeightControl = 0.7f;
 		var tempWidthControl = reversed ? -1f : 1f;
 
-		var blueTemp = originalBlueSpawnPoint;
-		blueTemp.x += tempWidthControl;
-		blueTemp.y -= tempHeightControl;
-		blueSpawnPoint.position = blueTemp;
+		var temp = originalBlueSpawnPoint;
+		temp.x += tempWidthControl;
+		temp.y -= tempHeightControl;
+		blueSpawnPoint.position = temp;
 
-		var orangeTemp = originalOrangeSpawnPoint;
-		orangeTemp.x -= tempWidthControl;
-		orangeTemp.y -= tempHeightControl;
-		orangeSpawnPoint.position = orangeTemp;
+		temp = originalOrangeSpawnPoint;
+		temp.x -= tempWidthControl;
+		temp.y -= tempHeightControl;
+		orangeSpawnPoint.position = temp;
 	}
 
 	private void AdjustControllers(bool reversed)
 	{
 		var tempWidthControl = reversed ? -0.5f : 0.5f;
 
-		var blueTemp = originalBlueController;
-		blueTemp.x += tempWidthControl;
-		blueController.position = blueTemp;
+		var temp = originalBlueController;
+		temp.x += tempWidthControl;
+		blueController.position = temp;
 
-		var orangeTemp = originalOrangeController;
-		orangeTemp.x -= tempWidthControl;
-		orangeController.position = orangeTemp;
+		temp = originalOrangeController;
+		temp.x -= tempWidthControl;
+		orangeController.position = temp;
 	}
 }

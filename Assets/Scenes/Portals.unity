@@ -2039,10 +2039,6 @@ PrefabInstance:
       propertyPath: bluePortal
       value: 
       objectReference: {fileID: 596844337}
-    - target: {fileID: 2301621065496114811, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
-      propertyPath: orangePortal
-      value: 
-      objectReference: {fileID: 1768622063}
     - target: {fileID: 4421210789567426594, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
       propertyPath: m_Name
       value: Orange Portal (4)
@@ -2050,10 +2046,6 @@ PrefabInstance:
     - target: {fileID: 4421210789567426604, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4421210789567426604, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4421210789567426604, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2099,10 +2091,6 @@ PrefabInstance:
       propertyPath: bluePortal
       value: 
       objectReference: {fileID: 596844337}
-    - target: {fileID: 7826982827349978201, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
-      propertyPath: orangePortal
-      value: 
-      objectReference: {fileID: 1768622063}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
 --- !u!4 &927104116 stripped
@@ -2371,17 +2359,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 80297680}
     - target: {fileID: 1316349969, guid: 69f5666f676a19f449704c6cb3c663ed, type: 3}
-      propertyPath: bluePortal
-      value: 
-      objectReference: {fileID: 596844337}
-    - target: {fileID: 1316349969, guid: 69f5666f676a19f449704c6cb3c663ed, type: 3}
       propertyPath: orangePortal
       value: 
       objectReference: {fileID: 1768622063}
-    - target: {fileID: 3920292110111077628, guid: 69f5666f676a19f449704c6cb3c663ed, type: 3}
-      propertyPath: bluePortal
-      value: 
-      objectReference: {fileID: 596844337}
     - target: {fileID: 3920292110111077628, guid: 69f5666f676a19f449704c6cb3c663ed, type: 3}
       propertyPath: orangePortal
       value: 
@@ -2878,7 +2858,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385611125}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -16.7, y: -4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3506,7 +3486,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709839747}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -16.7, y: -4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3812,11 +3792,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378355479028983717, guid: 6a064128006f9f44887d29b65415fe57, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -16.7
       objectReference: {fileID: 0}
     - target: {fileID: 6378355479028983717, guid: 6a064128006f9f44887d29b65415fe57, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6378355479028983717, guid: 6a064128006f9f44887d29b65415fe57, type: 3}
       propertyPath: m_LocalPosition.z

@@ -75,7 +75,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1.5, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &154149543
 Rigidbody2D:
@@ -108,8 +108,8 @@ GameObject:
   m_Component:
   - component: {fileID: 592566292}
   - component: {fileID: 592566295}
-  - component: {fileID: 592566293}
   - component: {fileID: 5411593710942279939}
+  - component: {fileID: 592566293}
   m_Layer: 6
   m_Name: Curtain_Left
   m_TagString: Untagged
@@ -184,6 +184,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &5411593710942279939
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592566291}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 1.66, y: 3.2}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.48, y: 3.48}
+    newSize: {x: 3.48, y: 3.48}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3, y: 3}
+  m_EdgeRadius: 0
 --- !u!61 &592566293
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -209,32 +235,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 3, y: 0.1}
-  m_EdgeRadius: 0
---- !u!61 &5411593710942279939
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 592566291}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1.7, y: 3.2}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.48, y: 3.48}
-    newSize: {x: 3.48, y: 3.48}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 3}
   m_EdgeRadius: 0
 --- !u!1 &3536160123187369661
 GameObject:
@@ -330,14 +330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04a847f979d8854f866da0bf603a6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftBlueTrigger: {fileID: 3536160123187369661}
-  rightBlueTrigger: {fileID: 6814264932243105282}
-  leftOrangeTrigger: {fileID: 0}
-  rightOrangeTrigger: {fileID: 0}
-  blueSpawnPoint: {fileID: 6163132503998761304}
-  orangeSpawnPoint: {fileID: 0}
-  blueController: {fileID: 154149542}
-  orangeController: {fileID: 0}
+  bluePortal: {fileID: 6163132504120181798}
+  orangePortal: {fileID: 0}
 --- !u!1 &6163132503409732423
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,11 +773,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04a847f979d8854f866da0bf603a6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftBlueTrigger: {fileID: 3536160123187369661}
-  rightBlueTrigger: {fileID: 6814264932243105282}
-  leftOrangeTrigger: {fileID: 0}
-  rightOrangeTrigger: {fileID: 0}
-  blueSpawnPoint: {fileID: 6163132503998761304}
-  orangeSpawnPoint: {fileID: 0}
-  blueController: {fileID: 154149542}
-  orangeController: {fileID: 0}
+  bluePortal: {fileID: 6163132504120181798}
+  orangePortal: {fileID: 0}

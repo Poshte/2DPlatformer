@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438979a7129e23347a8fb4aaadaf9fc6, type: 3}
+  m_Name: Horse_Test
+  m_EditorClassIdentifier: 
+  speakerName: Horse
+  speakerAvatar: {fileID: 0}
+  paragraphs:
+  - 'Yo there... '
+  - Yeah, you. Why don't you come here and have a little chat with an old man?
+  - Have you ever wondered why you do all these... well, these "things" you normally
+    do? Yeah I thought so. People never wonder. They are busy fucking humans.

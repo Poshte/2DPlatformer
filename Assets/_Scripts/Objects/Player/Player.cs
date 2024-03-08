@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
 	{
 		controller2D = GetComponent<Controller2D>();
 	}
+
 	void Start()
 	{
 		//math calculations
@@ -143,11 +144,17 @@ public class Player : MonoBehaviour
 
 	public void GetMovementInput(Vector2 movementInput)
 	{
+		if (!base.isActiveAndEnabled)
+			return;
+
 		playerInput = movementInput;
 	}
 
 	public void GetJumpInput(bool performed, bool canceled)
 	{
+		if (!base.isActiveAndEnabled)
+			return;
+
 		if (performed)
 			bufferCounter = jumpBuffer;
 

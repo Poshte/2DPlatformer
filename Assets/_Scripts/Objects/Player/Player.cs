@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Controller2D))]
-public class Player : MonoBehaviour
+public class Player : NPC, ITalkable, IWalkable
 {
 	//dependencies
 	private Controller2D controller2D;
@@ -51,6 +51,10 @@ public class Player : MonoBehaviour
 
 	private const int jumpsAllowed = 1;
 	private int jumpCounter;
+
+	//behavior
+	[SerializeField] private DialogueText dialogueText;
+	[SerializeField] private DialogueController dialogueController;
 
 	void Awake()
 	{
@@ -212,9 +216,25 @@ public class Player : MonoBehaviour
 
 		controller2D.Move(velocity * Time.deltaTime);
 	}
-
 	public Vector2 GetPlayerVelocity()
 	{
 		return velocity;
 	}
+
+	#region Behaviors
+	public override void Interact()
+	{
+		Talk(dialogueText);
+	}
+
+	public void Walk()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public void Talk(DialogueText dialogueText)
+	{
+		dialogueController.DisplayNextParagraph(dialogueText);
+	}
+	#endregion
 }

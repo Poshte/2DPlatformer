@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueController : MonoBehaviour
 {
-	//dialogues
+	//dialogue box
 	private TextMeshProUGUI NPCName;
 	private TextMeshProUGUI NPCDialogue;
-	[SerializeField] private float typeSpeed = 20f;
+	private Material boxMaterial;
+	[SerializeField] private float typeSpeed = 5f;
 
 	//paragraphs
+	private readonly Queue<string> names = new();
 	private readonly Queue<string> paragraphs = new();
 	private string currentParagraph;
+	private string currentName;
 	private Coroutine typeDialogueCoroutine;
 
 	//dependencies
@@ -32,6 +36,8 @@ public class DialogueController : MonoBehaviour
 		var temp = GetComponentsInChildren<TextMeshProUGUI>();
 		NPCName = temp[0];
 		NPCDialogue = temp[1];
+
+		boxMaterial = gameObject.GetComponent<Image>().material;
 	}
 
 	public void DisplayNextParagraph(DialogueText dialogueText)
@@ -51,7 +57,9 @@ public class DialogueController : MonoBehaviour
 		if (!isTyping)
 		{
 			currentParagraph = paragraphs.Dequeue();
-			typeDialogueCoroutine = StartCoroutine(TypeDialogue(currentParagraph));
+			currentName = names.Dequeue();
+
+			typeDialogueCoroutine = StartCoroutine(TypeDialogue(currentName, currentParagraph));
 		}
 		else
 		{
@@ -67,7 +75,8 @@ public class DialogueController : MonoBehaviour
 		gameObject.SetActive(true);
 		playerScript.enabled = false;
 
-		NPCName.text = dialogueText.speakerName;
+		foreach (var n in dialogueText.speakerNames)
+			names.Enqueue(n);
 
 		foreach (var p in dialogueText.paragraphs)
 			paragraphs.Enqueue(p);
@@ -76,20 +85,23 @@ public class DialogueController : MonoBehaviour
 	private void EndConversation()
 	{
 		paragraphs.Clear();
+		names.Clear();
 		gameObject.SetActive(false);
 		playerScript.enabled = true;
 		conversationEnded = false;
 	}
 
-	private IEnumerator TypeDialogue(string p)
+	private IEnumerator TypeDialogue(string name, string text)
 	{
 		isTyping = true;
 		var visibleCharactersCount = 0;
 
-		NPCDialogue.text = p;
+		boxMaterial.color = NPCsColors.GetColor(name);
+		NPCName.text = name;
+		NPCDialogue.text = text;
 		NPCDialogue.maxVisibleCharacters = visibleCharactersCount;
 
-		foreach (var c in p)
+		foreach (var c in text)
 		{
 			visibleCharactersCount++;
 			NPCDialogue.maxVisibleCharacters = visibleCharactersCount;
@@ -103,9 +115,7 @@ public class DialogueController : MonoBehaviour
 	private void FinishParagraph(string p)
 	{
 		StopCoroutine(typeDialogueCoroutine);
-
 		NPCDialogue.maxVisibleCharacters = p.Length;
-
 		isTyping = false;
 	}
 }

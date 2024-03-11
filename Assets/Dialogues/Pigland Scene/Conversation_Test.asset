@@ -10,12 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 438979a7129e23347a8fb4aaadaf9fc6, type: 3}
-  m_Name: Horse_Test
+  m_Name: Conversation_Test
   m_EditorClassIdentifier: 
-  speakerName: Horse
-  speakerAvatar: {fileID: 0}
+  speakerNames:
+  - Player
+  - Pig
+  - Player
+  - Pig
+  - Player
+  - Pig
+  - Player
+  - Pig
+  - Pig
   paragraphs:
-  - 'Yo there... '
-  - Yeah, you. Why don't you come here and have a little chat with an old man?
-  - Have you ever wondered why you do all these... well, these "things" you normally
-    do? Yeah I thought so. People never wonder. They are busy fucking humans.
+  - Dude, you are not even a human.
+  - So what? Does that mean I don't need to be hugged?
+  - ...
+  - Hey... Will you be my friend?
+  - I am already your friend.
+  - Then why don't I feel any better?
+  - ...
+  - Leave me be.
+  - I need some time alone.

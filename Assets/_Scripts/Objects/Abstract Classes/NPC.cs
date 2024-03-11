@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public abstract class NPC : MonoBehaviour, IIntractable
 {
 	[SerializeField] private SpriteRenderer interactSprite;
-
+	
 	private Transform playerTrnasform;
 
 	private const float interactDistance = 2f;

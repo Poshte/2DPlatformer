@@ -9,7 +9,7 @@ public class DialogueController : MonoBehaviour
 	//dialogue box
 	private TextMeshProUGUI NPCName;
 	private TextMeshProUGUI NPCDialogue;
-	private Material boxMaterial;
+	private Image boxImage;
 	[SerializeField] private float typeSpeed = 5f;
 
 	//paragraphs
@@ -25,6 +25,7 @@ public class DialogueController : MonoBehaviour
 	//controllers
 	private bool conversationEnded;
 	private bool isTyping;
+	private bool isDelayed = false;
 
 	//constants
 	private const float maxTypeTime = 0.1f;
@@ -37,11 +38,12 @@ public class DialogueController : MonoBehaviour
 		NPCName = temp[0];
 		NPCDialogue = temp[1];
 
-		boxMaterial = gameObject.GetComponent<Image>().material;
+		boxImage = gameObject.GetComponent<Image>();
 	}
 
 	public void DisplayNextParagraph(DialogueText dialogueText)
 	{
+		//handle empty paragraphs
 		if (paragraphs.Count == 0)
 		{
 			if (!conversationEnded)
@@ -54,12 +56,22 @@ public class DialogueController : MonoBehaviour
 			}
 		}
 
-		if (!isTyping)
+		//handle writting paragrpahs
+		if (!isTyping && !isDelayed)
 		{
 			currentParagraph = paragraphs.Dequeue();
 			currentName = names.Dequeue();
 
-			typeDialogueCoroutine = StartCoroutine(TypeDialogue(currentName, currentParagraph));
+			//delay if text is empty
+			if (string.IsNullOrWhiteSpace(currentParagraph))
+			{
+				StartCoroutine(Delay(currentName));
+			}
+			else
+			{
+				boxImage.enabled = true;
+				typeDialogueCoroutine = StartCoroutine(TypeDialogue(currentName, currentParagraph));
+			}
 		}
 		else
 		{
@@ -96,7 +108,11 @@ public class DialogueController : MonoBehaviour
 		isTyping = true;
 		var visibleCharactersCount = 0;
 
-		boxMaterial.color = NPCsColors.GetColor(name);
+		boxImage.material.color= Color.black;
+		var speakerColor = NPCsColors.GetColor(name);
+		NPCDialogue.color = speakerColor;
+		NPCName.color = speakerColor;
+
 		NPCName.text = name;
 		NPCDialogue.text = text;
 		NPCDialogue.maxVisibleCharacters = visibleCharactersCount;
@@ -117,5 +133,17 @@ public class DialogueController : MonoBehaviour
 		StopCoroutine(typeDialogueCoroutine);
 		NPCDialogue.maxVisibleCharacters = p.Length;
 		isTyping = false;
+	}
+
+	private IEnumerator Delay(string delay)
+	{
+		boxImage.enabled = false;
+		NPCName.text = "";
+		NPCDialogue.text = "";
+		isDelayed = true;
+
+		yield return new WaitForSeconds(float.Parse(delay));
+
+		isDelayed = false;
 	}
 }

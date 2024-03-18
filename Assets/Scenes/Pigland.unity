@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactSprite: {fileID: 1795749816}
-  dialogueText: {fileID: 11400000, guid: 2bbf72682edc9a246ae3c9199645cb3a, type: 2}
+  dialogueText: {fileID: 11400000, guid: e17c9b36a03bb644a93cf6d3f4c8ea7a, type: 2}
   dialogueController: {fileID: 721550127}
 --- !u!1001 &554799814
 PrefabInstance:
@@ -299,6 +299,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 721550126, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 721550126, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 583641320844225895, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3444631529690170086, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5010605170389526393, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -386,6 +402,10 @@ PrefabInstance:
     - target: {fileID: 5010605170389526397, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}
       propertyPath: m_Name
       value: Dialogue Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308212930698580771, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67b2b511fd9e8dc4292ee18ddc933bbe, type: 3}

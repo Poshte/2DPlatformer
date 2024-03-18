@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ public class DialogueController : MonoBehaviour
 	private TextMeshProUGUI NPCName;
 	private TextMeshProUGUI NPCDialogue;
 	private Image boxImage;
-	[SerializeField] private float typeSpeed = 5f;
+	private readonly float typeSpeed = 0.01f;
 
 	//paragraphs
 	private readonly Queue<string> names = new();
@@ -19,6 +20,13 @@ public class DialogueController : MonoBehaviour
 	private string currentName;
 	private Coroutine typeDialogueCoroutine;
 
+	//punctuations
+	private readonly Dictionary<HashSet<char>, float> punctuations = new()
+	{
+		{ new HashSet<char>(){'.', '?', '!'}, 0.3f },
+		{ new HashSet<char>(){',', ';', ':'}, 0.05f}
+	};
+
 	//dependencies
 	private Player playerScript;
 
@@ -26,9 +34,6 @@ public class DialogueController : MonoBehaviour
 	private bool endOfconversation;
 	private bool isTyping;
 	private bool isDelayed = false;
-
-	//constants
-	private const float maxTypeTime = 0.1f;
 
 	private void Awake()
 	{
@@ -120,12 +125,22 @@ public class DialogueController : MonoBehaviour
 		NPCDialogue.text = text;
 		NPCDialogue.maxVisibleCharacters = visibleCharactersCount;
 
+		var lastCharacter = '.';
 		foreach (var c in text)
 		{
 			visibleCharactersCount++;
 			NPCDialogue.maxVisibleCharacters = visibleCharactersCount;
 
-			yield return new WaitForSeconds(maxTypeTime / typeSpeed);
+			//pause after punctuations
+			foreach (KeyValuePair<HashSet<char>, float> category in punctuations)
+			{
+				if (c != lastCharacter && category.Key.Contains(c))
+					yield return new WaitForSeconds(category.Value);
+				else
+					yield return new WaitForSeconds(typeSpeed);
+
+				lastCharacter = c;
+			}
 		}
 
 		isTyping = false;

@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactSprite: {fileID: 1795749816}
-  dialogueText: {fileID: 11400000, guid: e17c9b36a03bb644a93cf6d3f4c8ea7a, type: 2}
+  dialogueText: {fileID: 11400000, guid: 2bbf72682edc9a246ae3c9199645cb3a, type: 2}
   dialogueController: {fileID: 721550127}
 --- !u!1001 &554799814
 PrefabInstance:

@@ -23,7 +23,7 @@ public class DialogueController : MonoBehaviour
 	private Player playerScript;
 
 	//controllers
-	private bool conversationEnded;
+	private bool endOfconversation;
 	private bool isTyping;
 	private bool isDelayed = false;
 
@@ -46,10 +46,10 @@ public class DialogueController : MonoBehaviour
 		//handle empty paragraphs
 		if (paragraphs.Count == 0)
 		{
-			if (!conversationEnded)
+			if (!endOfconversation)
 				StartConversation(dialogueText);
 
-			else if (conversationEnded && !isTyping)
+			else if (endOfconversation && !isTyping)
 			{
 				EndConversation();
 				return;
@@ -79,7 +79,7 @@ public class DialogueController : MonoBehaviour
 		}
 
 		if (paragraphs.Count == 0)
-			conversationEnded = true;
+			endOfconversation = true;
 	}
 
 	private void StartConversation(DialogueText dialogueText)
@@ -98,9 +98,12 @@ public class DialogueController : MonoBehaviour
 	{
 		paragraphs.Clear();
 		names.Clear();
-		gameObject.SetActive(false);
+		endOfconversation = false;
+
 		playerScript.enabled = true;
-		conversationEnded = false;
+		playerScript.GetMovementInput(Vector2.zero);
+
+		gameObject.SetActive(false);
 	}
 
 	private IEnumerator TypeDialogue(string name, string text)
@@ -108,7 +111,7 @@ public class DialogueController : MonoBehaviour
 		isTyping = true;
 		var visibleCharactersCount = 0;
 
-		boxImage.material.color= Color.black;
+		boxImage.material.color = Color.black;
 		var speakerColor = NPCsColors.GetColor(name);
 		NPCDialogue.color = speakerColor;
 		NPCName.color = speakerColor;

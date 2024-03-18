@@ -221,6 +221,12 @@ public class Player : NPC, ITalkable, IWalkable
 		return velocity;
 	}
 
+	private void OnEnable()
+	{
+		velocity.x = 0f;
+		velocity.y = 0f;
+	}
+
 	#region Behaviors
 	public override void Interact()
 	{

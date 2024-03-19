@@ -15,15 +15,17 @@ MonoBehaviour:
   speakerNames:
   - Player
   - Pig
+  - Player
   - Pig
   - 0.5
   - Player
   - Pig
   paragraphs:
-  - Hi. Do you happen to know, the way to the lighthouse?
+  - Hi. Do you happen to know the way to the lighthouse?
   - Lighthouse? What are you talking about, young man?
-  - Haha, there ain't no lighthouse in this county. Someone must have fooled you!
+  - ...
+  - Haha! There ain't no lighthouse in this county; someone must have fooled you!
   - 
-  - But I was told there would be one near the sea. It should be somehwere near.
-    Maybe you have never seen it.
+  - But I was told there would be one near the sea. It should be somehwere near,
+    maybe you have never seen it.
   - Look buddy, this is Pigland. There ain't no sea or such here.

@@ -23,6 +23,10 @@ public abstract class NPC : MonoBehaviour, IIntractable
 			if (Keyboard.current.eKey.wasPressedThisFrame)
 			{
 				Interact();
+
+				//testing AudioManager
+				AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InteractSound, this.transform.position);
+
 			}
 		}
 		else

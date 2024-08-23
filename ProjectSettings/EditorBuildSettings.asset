@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Portal.unity
     guid: dae860b0553014f4e9aa556a3c172bbc
   - enabled: 1
-    path: Assets/Scenes/Portals.unity
+    path: Assets/_Scenes/Portals.unity
     guid: 960ecd433b401fe41b5973c0a6288471
   - enabled: 1
-    path: Assets/Scenes/Underground.unity
+    path: Assets/_Scenes/Underground.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

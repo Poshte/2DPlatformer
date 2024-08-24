@@ -1,8 +1,11 @@
+using FMOD.Studio;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Controller2D))]
 public class Player : NPC, ITalkable, IWalkable
 {
+	#region Fields
 	//dependencies
 	private Controller2D controller2D;
 
@@ -56,6 +59,11 @@ public class Player : NPC, ITalkable, IWalkable
 	[SerializeField] private DialogueText dialogueText;
 	[SerializeField] private DialogueController dialogueController;
 
+	//sounds
+	private EventInstance playerFootsteps;
+	#endregion
+
+	#region MonoBehaviors 
 	void Awake()
 	{
 		controller2D = GetComponent<Controller2D>();
@@ -67,6 +75,9 @@ public class Player : NPC, ITalkable, IWalkable
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
+
+		//get sound instances
+		playerFootsteps = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.PlayerFootstepsSound);
 	}
 
 	void Update()
@@ -95,8 +106,11 @@ public class Player : NPC, ITalkable, IWalkable
 
 		//bufferCounter -= Time.deltaTime;
 
-
+		//move player based on calculated velocity
 		controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
+
+		//update player reltaed sounds
+		UpdateSound();
 
 		//top and bottom collisions
 		if (controller2D.info.topCollision || controller2D.info.bottomCollision)
@@ -105,7 +119,9 @@ public class Player : NPC, ITalkable, IWalkable
 			else
 				velocity.y = 0f;
 	}
+	#endregion
 
+	#region Methods
 	public void CalculateVelocity()
 	{
 		var target = playerInput.x * moveSpeed;
@@ -216,6 +232,7 @@ public class Player : NPC, ITalkable, IWalkable
 
 		controller2D.Move(velocity * Time.deltaTime);
 	}
+
 	public Vector2 GetPlayerVelocity()
 	{
 		return velocity;
@@ -226,6 +243,25 @@ public class Player : NPC, ITalkable, IWalkable
 		velocity.x = 0f;
 		velocity.y = 0f;
 	}
+
+	private void UpdateSound()
+	{
+		if (velocity.x != 0 && playerInput.x != 0 && controller2D.info.bottomCollision)
+		{
+
+			playerFootsteps.getPlaybackState(out PLAYBACK_STATE playbackState);
+
+			if (playbackState == PLAYBACK_STATE.STOPPED)
+			{
+				playerFootsteps.start();
+			}
+		}
+		else
+		{
+			playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+		}
+	}
+	#endregion
 
 	#region Behaviors
 	public override void Interact()

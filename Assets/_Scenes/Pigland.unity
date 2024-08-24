@@ -179,6 +179,13 @@ MonoBehaviour:
       Data3: 19454108
       Data4: -440064601
     Path: event:/weapons_explosion_debris_large
+  <PlayerFootstepsSound>k__BackingField:
+    Guid:
+      Data1: 1632777821
+      Data2: 1332663712
+      Data3: -851576189
+      Data4: -1638421604
+    Path: event:/player_footsteps
 --- !u!1001 &414122627
 PrefabInstance:
   m_ObjectHideFlags: 0

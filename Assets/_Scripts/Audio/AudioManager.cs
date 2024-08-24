@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,5 +33,10 @@ public class AudioManager : MonoBehaviour
     public void PlayOneShot(EventReference sound, Vector3 worldPos)
     {
         RuntimeManager.PlayOneShot(sound, worldPos);
+    }
+
+    public EventInstance CreateEventInstance(EventReference sound)
+    {
+        return RuntimeManager.CreateInstance(sound);
     }
 }

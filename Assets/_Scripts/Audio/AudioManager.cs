@@ -7,6 +7,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     private static AudioManager _instance;
+    private List<EventInstance> _eventInstances = new();
     public static AudioManager Instance
     {
         get
@@ -26,17 +27,31 @@ public class AudioManager : MonoBehaviour
         {
             Debug.LogError("More than one instance of AudioManager exist");
         }
-
-        _instance = this;
+        else
+        {
+            _instance = this;
+        }
     }
 
-    public void PlayOneShot(EventReference sound, Vector3 worldPos)
+	public void PlayOneShot(EventReference sound, Vector3 worldPos)
     {
         RuntimeManager.PlayOneShot(sound, worldPos);
     }
 
     public EventInstance CreateEventInstance(EventReference sound)
     {
-        return RuntimeManager.CreateInstance(sound);
+        var instance = RuntimeManager.CreateInstance(sound);
+        _eventInstances.Add(instance);
+		return instance;
     }
+
+    private void CleanUp()
+    {
+        _eventInstances.Clear();
+    }
+
+	private void OnDestroy()
+	{
+        CleanUp();
+	}
 }

@@ -30,7 +30,10 @@ public class LevelManager : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.V))
 		{
-			LoadNextScene();
+			if (Input.GetKey(KeyCode.LeftShift))
+				LoadPreviousScene();
+			else
+				LoadNextScene();
 		}
 	}
 
@@ -40,12 +43,17 @@ public class LevelManager : MonoBehaviour
 		StartCoroutine(LoadSceneAsynchronously(SceneManager.GetActiveScene().buildIndex + 1));
 	}
 
+	public void LoadPreviousScene()
+	{
+		StartCoroutine(screenFade.Fade(canvasGroup, 0f, 1f));
+		StartCoroutine(LoadSceneAsynchronously(SceneManager.GetActiveScene().buildIndex - 1));
+	}
+
 	private IEnumerator LoadSceneAsynchronously(int levelIndex)
 	{
 		yield return new WaitForSeconds(waitTime);
 
 		SceneManager.LoadSceneAsync(levelIndex);
 		StartCoroutine(screenFade.Fade(canvasGroup, 1f, 0f));
-
 	}
 }

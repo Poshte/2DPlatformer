@@ -56,8 +56,13 @@ public class Controller2D : RaycastController
 
 			if (hit)
 			{
+				Debug.Log("hit something");
+
 				if (hit.distance == 0f)
+				{
+					Debug.Log("hit distance is 0");
 					continue;
+				}
 
 				var slopeAngle = Vector2.Angle(Vector2.up, hit.normal);
 

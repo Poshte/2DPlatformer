@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class FMODEvents : MonoBehaviour
 {
-    [field: Header("Interact SFX")]
-    [field: SerializeField] public EventReference InteractSound { get; private set; }
+	[field: Header("Interact SFX")]
+	[field: SerializeField] public EventReference InteractSound { get; private set; }
 
 
 	[field: Header("Player SFX")]
@@ -33,7 +33,9 @@ public class FMODEvents : MonoBehaviour
 		{
 			Debug.LogError("More than one instance of FMODEvents exist");
 		}
-
-		_instance = this;
-    }
+		else
+		{
+			_instance = this;
+		}
+	}
 }

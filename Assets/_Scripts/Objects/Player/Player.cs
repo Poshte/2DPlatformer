@@ -246,9 +246,12 @@ public class Player : NPC, ITalkable, IWalkable
 
 	private void UpdateSound()
 	{
-		if (velocity.x != 0 && playerInput.x != 0 && controller2D.info.bottomCollision)
-		{
 
+		if (!controller2D.info.leftCollision &&
+			!controller2D.info.rightCollision &&
+			playerInput.x != 0 &&
+			controller2D.info.bottomCollision)
+		{
 			playerFootsteps.getPlaybackState(out PLAYBACK_STATE playbackState);
 
 			if (playbackState == PLAYBACK_STATE.STOPPED)

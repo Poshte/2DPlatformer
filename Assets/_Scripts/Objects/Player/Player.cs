@@ -244,9 +244,15 @@ public class Player : NPC, ITalkable, IWalkable
 		velocity.y = 0f;
 	}
 
+	private void OnDisable()
+	{
+		velocity.x = 0f;
+		velocity.y = 0f;
+		playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+	}
+
 	private void UpdateSound()
 	{
-
 		if (!controller2D.info.leftCollision &&
 			!controller2D.info.rightCollision &&
 			playerInput.x != 0 &&

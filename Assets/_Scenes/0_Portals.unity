@@ -2375,6 +2375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pig
       objectReference: {fileID: 0}
+    - target: {fileID: 6597287424479760487, guid: 723b0b8e2928e4a428b992928e388a93, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 723b0b8e2928e4a428b992928e388a93, type: 3}
 --- !u!1001 &1023163475
@@ -2717,6 +2721,10 @@ PrefabInstance:
     - target: {fileID: 223580250676355603, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
       propertyPath: m_Name
       value: Dynamic Managers
+      objectReference: {fileID: 0}
+    - target: {fileID: 5085531375367554797, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
       propertyPath: <InteractSound>k__BackingField.Path

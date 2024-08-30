@@ -30,6 +30,10 @@ public class LevelManager : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.V))
 		{
+			//fire BeforeSceneLoad event
+			GameEvents.Instance.BeforeSceneLoad();
+
+			//replace this with end of scene trigger
 			if (Input.GetKey(KeyCode.LeftShift))
 				LoadPreviousScene();
 			else
@@ -52,8 +56,10 @@ public class LevelManager : MonoBehaviour
 	private IEnumerator LoadSceneAsynchronously(int levelIndex)
 	{
 		yield return new WaitForSeconds(waitTime);
-
 		SceneManager.LoadSceneAsync(levelIndex);
 		StartCoroutine(screenFade.Fade(canvasGroup, 1f, 0f));
+
+		//fire AfterSceneLoad event
+		GameEvents.Instance.AfterSceneLoad();
 	}
 }

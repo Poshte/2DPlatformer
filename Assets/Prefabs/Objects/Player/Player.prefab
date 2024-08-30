@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672c9271418d00e40bc124833a494339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactSprite: {fileID: 0}
   moveSpeed: 5
   maxJumpHeight: 3.5
   minJumpHeight: 1
@@ -150,6 +151,8 @@ MonoBehaviour:
   wallJumpFall: {x: 5.5, y: 4}
   wallJumpClimb: {x: 4, y: 9}
   wallJumpLeap: {x: 8, y: 10}
+  dialogueText: {fileID: 0}
+  dialogueController: {fileID: 0}
 --- !u!114 &6390401213679046304
 MonoBehaviour:
   m_ObjectHideFlags: 0

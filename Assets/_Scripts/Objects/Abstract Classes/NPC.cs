@@ -26,7 +26,6 @@ public abstract class NPC : MonoBehaviour, IIntractable
 
 				//testing AudioManager
 				AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InteractSound, this.transform.position);
-
 			}
 		}
 		else
@@ -39,9 +38,6 @@ public abstract class NPC : MonoBehaviour, IIntractable
 
 	private bool PlayerStandingNear()
 	{
-		if (UnityEngine.Vector2.Distance(playerTrnasform.position, gameObject.transform.position) < interactDistance)
-			return true;
-		else
-			return false;
+		return Vector2.Distance(playerTrnasform.position, gameObject.transform.position) < interactDistance;
 	}
 }

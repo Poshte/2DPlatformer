@@ -7,7 +7,6 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     private static AudioManager _instance;
-    private List<EventInstance> _eventInstances = new();
     public static AudioManager Instance
     {
         get
@@ -41,17 +40,6 @@ public class AudioManager : MonoBehaviour
     public EventInstance CreateEventInstance(EventReference sound)
     {
         var instance = RuntimeManager.CreateInstance(sound);
-        _eventInstances.Add(instance);
 		return instance;
     }
-
-    private void CleanUp()
-    {
-        _eventInstances.Clear();
-    }
-
-	private void OnDestroy()
-	{
-        CleanUp();
-	}
 }

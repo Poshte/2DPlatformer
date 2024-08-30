@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+	private List<EventInstance> eventInstances = new();
+	private List<StudioEventEmitter> eventEmitters = new();
+
     private static AudioManager _instance;
     public static AudioManager Instance
     {
@@ -32,14 +35,42 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-	public void PlayOneShot(EventReference sound, Vector3 worldPos)
+    public void PlayOneShot(EventReference eventReference, Vector3 worldPos)
     {
-        RuntimeManager.PlayOneShot(sound, worldPos);
+        RuntimeManager.PlayOneShot(eventReference, worldPos);
     }
 
-    public EventInstance CreateEventInstance(EventReference sound)
+    public EventInstance CreateEventInstance(EventReference eventReference)
     {
-        var instance = RuntimeManager.CreateInstance(sound);
-		return instance;
+        var instance = RuntimeManager.CreateInstance(eventReference);
+        eventInstances.Add(instance);
+        return instance;
     }
+
+    public StudioEventEmitter InitializeEventEmitter(EventReference eventReference, GameObject emitterObject)
+    {
+        var emitter = emitterObject.GetComponent<StudioEventEmitter>();
+        emitter.EventReference = eventReference;
+        eventEmitters.Add(emitter);
+        return emitter;
+    }
+
+    private void CleanUp()
+    {
+        foreach (var instance in eventInstances)
+        {
+            instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            instance.release();
+        }
+
+        foreach (var emitter in eventEmitters)
+        {
+            emitter.Stop();
+        }
+    }
+
+    private void OnDestroy()
+	{
+        CleanUp();
+	}
 }

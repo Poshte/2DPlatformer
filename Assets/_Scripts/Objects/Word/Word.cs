@@ -14,7 +14,7 @@ public class Word : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.name == "Player")
+		if (collision.CompareTag("Player"))
 		{
 			gameObject.SetActive(false);
 			eventEmitter.Stop();

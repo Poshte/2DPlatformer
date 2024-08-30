@@ -8,12 +8,14 @@ public class FMODEvents : MonoBehaviour
 	[field: Header("Interact SFX")]
 	[field: SerializeField] public EventReference InteractSound { get; private set; }
 
-
 	[field: Header("Player SFX")]
 	[field: SerializeField] public EventReference PlayerFootstepsSound { get; private set; }
 
+	[field: Header("Word SFX")]
 	[field: SerializeField] public EventReference Heartbeat { get; private set; }
 
+	[field: Header("Ambience")]
+	[field: SerializeField] public EventReference ForestRain { get; private set; }
 
 	private static FMODEvents _instance;
 	public static FMODEvents Instance

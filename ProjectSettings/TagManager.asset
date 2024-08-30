@@ -8,6 +8,8 @@ TagManager:
   - Solid
   - Dormant
   - Persistent
+  - AreaRain
+  - RainIntensity
   layers:
   - Default
   - TransparentFX

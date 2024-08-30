@@ -1,9 +1,11 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 	private const float waitTime = 2f;
+	private EventReference ambienceEventReference;
 
 	private void Start()
 	{

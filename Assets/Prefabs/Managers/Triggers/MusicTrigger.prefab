@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3881702330624441533
+--- !u!1 &5665739958341031555
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3881702330624441506}
-  - component: {fileID: 3881702330624441507}
-  - component: {fileID: 3881702330624441532}
-  - component: {fileID: 3881702330624441505}
+  - component: {fileID: 5665739958341031580}
+  - component: {fileID: 7329732088733824197}
+  - component: {fileID: 5665739958341031554}
+  - component: {fileID: 5665739958341031583}
   m_Layer: 0
-  m_Name: AreaTrigger
+  m_Name: MusicTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3881702330624441506
+--- !u!4 &5665739958341031580
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3881702330624441533}
+  m_GameObject: {fileID: 5665739958341031555}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,25 +34,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3881702330624441507
+--- !u!114 &7329732088733824197
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3881702330624441533}
+  m_GameObject: {fileID: 5665739958341031555}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ac949f5d843fac488638fd5a46ae70d, type: 3}
+  m_Script: {fileID: 11500000, guid: d3d504e31ed08734091e7f8594cde68d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &3881702330624441532
+--- !u!61 &5665739958341031554
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3881702330624441533}
+  m_GameObject: {fileID: 5665739958341031555}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -72,14 +72,14 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 17.48}
   m_EdgeRadius: 0
---- !u!50 &3881702330624441505
+--- !u!50 &5665739958341031583
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3881702330624441533}
+  m_GameObject: {fileID: 5665739958341031555}
   m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0

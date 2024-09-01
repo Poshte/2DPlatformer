@@ -8,8 +8,12 @@ TagManager:
   - Solid
   - Dormant
   - Persistent
-  - AreaRain
+  - AmbienceRain
   - RainIntensity
+  - ElectronicArea
+  - RockArea
+  - AreaRain
+  - MusicInitializer
   layers:
   - Default
   - TransparentFX

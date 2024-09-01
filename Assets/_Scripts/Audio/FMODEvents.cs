@@ -1,6 +1,4 @@
 using FMODUnity;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FMODEvents : MonoBehaviour
@@ -16,6 +14,9 @@ public class FMODEvents : MonoBehaviour
 
 	[field: Header("Ambience")]
 	[field: SerializeField] public EventReference ForestRain { get; private set; }
+
+	[field: Header("Music")]
+	[field: SerializeField] public EventReference TestMusic { get; private set; }
 
 	private static FMODEvents _instance;
 	public static FMODEvents Instance

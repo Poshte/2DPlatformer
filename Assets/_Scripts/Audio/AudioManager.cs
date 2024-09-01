@@ -1,18 +1,16 @@
 using FMOD.Studio;
 using FMODUnity;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-	private List<EventInstance> eventInstances = new();
-	private List<StudioEventEmitter> eventEmitters = new();
-
 	private EventInstance ambience;
+	private EventInstance music;
+	private readonly List<EventInstance> eventInstances = new();
+	private readonly List<StudioEventEmitter> eventEmitters = new();
 
 	private static AudioManager _instance;
-
 	public static AudioManager Instance
 	{
 		get
@@ -36,6 +34,19 @@ public class AudioManager : MonoBehaviour
 		{
 			_instance = this;
 		}
+	}
+
+	public void InitializeMusic(EventReference eventReference, int musicEventIndex)
+	{
+		music.getPlaybackState(out PLAYBACK_STATE state);
+
+		if (state == PLAYBACK_STATE.STOPPED)
+		{
+			music = CreateEventInstance(eventReference);
+			music.start();
+		}
+
+		music.setParameterByName("MusicArea", musicEventIndex);
 	}
 
 	public void InitializeAmbience(EventReference eventReference)

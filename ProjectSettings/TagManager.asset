@@ -14,6 +14,7 @@ TagManager:
   - RockArea
   - AreaRain
   - MusicInitializer
+  - Clone
   layers:
   - Default
   - TransparentFX

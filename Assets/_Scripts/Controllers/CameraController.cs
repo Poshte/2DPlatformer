@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using Cinemachine;
 using UnityEngine;
 
@@ -10,23 +11,16 @@ public class CameraController : MonoBehaviour
 	private float enterDirection;
 	private float exitDirection;
 
-	// Start is called before the first frame update
+
 	void Start()
 	{
-		controller2D = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
+		controller2D = GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Controller2D>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.name == "Player")
+		if (collision.gameObject.CompareTag(Constants.Tags.Player))
 		{
-
 			enterDirection = controller2D.info.faceDirection;
 		}
 	}

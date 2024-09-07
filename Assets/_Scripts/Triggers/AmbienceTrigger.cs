@@ -9,16 +9,16 @@ public class AmbienceTrigger : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.CompareTag("Player"))
+		if (collision.CompareTag(Constants.Tags.Player))
 		{
 			switch (gameObject.tag)
 			{
-				case Constants.Tags.rain:
+				case Constants.Tags.Rain:
 					AudioManager.Instance.InitializeAmbience(FMODEvents.Instance.ForestRain);
 					break;
 
-				case Constants.Tags.rainIntensity:
-					AudioManager.Instance.SetAmbienceParameters(Constants.Tags.rainIntensity, intensity);
+				case Constants.Tags.RainIntensity:
+					AudioManager.Instance.SetAmbienceParameters(Constants.Tags.RainIntensity, intensity);
 					break;
 
 				default:

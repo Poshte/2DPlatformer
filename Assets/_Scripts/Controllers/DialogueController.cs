@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -39,8 +40,8 @@ public class DialogueController : MonoBehaviour
 
 	private void Awake()
 	{
-		playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-		controller2D = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
+		playerScript = GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>();
+		controller2D = GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Controller2D>();
 
 		var temp = dialogueBox.GetComponentsInChildren<TextMeshProUGUI>();
 		NPCName = temp[0];

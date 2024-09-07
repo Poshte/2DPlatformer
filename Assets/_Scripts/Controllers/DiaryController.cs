@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -27,15 +28,14 @@ public class DiaryController : MonoBehaviour
 
 	private void Awake()
 	{
-		playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-		controller2D = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
+		playerScript = GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>();
+		controller2D = GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Controller2D>();
 
 		var temp = cover.GetComponentsInChildren<Image>();
 		leftPage = temp[1];
 		rightPage = temp[2];
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
 		if (Keyboard.current.tabKey.wasPressedThisFrame && controller2D.info.bottomCollision)

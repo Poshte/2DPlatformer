@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using FMODUnity;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class Word : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.CompareTag("Player"))
+		if (collision.CompareTag(Constants.Tags.Player))
 		{
 			gameObject.SetActive(false);
 			eventEmitter.Stop();

@@ -1,3 +1,6 @@
+using Assets._Scripts.BaseInfos;
+using FMODUnity;
+using System;
 using UnityEngine;
 
 public class TeleportController : MonoBehaviour
@@ -25,7 +28,6 @@ public class TeleportController : MonoBehaviour
 	private float enterDirection;
 	private float exitDirection;
 
-
 	private void Awake()
 	{
 		blueCollider = blueController.GetComponent<Collider2D>();
@@ -34,31 +36,32 @@ public class TeleportController : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.name == "Player")
+		if (collision.gameObject.CompareTag(Constants.Tags.Player))
 		{
-			controller2D = GameObject.FindGameObjectWithTag("Player").GetComponent<Controller2D>();
-
+			controller2D = GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Controller2D>();
 			enterDirection = controller2D.info.faceDirection;
 
 			//if player enters blue portal
 			if (gameObject == blueController)
 			{
-				//disable orange collider
 				DisableCollider(orangeCollider);
-
-				//create clone at orange portal
 				CreateClone(orangeSpawnPoint);
+				PlayTeleportSFX();
 			}
 			//if player enters orange portal
 			else if (gameObject == orangeController)
 			{
-				//disable blue collider
 				DisableCollider(blueCollider);
-
-				//create clone at blue portal
 				CreateClone(blueSpawnPoint);
+				PlayTeleportSFX();
 			}
 		}
+	}
+
+	private void PlayTeleportSFX()
+	{
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PortalTeleport, this.transform.position);
+		AudioManager.Instance.DisableAllSounds();
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
@@ -75,14 +78,14 @@ public class TeleportController : MonoBehaviour
 		{
 			Destroy(collision.gameObject);
 			EnableColliders();
-			clone.name = "Player";
+			clone.tag = Constants.Tags.Player;
 		}
 	}
 
 	private void CreateClone(Transform spawnPoint)
 	{
 		clone = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);
-		clone.name = "Clone";
+		clone.tag = Constants.Tags.Clone;
 	}
 
 	private void DisableCollider(Collider2D collider)

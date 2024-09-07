@@ -5,6 +5,7 @@ public class FMODEvents : MonoBehaviour
 {
 	[field: Header("Interact SFX")]
 	[field: SerializeField] public EventReference InteractSound { get; private set; }
+	[field: SerializeField] public EventReference PortalTeleport { get; private set; }
 
 	[field: Header("Player SFX")]
 	[field: SerializeField] public EventReference PlayerFootstepsSound { get; private set; }
@@ -17,6 +18,7 @@ public class FMODEvents : MonoBehaviour
 
 	[field: Header("Music")]
 	[field: SerializeField] public EventReference TestMusic { get; private set; }
+
 
 	private static FMODEvents _instance;
 	public static FMODEvents Instance

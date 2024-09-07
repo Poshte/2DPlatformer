@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,7 @@ public abstract class NPC : MonoBehaviour, IIntractable
 
 	void Awake()
 	{
-		playerTrnasform = GameObject.FindGameObjectWithTag("Player").transform;
+		playerTrnasform = GameObject.FindGameObjectWithTag(Constants.Tags.Player).transform;
 	}
 
 	void Update()

@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -91,7 +92,7 @@ public class PortalManager : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.name == "Player")
+		if (collision.gameObject.CompareTag(Constants.Tags.Player))
 		{
 			//player entering from left blue portal
 			if (ReferenceEquals(gameObject, leftBlueTrigger))

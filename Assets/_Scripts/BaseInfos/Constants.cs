@@ -4,8 +4,10 @@
 	{
 		public static class Tags
 		{
-			public const string rain = "AmbienceRain";
-			public const string rainIntensity = "RainIntensity";
+			public const string Player = "Player";
+			public const string Clone = "Clone";
+			public const string Rain = "AmbienceRain";
+			public const string RainIntensity = "RainIntensity";
 		}
 	}
 }

@@ -1,5 +1,7 @@
+using Assets._Scripts.BaseInfos;
 using FMOD.Studio;
 using System;
+using System.Threading;
 using UnityEngine;
 
 [RequireComponent(typeof(Controller2D))]
@@ -109,7 +111,7 @@ public class Player : NPC, ITalkable, IWalkable
 		//move player based on calculated velocity
 		controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
 
-		//update player reltaed sounds
+		//update player related sounds
 		UpdateSound();
 
 		//top and bottom collisions
@@ -242,18 +244,37 @@ public class Player : NPC, ITalkable, IWalkable
 	{
 		velocity.x = 0f;
 		velocity.y = 0f;
+
+		playerFootsteps.stop(STOP_MODE.IMMEDIATE);
+
 	}
+
 
 	private void OnDisable()
 	{
 		velocity.x = 0f;
 		velocity.y = 0f;
-		playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+		playerFootsteps.stop(STOP_MODE.IMMEDIATE);
+	}
+
+	private void OnDestroy()
+	{
+		velocity.x = 0f;
+		velocity.y = 0f;
+		playerFootsteps.stop(STOP_MODE.IMMEDIATE);
 	}
 
 	private void UpdateSound()
 	{
-		if (!controller2D.info.leftCollision &&
+		if (this.gameObject.CompareTag(Constants.Tags.Clone))
+		{
+			playerFootsteps.stop(STOP_MODE.IMMEDIATE);
+			return;
+		}
+
+
+		if (
+			!controller2D.info.leftCollision &&
 			!controller2D.info.rightCollision &&
 			playerInput.x != 0 &&
 			controller2D.info.bottomCollision)

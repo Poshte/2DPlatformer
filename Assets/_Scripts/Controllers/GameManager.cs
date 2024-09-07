@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using FMODUnity;
 using System.Collections;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-		GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().enabled = true;
+		GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>().enabled = true;
 
 		GameEvents.Instance.OnBeforeSceneLoad += OnBeforeSceneLoad;
 		GameEvents.Instance.OnAfterSceneLoad += OnAfterSceneLoad;
@@ -27,13 +28,13 @@ public class GameManager : MonoBehaviour
 
 	private void DisablePlayerScript()
 	{
-		GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().enabled = false;
+		GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>().enabled = false;
 	}
 
 	private IEnumerator EnablePlayerAfterSceneIsLoaded()
 	{
 		yield return new WaitForSeconds(waitTime);
 
-		GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().enabled = true;
+		GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>().enabled = true;
 	}
 }

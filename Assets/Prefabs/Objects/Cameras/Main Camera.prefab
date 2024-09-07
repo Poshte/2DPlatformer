@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8674269515150729343}
   - component: {fileID: 8674269515150729344}
-  - component: {fileID: 8674269515150729346}
   - component: {fileID: 8674269515150729342}
   - component: {fileID: 8674269515150729341}
   - component: {fileID: 8674269515150729340}
@@ -29,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8674269515150729347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.507001, y: -2, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -79,14 +78,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &8674269515150729346
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8674269515150729347}
-  m_Enabled: 0
 --- !u!114 &8674269515150729342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,4 +157,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 0}
+  attenuationObject: {fileID: 4641872943211507953, guid: 6a064128006f9f44887d29b65415fe57, type: 3}

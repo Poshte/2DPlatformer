@@ -51,6 +51,13 @@ MonoBehaviour:
       Data3: -1014090344
       Data4: -259488079
     Path: event:/ui_okay
+  <PortalTeleport>k__BackingField:
+    Guid:
+      Data1: -1788634533
+      Data2: 1230335420
+      Data3: -912930145
+      Data4: -1942762774
+    Path: event:/ui_cancel
   <PlayerFootstepsSound>k__BackingField:
     Guid:
       Data1: 1632777821
@@ -60,18 +67,25 @@ MonoBehaviour:
     Path: event:/player_footsteps
   <Heartbeat>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 752699408
+      Data2: 1105852112
+      Data3: 1728801441
+      Data4: -1949723044
+    Path: event:/heartbeat
   <ForestRain>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -436146805
+      Data2: 1147586671
+      Data3: -841437816
+      Data4: 281843732
+    Path: event:/amb_forest_rain_outside_small
+  <TestMusic>k__BackingField:
+    Guid:
+      Data1: 1669133378
+      Data2: 1163187213
+      Data3: -217035619
+      Data4: 148830515
+    Path: event:/music_level_1
 --- !u!1 &8498944460906393827
 GameObject:
   m_ObjectHideFlags: 0

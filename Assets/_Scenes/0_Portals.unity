@@ -2006,10 +2006,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 2035491308}
     m_Modifications:
     - target: {fileID: 1427875190, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
-      propertyPath: blueController
-      value: 
-      objectReference: {fileID: 1867246265}
-    - target: {fileID: 1427875190, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
       propertyPath: blueSpawnPoint
       value: 
       objectReference: {fileID: 777326202}
@@ -2459,10 +2455,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2035491308}
     m_Modifications:
-    - target: {fileID: 154149545, guid: 69f5666f676a19f449704c6cb3c663ed, type: 3}
-      propertyPath: orangeController
-      value: 
-      objectReference: {fileID: 1458316759}
     - target: {fileID: 154149545, guid: 69f5666f676a19f449704c6cb3c663ed, type: 3}
       propertyPath: orangeSpawnPoint
       value: 
@@ -2940,6 +2932,10 @@ PrefabInstance:
       value: event:/ui_okay
       objectReference: {fileID: 0}
     - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
+      propertyPath: <PortalTeleport>k__BackingField.Path
+      value: event:/ui_cancel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
       propertyPath: <Heartbeat>k__BackingField.Guid.Data1
       value: 752699408
       objectReference: {fileID: 0}
@@ -3002,6 +2998,22 @@ PrefabInstance:
     - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
       propertyPath: <InteractSound>k__BackingField.Guid.Data4
       value: -259488079
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
+      propertyPath: <PortalTeleport>k__BackingField.Guid.Data1
+      value: -1788634533
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
+      propertyPath: <PortalTeleport>k__BackingField.Guid.Data2
+      value: 1230335420
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
+      propertyPath: <PortalTeleport>k__BackingField.Guid.Data3
+      value: -912930145
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925374944260783422, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
+      propertyPath: <PortalTeleport>k__BackingField.Guid.Data4
+      value: -1942762774
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b75cedccb08caab489ed9de004c3a143, type: 3}
@@ -3433,11 +3445,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6892ee639a89fd649b3ad695523820b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1458316759 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1427875187, guid: b592dfc9ab30de04ca98176066b54fe6, type: 3}
-  m_PrefabInstance: {fileID: 858186007}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1465944668
 GameObject:
   m_ObjectHideFlags: 3
@@ -4099,11 +4106,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aebbbbe59f7f517419bf9f5a15a67855, type: 3}
---- !u!1 &1867246265 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 154149541, guid: 69f5666f676a19f449704c6cb3c663ed, type: 3}
-  m_PrefabInstance: {fileID: 1023163475}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1885971847
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,6 +1,4 @@
 using Assets._Scripts.BaseInfos;
-using FMODUnity;
-using System;
 using UnityEngine;
 
 public class TeleportController : MonoBehaviour
@@ -15,8 +13,6 @@ public class TeleportController : MonoBehaviour
 	private Controller2D controller2D;
 
 	//controllers
-	[SerializeField] private GameObject blueController;
-	[SerializeField] private GameObject orangeController;
 	private Collider2D blueCollider;
 	private Collider2D orangeCollider;
 
@@ -30,8 +26,8 @@ public class TeleportController : MonoBehaviour
 
 	private void Awake()
 	{
-		blueCollider = blueController.GetComponent<Collider2D>();
-		orangeCollider = orangeController.GetComponent<Collider2D>();
+		blueCollider = GameObject.FindGameObjectWithTag(Constants.Tags.BluePortalController).GetComponent<Collider2D>();
+		orangeCollider = GameObject.FindGameObjectWithTag(Constants.Tags.OrangePortalController).GetComponent<Collider2D>();
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -42,14 +38,14 @@ public class TeleportController : MonoBehaviour
 			enterDirection = controller2D.info.faceDirection;
 
 			//if player enters blue portal
-			if (gameObject == blueController)
+			if (gameObject.CompareTag(Constants.Tags.BluePortalController))
 			{
 				DisableCollider(orangeCollider);
 				CreateClone(orangeSpawnPoint);
 				PlayTeleportSFX();
 			}
 			//if player enters orange portal
-			else if (gameObject == orangeController)
+			else if (gameObject.CompareTag(Constants.Tags.OrangePortalController))
 			{
 				DisableCollider(blueCollider);
 				CreateClone(blueSpawnPoint);
@@ -60,8 +56,8 @@ public class TeleportController : MonoBehaviour
 
 	private void PlayTeleportSFX()
 	{
-		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PortalTeleport, this.transform.position);
 		AudioManager.Instance.DisableAllSounds();
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PortalTeleport, this.transform.position);
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)

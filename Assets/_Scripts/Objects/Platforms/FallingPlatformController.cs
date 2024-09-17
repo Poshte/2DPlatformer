@@ -60,6 +60,7 @@ public class FallingPlatformController : RaycastController
 
 	public void Respawn()
 	{
+		//TODO
 		//this approach simply activates and deactivates the game object.
 		//it could potentially be better to destroy the game object and reintialize it.
 		gameObject.SetActive(true);

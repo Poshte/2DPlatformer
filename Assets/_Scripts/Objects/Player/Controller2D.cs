@@ -205,7 +205,6 @@ public class Controller2D : RaycastController
 					info.descendingSlope = true;
 					info.slopeAngle = slopeAngle;
 					info.slopeNormal = hit.normal;
-
 				}
 			}
 		}

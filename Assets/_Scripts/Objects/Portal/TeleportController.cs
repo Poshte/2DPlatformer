@@ -62,6 +62,9 @@ public class TeleportController : MonoBehaviour
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
+		if (controller2D == null)
+			return;
+
 		exitDirection = controller2D.info.faceDirection;
 
 		//if player exits portal without teleporting

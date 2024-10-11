@@ -33,8 +33,6 @@ public class Player : NPC, ITalkable, IWalkable
 	[SerializeField] private Vector2 wallJumpFall;
 	[SerializeField] private Vector2 wallJumpClimb;
 	[SerializeField] private Vector2 wallJumpLeap;
-	private int wallDirection;
-	//private bool wallSliding;
 
 	//falling down through a platform
 	private bool isCommandButtonDown;
@@ -51,8 +49,6 @@ public class Player : NPC, ITalkable, IWalkable
 
 	private float gravity;
 	private Vector2 velocity;
-
-	private const int jumpsAllowed = 1;
 
 	//behavior
 	[SerializeField] private DialogueText dialogueText;
@@ -81,49 +77,65 @@ public class Player : NPC, ITalkable, IWalkable
 
 	void Update()
 	{
-		//manage input direction
-		if (playerInput.x > 0)
-			inputDirection = 1;
-		else if (playerInput.x < 0)
-			inputDirection = -1;
-		else
-			inputDirection = 0;
+		ManageInputDirection();
 
 		CalculateVelocity();
+		
 		FallThroughPlatform();
+		
+		ManageCoyoteTime();
+		
+		MovePlayer();
+		
+		UpdatePlayerSounds();
+		
+		ManageTopAndBottomCollisions();
+	}
+	#endregion
 
-		//manage coyote time
-		if (controller2D.info.bottomCollision)
-		{
-			coyoteCounter = coyoteTime;
-		}
-		else
-			coyoteCounter -= Time.deltaTime;
-
-		//move player based on calculated velocity
-		controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
-
-		//update player related sounds
-		UpdateSound();
-
-		//top and bottom collisions
+	#region Methods
+	private void ManageTopAndBottomCollisions()
+	{
 		if (controller2D.info.topCollision || controller2D.info.bottomCollision)
 			if (controller2D.info.slidingMaxSlope)
 				velocity.y += controller2D.info.slopeNormal.y * Mathf.Abs(gravity) * Time.deltaTime;
 			else
 				velocity.y = 0f;
 	}
-	#endregion
 
-	#region Methods
-	public void CalculateVelocity()
+	private void MovePlayer()
+	{
+		controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
+	}
+
+	private void ManageCoyoteTime()
+	{
+		if (controller2D.info.bottomCollision)
+		{
+			coyoteCounter = coyoteTime;
+		}
+		else
+			coyoteCounter -= Time.deltaTime;
+	}
+
+	private void ManageInputDirection()
+	{
+		if (playerInput.x > 0)
+			inputDirection = 1;
+		else if (playerInput.x < 0)
+			inputDirection = -1;
+		else
+			inputDirection = 0;
+	}
+
+	private void CalculateVelocity()
 	{
 		var target = playerInput.x * moveSpeed;
 		velocity.x = Mathf.SmoothDamp(velocity.x, target, ref velocityXSmoothing, controller2D.info.bottomCollision ? accelerationTimeGrounded : accelerationTimeAirborne);
 		velocity.y += gravity * Time.deltaTime;
 	}
 
-	public void FallThroughPlatform()
+	private void FallThroughPlatform()
 	{
 		if (playerInput.y == -1)
 		{
@@ -214,14 +226,13 @@ public class Player : NPC, ITalkable, IWalkable
 		playerFootsteps.stop(STOP_MODE.IMMEDIATE);
 	}
 
-	private void UpdateSound()
+	private void UpdatePlayerSounds()
 	{
 		if (this.gameObject.CompareTag(Constants.Tags.Clone))
 		{
 			playerFootsteps.stop(STOP_MODE.IMMEDIATE);
 			return;
 		}
-
 
 		if (
 			!controller2D.info.leftCollision &&

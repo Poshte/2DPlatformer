@@ -1,7 +1,5 @@
 using Assets._Scripts.BaseInfos;
 using FMOD.Studio;
-using System;
-using System.Threading;
 using UnityEngine;
 
 [RequireComponent(typeof(Controller2D))]
@@ -40,7 +38,7 @@ public class Player : NPC, ITalkable, IWalkable
 
 	//falling down through a platform
 	private bool isCommandButtonDown;
-	private const float commandButtonHoldDuration = 0.5f;
+	private const float commandButtonHoldDuration = 0.1f;
 	private float commandButtonTimer;
 
 	//jump buffer
@@ -55,7 +53,6 @@ public class Player : NPC, ITalkable, IWalkable
 	private Vector2 velocity;
 
 	private const int jumpsAllowed = 1;
-	private int jumpCounter;
 
 	//behavior
 	[SerializeField] private DialogueText dialogueText;
@@ -94,19 +91,14 @@ public class Player : NPC, ITalkable, IWalkable
 
 		CalculateVelocity();
 		FallThroughPlatform();
-		//HandleWallSliding();
 
 		//manage coyote time
 		if (controller2D.info.bottomCollision)
 		{
 			coyoteCounter = coyoteTime;
-			jumpCounter = 0;
 		}
 		else
 			coyoteCounter -= Time.deltaTime;
-
-
-		//bufferCounter -= Time.deltaTime;
 
 		//move player based on calculated velocity
 		controller2D.Move(velocity * Time.deltaTime, isCommandButtonDown);
@@ -148,22 +140,6 @@ public class Player : NPC, ITalkable, IWalkable
 		}
 	}
 
-	//public void HandleWallSliding()
-	//{
-	//    wallSliding = false;
-	//    
-	//    if ((controller2D.info.leftCollision || controller2D.info.rightCollision) && !controller2D.info.bottomCollision && velocity.y < 0)
-	//    {
-	//        wallSliding = true;
-	//        wallDirection = (controller2D.info.leftCollision) ? -1 : 1;
-
-	//        if (velocity.y < -maxWallSlidingSpeed && inputDirection == wallDirection)
-	//        {
-	//            velocity.y = -maxWallSlidingSpeed;
-	//        }
-	//    }
-	//}
-
 	public void GetMovementInput(Vector2 movementInput)
 	{
 		if (!base.isActiveAndEnabled)
@@ -181,7 +157,7 @@ public class Player : NPC, ITalkable, IWalkable
 			bufferCounter = jumpBuffer;
 
 		//regular jumping max
-		if (bufferCounter > 0f && coyoteCounter > 0f && jumpCounter < jumpsAllowed)
+		if (bufferCounter > 0f && coyoteCounter > 0f)
 		{
 			if (controller2D.info.slidingMaxSlope)
 			{
@@ -198,39 +174,15 @@ public class Player : NPC, ITalkable, IWalkable
 
 			controller2D.info.bottomCollision = false;
 			bufferCounter = 0f;
-			jumpCounter++;
 		}
 		//regular jumping min
-		else if (canceled && velocity.y > minJumpVelocity && jumpCounter < jumpsAllowed /*&& coyoteCounter > 0f*/)
+		else if (canceled && velocity.y > minJumpVelocity /*&& coyoteCounter > 0f*/)
 		{
 			velocity.y = minJumpVelocity;
 
 			controller2D.info.bottomCollision = false;
 			bufferCounter = 0f;
-			jumpCounter++;
 		}
-		////wall jumping
-		//else if (bufferCounter > 0f && wallSliding)
-		//{
-		//	//falling from wall
-		//	if (inputDirection == 0)
-		//	{
-		//		velocity.x = -wallDirection * wallJumpFall.x;
-		//		velocity.y = wallJumpFall.y;
-		//	}
-		//	//climbing wall
-		//	else if (wallDirection == inputDirection)
-		//	{
-		//		velocity.x = -wallDirection * wallJumpClimb.x;
-		//		velocity.y = wallJumpClimb.y;
-		//	}
-		//	//leaping between walls
-		//	else if (inputDirection == -wallDirection)
-		//	{
-		//		velocity.x = -wallDirection * wallJumpLeap.x;
-		//		velocity.y = wallJumpLeap.y;
-		//	}
-		//}
 
 		controller2D.Move(velocity * Time.deltaTime);
 	}
@@ -246,9 +198,7 @@ public class Player : NPC, ITalkable, IWalkable
 		velocity.y = 0f;
 
 		playerFootsteps.stop(STOP_MODE.IMMEDIATE);
-
 	}
-
 
 	private void OnDisable()
 	{

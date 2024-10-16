@@ -17,6 +17,7 @@ TagManager:
   - Clone
   - BluePortalController
   - OrangePortalController
+  - HollowSlope
   layers:
   - Default
   - TransparentFX

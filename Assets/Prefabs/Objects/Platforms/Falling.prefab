@@ -124,16 +124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f9a9d5b6680ca4583a6ed6bbd6f166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider: {fileID: 0}
-  horizontalRayCount: 0
-  verticalRayCount: 0
-  horizontalRaySpace: 0
-  verticalRaySpace: 0
   playerMask:
     serializedVersion: 2
     m_Bits: 8
   fallDelay: 1
   respawnDelay: 2
-  startColor: {r: 0, g: 0, b: 0, a: 0}
+  startColor: {r: 0.5411765, g: 0.47843137, b: 0.22745098, a: 0}
   endColor: {r: 1, g: 0, b: 0, a: 0}
   colorChangeSpeed: 1.5

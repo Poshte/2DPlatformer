@@ -144,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactSprite: {fileID: 0}
   moveSpeed: 5
-  maxJumpHeight: 3.5
+  maxJumpHeight: 4.5
   minJumpHeight: 1
   timeToJumpApex: 0.45
   maxWallSlidingSpeed: 3

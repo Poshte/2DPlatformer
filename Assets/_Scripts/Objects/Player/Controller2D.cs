@@ -81,6 +81,9 @@ public class Controller2D : RaycastController
 				}
 				else
 				{
+					if (!hit.collider.CompareTag("Solid"))
+						continue;
+
 					velocity.x = (hit.distance - skinWidth) * directionX;
 					rayLength = hit.distance;
 
@@ -111,15 +114,15 @@ public class Controller2D : RaycastController
 
 			if (hit)
 			{
-				if (hit.collider.tag == "Hollow" && directionY == 1)
+				//collide only on top of non-solid platforms
+				if (!hit.collider.CompareTag("Solid") && directionY != -1)
 					continue;
 
-				if (hit.collider.tag != "Solid" && jumpDown)
-				{
+				//jump down only from hollow platforms
+				if (hit.collider.CompareTag("Hollow") && jumpDown)
 					continue;
-				}
 
-				if (hit.distance != 0f) //this is a custom change
+				if (hit.distance != 0f)
 				{
 					velocity.y = (hit.distance - skinWidth) * directionY;
 					rayLength = hit.distance;

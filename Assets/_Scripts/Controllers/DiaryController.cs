@@ -1,4 +1,5 @@
 using Assets._Scripts.BaseInfos;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -16,11 +17,16 @@ public class DiaryController : MonoBehaviour
 	private int rightIndex = 1;
 
 	//maximum pages control
+	private const int maxIndex = 9;
+
+	//diary pages
 	[SerializeField]
-	private int maxIndex = 1;
+	private Sprite[] photos;
 
 	[SerializeField]
-	private Sprite[] pages;
+	private Sprite[] blankPages;
+
+	private List<Sprite> diaryPages = new();
 
 	//dependencies
 	private Player playerScript;
@@ -34,6 +40,19 @@ public class DiaryController : MonoBehaviour
 		var temp = cover.GetComponentsInChildren<Image>();
 		leftPage = temp[1];
 		rightPage = temp[2];
+	}
+
+	private void Start()
+	{
+		//TODO
+		//must load acquired pages before filling diary with blank pages
+		for (int i = 0; i <= maxIndex; i++)
+		{
+			if (diaryPages.Count > i)
+				continue;
+
+			diaryPages.Add(blankPages[i]);
+		}
 	}
 
 	void Update()
@@ -89,14 +108,32 @@ public class DiaryController : MonoBehaviour
 	{
 		if (leftIndex >= 0 && rightIndex <= maxIndex)
 		{
-			leftPage.overrideSprite = pages[leftIndex];
-			rightPage.overrideSprite = pages[rightIndex];
+			leftPage.overrideSprite = diaryPages[leftIndex];
+			rightPage.overrideSprite = diaryPages[rightIndex];
 		}
 	}
 
-	//unlocking new entries in diary
-	public void IncreamentDiaryIndex()
+	public void AddPhotosToDiary(int[] pageIndexes)
 	{
-		maxIndex += 2;
+		foreach (var index in pageIndexes)
+		{
+			diaryPages[index] = photos[index];
+		}
+
+		PlayPageAddedToDiarySound();
+		ShowPageAddedToDiaryVisual();
+	}
+
+	private void PlayPageAddedToDiarySound()
+	{
+		//TODO
+		//might wanna change this.transform.position to player.transform.position
+		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.DiaryAddedSound, this.transform.position);
+	}
+
+	private void ShowPageAddedToDiaryVisual()
+	{
+		//TODO
+		//show visuals
 	}
 }

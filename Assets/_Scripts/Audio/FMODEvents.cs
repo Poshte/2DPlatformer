@@ -19,6 +19,8 @@ public class FMODEvents : MonoBehaviour
 	[field: Header("Music")]
 	[field: SerializeField] public EventReference TestMusic { get; private set; }
 
+	[field: Header("Trigger SFX")]
+	[field: SerializeField] public EventReference DiaryAddedSound { get; private set; }
 
 	private static FMODEvents _instance;
 	public static FMODEvents Instance

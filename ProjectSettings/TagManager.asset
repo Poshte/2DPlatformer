@@ -18,6 +18,7 @@ TagManager:
   - BluePortalController
   - OrangePortalController
   - HollowSlope
+  - DiaryController
   layers:
   - Default
   - TransparentFX

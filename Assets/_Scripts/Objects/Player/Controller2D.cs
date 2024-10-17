@@ -1,3 +1,4 @@
+using Assets._Scripts.BaseInfos;
 using UnityEngine;
 
 public class Controller2D : RaycastController
@@ -81,7 +82,7 @@ public class Controller2D : RaycastController
 				}
 				else
 				{
-					if (!hit.collider.CompareTag("Solid"))
+					if (!hit.collider.CompareTag(Constants.Tags.Solid))
 						continue;
 
 					velocity.x = (hit.distance - skinWidth) * directionX;
@@ -115,11 +116,11 @@ public class Controller2D : RaycastController
 			if (hit)
 			{
 				//collide only on top of non-solid platforms
-				if (!hit.collider.CompareTag("Solid") && directionY != -1)
+				if (!hit.collider.CompareTag(Constants.Tags.Solid) && directionY != -1)
 					continue;
 
 				//jump down only from hollow platforms
-				if (hit.collider.CompareTag("Hollow") && jumpDown)
+				if (hit.collider.CompareTag(Constants.Tags.Hollow) && jumpDown)
 					continue;
 
 				if (hit.distance != 0f)

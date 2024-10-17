@@ -4,11 +4,9 @@ using UnityEngine.InputSystem;
 
 public abstract class NPC : MonoBehaviour, IIntractable
 {
-	[SerializeField] private SpriteRenderer interactSprite;
-	
+	[SerializeField] private GameObject interactObject;
 	private Transform playerTrnasform;
-
-	private const float interactDistance = 2f;
+	private const float interactDistance = 2.5f;
 
 	void Awake()
 	{
@@ -17,9 +15,12 @@ public abstract class NPC : MonoBehaviour, IIntractable
 
 	void Update()
 	{
+		if (interactObject == null)
+			return;
+
 		if (PlayerStandingNear())
 		{
-			interactSprite.gameObject.SetActive(true);
+			interactObject.SetActive(true);
 
 			if (Keyboard.current.eKey.wasPressedThisFrame)
 			{
@@ -31,7 +32,7 @@ public abstract class NPC : MonoBehaviour, IIntractable
 		}
 		else
 		{
-			interactSprite.gameObject.SetActive(false);
+			interactObject.SetActive(false);
 		}
 	}
 

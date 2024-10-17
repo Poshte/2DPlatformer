@@ -115,6 +115,9 @@ public class DialogueController : MonoBehaviour
 		playerScript.GetMovementInput(Vector2.zero);
 
 		dialogueBox.SetActive(false);
+
+		//fire ConversationEnded event
+		GameEvents.Instance.ConversationEnded();
 	}
 
 	private IEnumerator TypeDialogue(string name, string text)

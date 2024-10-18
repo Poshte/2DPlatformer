@@ -7,7 +7,7 @@ public class EncryptionUtility
 	private static readonly byte[] key = Convert.FromBase64String("bR7r54wsR2VjiMwSh4XOHBPdTjtmcKCquiq/qopbJIY=");
 	private static readonly byte[] iv = Convert.FromBase64String("u4DrCDLTksss+yg7Ps9ENg==");
 
-	public static byte[] Encrypt(byte[] data)
+	public static string Encrypt(string data)
 	{
 		using (var aes = Aes.Create())
 		{
@@ -20,16 +20,19 @@ public class EncryptionUtility
 				{
 					using (var crypteStream = new CryptoStream(stream, encryptor, CryptoStreamMode.Write))
 					{
-						crypteStream.Write(data, 0, data.Length);
+						using (var writer = new StreamWriter(crypteStream))
+						{
+							writer.Write(data);
+						}
 					}
 
-					return stream.ToArray();
+					return Convert.ToBase64String(stream.ToArray());
 				}
 			}
 		}
 	}
 
-	public static byte[] Decrypt(byte[] data)
+	public static string Decrypt(string data)
 	{
 		using (var aes = Aes.Create())
 		{
@@ -38,14 +41,13 @@ public class EncryptionUtility
 
 			using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
 			{
-				using (var stream = new MemoryStream(data))
+				using (var stream = new MemoryStream(Convert.FromBase64String(data)))
 				{
 					using (var crypteStream = new CryptoStream(stream, decryptor, CryptoStreamMode.Read))
 					{
-						using (var result = new MemoryStream())
+						using (var reader = new StreamReader(crypteStream))
 						{
-							crypteStream.CopyTo(result);
-							return result.ToArray();
+							return reader.ReadToEnd();
 						}
 					}
 				}

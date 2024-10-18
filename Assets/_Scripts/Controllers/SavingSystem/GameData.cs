@@ -1,16 +1,16 @@
 using System;
-using UnityEngine.SceneManagement;
+using UnityEngine;
 
 [Serializable]
 public class GameData
 {
-	public float[] PlayerPosition { get; set; }
-	public int SceneIndex { get; set; }
-	public int ActiveDiaryPages { get; set; }
+	public Vector3 PlayerPosition;
+	public int SceneIndex;
+	public int ActiveDiaryPages;
 
-    public GameData()
+	public GameData()
 	{
-		PlayerPosition = new float[] { 0, 0 };
+		PlayerPosition = Vector3.zero;
 		SceneIndex = 0;
 		ActiveDiaryPages = 0;
 	}

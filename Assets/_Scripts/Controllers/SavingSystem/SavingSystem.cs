@@ -1,41 +1,57 @@
+using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public static class SavingSystem
 {
-	public static void Save(GameData gameData)
+	public static void Save(GameData data)
 	{
-		var path = Application.persistentDataPath + "/ISOHV.dat";
-		var formatter = new BinaryFormatter();
+		var path = Path.Combine(Application.persistentDataPath, "gameSave.dat");
 
-		using (var stream = new FileStream(path, FileMode.Create))
+		try
 		{
-			formatter.Serialize(stream, gameData);
-		}
+			var json = JsonUtility.ToJson(data);
+			var encryptedData = EncryptionUtility.Encrypt(json);
 
-		var data = File.ReadAllBytes(path);
-		var encryptedData = EncryptionUtility.Encrypt(data);
-		File.WriteAllBytes(path, encryptedData);
+			using (var stream = new FileStream(path, FileMode.Create))
+			{
+				using (var writer = new StreamWriter(stream))
+				{
+					writer.Write(encryptedData);
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			Debug.LogError("An error occured during saving data at: " + path + Environment.NewLine + " ErrorMessage: " + ex.Message);
+		}
 	}
 
 	public static GameData Load()
 	{
-		var path = Application.persistentDataPath + "/ISOHV.dat";
+		var path = Path.Combine(Application.persistentDataPath, "gameSave.dat");
+		GameData data = null;
 
 		if (File.Exists(path))
 		{
-			var encryptedData = File.ReadAllBytes(path);
-			var data = EncryptionUtility.Decrypt(encryptedData);
-
-			using (var stream = new MemoryStream(data))
+			try
 			{
-				var formatter = new BinaryFormatter();
-
-				return formatter.Deserialize(stream) as GameData;
+				using (var stream = new FileStream(path, FileMode.Open))
+				{
+					using (var reader = new StreamReader(stream))
+					{
+						var encryptedData = reader.ReadToEnd();
+						var json = EncryptionUtility.Decrypt(encryptedData);
+						data = JsonUtility.FromJson<GameData>(json);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.LogError("An error occured during loading data at: " + path + Environment.NewLine + " ErrorMessage: " + ex.Message);
 			}
 		}
 
-		return null;
+		return data;
 	}
 }

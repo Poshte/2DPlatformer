@@ -29,6 +29,8 @@ public class GameEvents : MonoBehaviour
 		}
 	}
 
+	//TODO
+	//make sure to unsubscribe from below events when the object gets destroyed
 	public event Action OnBeforeSceneLoad;
 	public void BeforeSceneLoad() => OnBeforeSceneLoad?.Invoke();
 

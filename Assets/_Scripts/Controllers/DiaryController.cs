@@ -1,10 +1,10 @@
 using Assets._Scripts.BaseInfos;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class DiaryController : MonoBehaviour
+public class DiaryController : MonoBehaviour, IDataPersistence
 {
 	//diary elements
 	[SerializeField]
@@ -19,14 +19,14 @@ public class DiaryController : MonoBehaviour
 	//maximum pages control
 	private const int maxIndex = 9;
 
-	//diary pages
+	//pages
 	[SerializeField]
 	private Sprite[] photos;
 
 	[SerializeField]
-	private Sprite[] blankPages;
+	private Sprite[] diaryPages;
 
-	private List<Sprite> diaryPages = new();
+	private int currentPageCount;
 
 	//dependencies
 	private Player playerScript;
@@ -40,19 +40,6 @@ public class DiaryController : MonoBehaviour
 		var temp = cover.GetComponentsInChildren<Image>();
 		leftPage = temp[1];
 		rightPage = temp[2];
-	}
-
-	private void Start()
-	{
-		//TODO
-		//must load acquired pages before filling diary with blank pages
-		for (int i = 0; i <= maxIndex; i++)
-		{
-			if (diaryPages.Count > i)
-				continue;
-
-			diaryPages.Add(blankPages[i]);
-		}
 	}
 
 	void Update()
@@ -118,22 +105,36 @@ public class DiaryController : MonoBehaviour
 		foreach (var index in pageIndexes)
 		{
 			diaryPages[index] = photos[index];
+			currentPageCount++;
 		}
-
-		PlayPageAddedToDiarySound();
-		ShowPageAddedToDiaryVisual();
 	}
 
-	private void PlayPageAddedToDiarySound()
+	public void PlayPageAddedToDiarySound()
 	{
 		//TODO
 		//might wanna change this.transform.position to player.transform.position
 		AudioManager.Instance.PlayOneShot(FMODEvents.Instance.DiaryAddedSound, this.transform.position);
 	}
 
-	private void ShowPageAddedToDiaryVisual()
+	public void ShowPageAddedToDiaryVisual()
 	{
 		//TODO
 		//show visuals
+	}
+
+	public void LoadData(GameData data)
+	{
+		LoadDiaryPages(data.ActiveDiaryPages);
+	}
+
+	public void SaveData(GameData data)
+	{
+		data.ActiveDiaryPages = currentPageCount;
+	}
+
+	private void LoadDiaryPages(int loadedIndex)
+	{
+		var loadedArray = Enumerable.Range(0, loadedIndex).ToArray();
+		AddPhotosToDiary(loadedArray);
 	}
 }

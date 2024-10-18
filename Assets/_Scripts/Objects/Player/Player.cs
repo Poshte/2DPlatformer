@@ -3,7 +3,7 @@ using FMOD.Studio;
 using UnityEngine;
 
 [RequireComponent(typeof(Controller2D))]
-public class Player : NPC, ITalkable, IWalkable
+public class Player : NPC, ITalkable, IWalkable, IDataPersistence
 {
 	#region Fields
 	//dependencies
@@ -80,15 +80,15 @@ public class Player : NPC, ITalkable, IWalkable
 		ManageInputDirection();
 
 		CalculateVelocity();
-		
+
 		FallThroughPlatform();
-		
+
 		ManageCoyoteTime();
-		
+
 		MovePlayer();
-		
+
 		UpdatePlayerSounds();
-		
+
 		ManageTopAndBottomCollisions();
 	}
 	#endregion
@@ -268,6 +268,17 @@ public class Player : NPC, ITalkable, IWalkable
 	public void Talk(DialogueText dialogueText)
 	{
 		dialogueController.DisplayNextParagraph(dialogueText);
+	}
+
+	public void LoadData(GameData data)
+	{
+		gameObject.transform.position = new Vector3(data.PlayerPosition[0], data.PlayerPosition[1]);
+	}
+
+	public void SaveData(GameData data)
+	{
+		data.PlayerPosition[0] = gameObject.transform.position.x;
+		data.PlayerPosition[1] = gameObject.transform.position.y;
 	}
 	#endregion
 }

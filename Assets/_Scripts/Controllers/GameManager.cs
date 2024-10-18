@@ -1,12 +1,10 @@
 using Assets._Scripts.BaseInfos;
-using FMODUnity;
 using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 	private const float waitTime = 2f;
-	private EventReference ambienceEventReference;
 
 	private void Start()
 	{
@@ -26,15 +24,19 @@ public class GameManager : MonoBehaviour
 		StartCoroutine(EnablePlayerAfterSceneIsLoaded());
 	}
 
+	private IEnumerator EnablePlayerAfterSceneIsLoaded()
+	{
+		yield return new WaitForSeconds(waitTime);
+		EnablePlayerScript();
+	}
+
 	private void DisablePlayerScript()
 	{
 		GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>().enabled = false;
 	}
 
-	private IEnumerator EnablePlayerAfterSceneIsLoaded()
+	private void EnablePlayerScript()
 	{
-		yield return new WaitForSeconds(waitTime);
-
 		GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>().enabled = true;
 	}
 }

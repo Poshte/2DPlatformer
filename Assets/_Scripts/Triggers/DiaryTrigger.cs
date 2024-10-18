@@ -18,6 +18,8 @@ public class DiaryTrigger : MonoBehaviour
 		if (collision.CompareTag(Constants.Tags.Player))
 		{
 			diaryController.AddPhotosToDiary(photoIndexes);
+			diaryController.ShowPageAddedToDiaryVisual();
+			diaryController.PlayPageAddedToDiarySound();
 
 			Destroy(gameObject);
 		}

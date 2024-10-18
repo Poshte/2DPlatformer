@@ -7,9 +7,15 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 0
     path: 
-    guid: dae860b0553014f4e9aa556a3c172bbc
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/_Scenes/0_Portals.unity
+    path: Assets/_Scenes/0_Menu.unity
+    guid: 4af423ba047160145ba069dd339af6dc
+  - enabled: 1
+    path: Assets/_Scenes/1_Prologue.unity
+    guid: 99d0b5548245cb84d9feba5f6ff60fa6
+  - enabled: 1
+    path: Assets/_Scenes/5_Portals.unity
     guid: 960ecd433b401fe41b5973c0a6288471
   - enabled: 1
     path: Assets/_Scenes/1_Underground.unity

@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Dialogue/New Dialogue Container")]
 public class DialogueText : ScriptableObject
 {
-	//TO DO
+	//TODO
 	//Capsulate public fields
 
 	public string[] speakerNames;

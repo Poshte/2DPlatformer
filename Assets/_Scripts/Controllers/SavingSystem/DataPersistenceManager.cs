@@ -38,7 +38,6 @@ public class DataPersistenceManager : MonoBehaviour
 	{
 		dataPersistenceObjects = FindDataPersistenceObjects();
 
-
 		LoadGame();
 	}
 
@@ -47,13 +46,9 @@ public class DataPersistenceManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (timer >= savingTime)
+		if (Input.GetKeyDown(KeyCode.F1))
 		{
 			SaveGame();
-		}
-		else
-		{
-			timer += Time.deltaTime;
 		}
 	}
 

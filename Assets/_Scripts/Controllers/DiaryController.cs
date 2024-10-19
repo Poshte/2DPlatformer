@@ -99,7 +99,7 @@ public class DiaryController : MonoBehaviour, IDataPersistence
 			rightPage.overrideSprite = diaryPages[rightIndex];
 		}
 	}
-
+		
 	public void AddPhotosToDiary(int[] pageIndexes)
 	{
 		foreach (var index in pageIndexes)
@@ -124,12 +124,12 @@ public class DiaryController : MonoBehaviour, IDataPersistence
 
 	public void LoadData(GameData data)
 	{
-		LoadDiaryPages(data.ActiveDiaryPages);
+		LoadDiaryPages(data.activeDiaryPages);
 	}
 
 	public void SaveData(GameData data)
 	{
-		data.ActiveDiaryPages = currentPageCount;
+		data.activeDiaryPages = currentPageCount;
 	}
 
 	private void LoadDiaryPages(int loadedIndex)

@@ -272,12 +272,12 @@ public class Player : NPC, ITalkable, IWalkable, IDataPersistence
 
 	public void LoadData(GameData data)
 	{
-		gameObject.transform.position = data.PlayerPosition;
+		gameObject.transform.position = data.playerPosition;
 	}
 
 	public void SaveData(GameData data)
 	{
-		data.PlayerPosition = gameObject.transform.position;
+		data.playerPosition = gameObject.transform.position;
 	}
 	#endregion
 }

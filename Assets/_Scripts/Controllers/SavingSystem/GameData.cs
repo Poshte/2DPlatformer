@@ -1,17 +1,19 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
 public class GameData
 {
-	public Vector3 PlayerPosition;
-	public int SceneIndex;
-	public int ActiveDiaryPages;
-
+	public Vector3 playerPosition;
+	public int sceneIndex;
+	public int activeDiaryPages;
+	public SerializableDictionary<int, bool> diaryEntries;
 	public GameData()
 	{
-		PlayerPosition = Vector3.zero;
-		SceneIndex = 0;
-		ActiveDiaryPages = 0;
+		playerPosition = Vector3.zero;
+		sceneIndex = 0;
+		activeDiaryPages = 0;
+		diaryEntries = new();
 	}
 }

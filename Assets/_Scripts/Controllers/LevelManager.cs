@@ -2,37 +2,46 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public interface ILevelManager
+public class LevelManager : MonoBehaviour, IDataPersistence
 {
-	void LoadNextScene();
-}
+	private static LevelManager _instance;
+	public static LevelManager Instance
+	{
+		get
+		{
+			if (_instance == null)
+			{
+				Debug.LogError("LevelManager is null");
+			}
 
-public class LevelManager : MonoBehaviour
-{
-	[SerializeField] private float waitTime = 1f;
-	[SerializeField] private GameObject canvas;
+			return _instance;
+		}
+	}
 
-	private IScreenFadeService screenFade;
-	private CanvasGroup canvasGroup;
+	private readonly float waitTime = 0.5f;
+
+	//Forest is the default scene when starting a new game
+	private int sceneIndex/* = 1*/;
 
 	private void Awake()
 	{
-		screenFade = ServiceLocator.Instance.Get<IScreenFadeService>();
-		canvasGroup = canvas.GetComponent<CanvasGroup>();
-	}
+		if (_instance != null)
+		{
+			Destroy(gameObject);
+		}
+		else
+		{
+			_instance = this;
+		}
 
-	private void Start()
-	{
-		StartCoroutine(screenFade.Fade(canvasGroup, 1f, 0f));
+		DontDestroyOnLoad(gameObject);
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.V))
 		{
-			//fire BeforeSceneLoad event
-			GameEvents.Instance.BeforeSceneLoad();
-
+			//TODO
 			//replace this with end of scene trigger
 			if (Input.GetKey(KeyCode.LeftShift))
 				LoadPreviousScene();
@@ -41,25 +50,38 @@ public class LevelManager : MonoBehaviour
 		}
 	}
 
-	public void LoadNextScene()
+	private void LoadNextScene()
 	{
-		StartCoroutine(screenFade.Fade(canvasGroup, 0f, 1f));
-		StartCoroutine(LoadSceneAsynchronously(SceneManager.GetActiveScene().buildIndex + 1));
+		LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	}
 
-	public void LoadPreviousScene()
+	private void LoadPreviousScene()
 	{
-		StartCoroutine(screenFade.Fade(canvasGroup, 0f, 1f));
-		StartCoroutine(LoadSceneAsynchronously(SceneManager.GetActiveScene().buildIndex - 1));
+		LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 	}
 
-	private IEnumerator LoadSceneAsynchronously(int levelIndex)
+	private IEnumerator LoadSceneAsynchronously(int index)
 	{
+		//fire BeforeSceneDestroyed event
+		GameEvents.Instance.BeforeSceneDestroyed();
+
 		yield return new WaitForSeconds(waitTime);
-		SceneManager.LoadSceneAsync(levelIndex);
-		StartCoroutine(screenFade.Fade(canvasGroup, 1f, 0f));
+		SceneManager.LoadSceneAsync(index);
+	}
 
-		//fire AfterSceneLoad event
-		GameEvents.Instance.AfterSceneLoad();
+	public void LoadScene(int? index = null)
+	{
+		index ??= sceneIndex;
+		StartCoroutine(LoadSceneAsynchronously(index.Value));
+	}
+
+	public void LoadData(GameData data)
+	{
+		sceneIndex = data.sceneIndex;
+	}
+
+	public void SaveData(GameData data)
+	{
+		data.sceneIndex = SceneManager.GetActiveScene().buildIndex;
 	}
 }

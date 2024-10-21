@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IScreenFadeService : IGameService
 {
-    IEnumerator Fade(CanvasGroup canvasGroup, float startAlpha, float targetAlpha);
+    IEnumerator Fade(CanvasGroup canvasGroup, float startAlpha, float targetAlpha, int buildIndex);
 }

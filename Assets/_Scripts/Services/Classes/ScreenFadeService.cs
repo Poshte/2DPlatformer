@@ -3,11 +3,22 @@ using UnityEngine;
 
 public class ScreenFadeService : IScreenFadeService
 {
-    [SerializeField]
-    private float fadeDuration = 2.5f;
+    private readonly float menuFade = 0.5f;
+    private readonly float gameFade = 2f;
+	private float fadeDuration;
 
-    public IEnumerator Fade(CanvasGroup canvasGroup, float startAlpha, float targetAlpha)
+    public IEnumerator Fade(CanvasGroup canvasGroup, float startAlpha, float targetAlpha, int buildIndex)
     {
+        if (buildIndex == 0)
+        {
+			(targetAlpha, startAlpha) = (startAlpha, targetAlpha);
+			fadeDuration = menuFade;
+		}
+        else
+        {
+            fadeDuration = gameFade;
+        }
+
         canvasGroup.alpha = startAlpha;
 
         var elapsedTime = 0f;

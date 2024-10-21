@@ -33,11 +33,15 @@ public class MovingPlatformController : RaycastController
 	private List<PassengerMovement> passengerMovements;
 	private readonly Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
 
+	private IColorService colorService;
+
 	public override void Awake()
 	{
 		base.Awake();
 
 		//controller2D = playerObject.GetComponent<Controller2D>();
+		colorService = ServiceLocator.Instance.Get<IColorService>();
+
 	}
 
 	public override void Start()
@@ -203,13 +207,12 @@ public class MovingPlatformController : RaycastController
 	//for detecting player on a dormant platform
 	public void DetectPlayer()
 	{
-		var colorService = ServiceLocator.Instance.Get<IColorService>();
-
 		for (int i = 0; i < VerticalRayCount; i++)
 		{
 			var rayOrigin = RaycastOrigin.topLeft;
 			rayOrigin += Vector2.right * (VerticalRaySpace * i);
 			var hit = Physics2D.Raycast(rayOrigin, Vector2.up, skinWidth, passengerMask);
+
 			if (hit)
 			{
 				var renderer = GetComponent<Renderer>();

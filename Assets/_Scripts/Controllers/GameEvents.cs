@@ -21,22 +21,18 @@ public class GameEvents : MonoBehaviour
 	{
 		if (_instance != null)
 		{
-			Debug.LogError("More than one instance of GameEvents exist");
+			Destroy(gameObject);
 		}
 		else
 		{
 			_instance = this;
 		}
+
+		DontDestroyOnLoad(gameObject);
 	}
 
-	//TODO
-	//make sure to unsubscribe from below events when the object gets destroyed
-	public event Action OnBeforeSceneLoad;
-	public void BeforeSceneLoad() => OnBeforeSceneLoad?.Invoke();
-
-
-	public event Action OnAfterSceneLoad;
-	public void AfterSceneLoad() => OnAfterSceneLoad?.Invoke();
+	public event Action OnBeforeSceneDestroyed;
+	public void BeforeSceneDestroyed() => OnBeforeSceneDestroyed?.Invoke();
 
 
 	public event Action OnConversationEnded;

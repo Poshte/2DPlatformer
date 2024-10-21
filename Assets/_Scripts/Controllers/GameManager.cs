@@ -1,25 +1,35 @@
 using Assets._Scripts.BaseInfos;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
 	private const float waitTime = 2f;
 
+	private void OnEnable()
+	{
+		SceneManager.sceneLoaded += OnSceneLoaded;
+		SceneManager.sceneUnloaded += OnSceneUnloaded;
+	}
+
 	private void Start()
 	{
 		GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>().enabled = true;
-
-		GameEvents.Instance.OnBeforeSceneLoad += OnBeforeSceneLoad;
-		GameEvents.Instance.OnAfterSceneLoad += OnAfterSceneLoad;
 	}
 
-	private void OnBeforeSceneLoad()
+	private void OnDisable()
+	{
+		SceneManager.sceneLoaded -= OnSceneLoaded;
+		SceneManager.sceneUnloaded -= OnSceneUnloaded;
+	}
+
+	private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
 	{
 		DisablePlayerScript();
 	}
 
-	private void OnAfterSceneLoad()
+	private void OnSceneUnloaded(Scene arg0)
 	{
 		StartCoroutine(EnablePlayerAfterSceneIsLoaded());
 	}

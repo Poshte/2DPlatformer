@@ -9,12 +9,12 @@ public class MusicTrigger : MonoBehaviour
 		{
 			switch (gameObject.tag)
 			{
-				case nameof(Enumerations.MusicAreasLevel1.RockArea):
-					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)Enumerations.MusicAreasLevel1.RockArea);
+				case nameof(Enumerations.MusicAreas_LevelOne.RockArea):
+					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)Enumerations.MusicAreas_LevelOne.RockArea);
 					break;
 
-				case nameof(Enumerations.MusicAreasLevel1.ElectronicArea):
-					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)Enumerations.MusicAreasLevel1.ElectronicArea);
+				case nameof(Enumerations.MusicAreas_LevelOne.ElectronicArea):
+					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)Enumerations.MusicAreas_LevelOne.ElectronicArea);
 					break;
 
 				default:

@@ -76,6 +76,9 @@ public class DialogueController : MonoBehaviour
 			//delay if text is empty
 			if (string.IsNullOrWhiteSpace(currentParagraph))
 			{
+				//TODO
+				//I think i have created a bug here by sending speaker's name
+				//instead of a valid int value...OOPS!
 				StartCoroutine(Delay(currentName));
 			}
 			else

@@ -1,4 +1,5 @@
 using Assets._Scripts.BaseInfos;
+using System.Linq;
 using UnityEngine;
 
 public class DiaryTrigger : MonoBehaviour, IDataPersistence
@@ -45,6 +46,7 @@ public class DiaryTrigger : MonoBehaviour, IDataPersistence
 			diaryController.AddPhotosToDiary(photoIndexes);
 			diaryController.ShowPageAddedToDiaryVisual();
 			diaryController.PlayPageAddedToDiarySound();
+			diaryController.SetAddedPageAsCurrent(photoIndexes.Last());
 
 			gameObject.SetActive(false);
 		}

@@ -8,11 +8,6 @@ public class GameEvents : MonoBehaviour
 	{
 		get
 		{
-			if (_instance == null)
-			{
-				Debug.LogError("GameEvents is null");
-			}
-
 			return _instance;
 		}
 	}

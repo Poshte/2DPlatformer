@@ -122,6 +122,20 @@ public class DiaryController : MonoBehaviour, IDataPersistence
 		//show visuals
 	}
 
+	public void SetAddedPageAsCurrent(int newestPageIndex)
+	{
+		if (newestPageIndex.IsEven())
+		{
+			leftIndex = newestPageIndex;
+			rightIndex = newestPageIndex + 1;
+		}
+		else
+		{
+			leftIndex = newestPageIndex - 1;
+			rightIndex = newestPageIndex;
+		}
+	}
+
 	public void LoadData(GameData data)
 	{
 		LoadDiaryPages(data.activeDiaryPages);

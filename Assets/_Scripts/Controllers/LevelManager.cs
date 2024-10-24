@@ -82,6 +82,7 @@ public class LevelManager : MonoBehaviour, IDataPersistence
 
 	public void SaveData(GameData data)
 	{
-		data.sceneIndex = SceneManager.GetActiveScene().buildIndex;
+		var currentIndex = SceneManager.GetActiveScene().buildIndex;
+		data.sceneIndex = currentIndex == 0 ? sceneIndex : currentIndex;
 	}
 }

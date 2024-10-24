@@ -208,10 +208,13 @@ public class Player : NPC, ITalkable, IWalkable, IDataPersistence
 	{
 		velocity.x = 0f;
 		velocity.y = 0f;
-
 		playerFootsteps.stop(STOP_MODE.IMMEDIATE);
 	}
 
+	//TODO
+	//Make sure if one of these two
+	//OnDisable and OnDestroy
+	//can't be removed
 	private void OnDisable()
 	{
 		velocity.x = 0f;

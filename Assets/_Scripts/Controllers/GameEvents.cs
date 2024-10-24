@@ -32,4 +32,12 @@ public class GameEvents : MonoBehaviour
 
 	public event Action OnConversationEnded;
 	public void ConversationEnded() => OnConversationEnded?.Invoke();
+
+
+	public event Action OnPauseButtonClicked;
+	public void PauseButtonClicked() => OnPauseButtonClicked?.Invoke();
+
+
+	public event Action OnResumeButtonClicked;
+	public void ResumeButtonClicked() => OnResumeButtonClicked?.Invoke();
 }

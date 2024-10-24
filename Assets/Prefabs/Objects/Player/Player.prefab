@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 672c9271418d00e40bc124833a494339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactSprite: {fileID: 0}
+  interactObject: {fileID: 0}
   moveSpeed: 5
   maxJumpHeight: 4.5
   minJumpHeight: 1
@@ -210,6 +210,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c360a708-2351-48da-b68b-64d7dacce5eb
     m_ActionName: Basic Input/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1622927765}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
+        m_MethodName: Escape
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 883a4718-2c24-45b3-a69d-877591423f2c
+    m_ActionName: Basic Input/Escape[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Basic Input

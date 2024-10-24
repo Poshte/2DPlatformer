@@ -10,18 +10,22 @@ public class GameManager : MonoBehaviour
 	private void OnEnable()
 	{
 		SceneManager.sceneLoaded += OnSceneLoaded;
-		SceneManager.sceneUnloaded += OnSceneUnloaded;
+		SceneManager.sceneUnloaded += OnSceneUnloaded;		
 	}
 
 	private void Start()
 	{
 		GameObject.FindGameObjectWithTag(Constants.Tags.Player).GetComponent<Player>().enabled = true;
+		GameEvents.Instance.OnPauseButtonClicked += PauseButtonClicked;
+		GameEvents.Instance.OnResumeButtonClicked += ResumeButtonClicked;
 	}
 
-	private void OnDisable()
+	private void OnDestroy()
 	{
 		SceneManager.sceneLoaded -= OnSceneLoaded;
 		SceneManager.sceneUnloaded -= OnSceneUnloaded;
+		GameEvents.Instance.OnPauseButtonClicked -= PauseButtonClicked;
+		GameEvents.Instance.OnResumeButtonClicked -= ResumeButtonClicked;
 	}
 
 	private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -32,6 +36,16 @@ public class GameManager : MonoBehaviour
 	private void OnSceneUnloaded(Scene arg0)
 	{
 		StartCoroutine(EnablePlayerAfterSceneIsLoaded());
+	}
+
+	private void PauseButtonClicked()
+	{
+		DisablePlayerScript();
+	}
+
+	private void ResumeButtonClicked()
+	{
+		EnablePlayerScript();
 	}
 
 	private IEnumerator EnablePlayerAfterSceneIsLoaded()

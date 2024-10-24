@@ -11,11 +11,6 @@ public class PlayerInput : MonoBehaviour
 		playerScript = GetComponent<Player>();
 	}
 
-	void Start()
-	{
-
-	}
-
 	public void Movement(InputAction.CallbackContext context)
 	{
 		playerScript.GetMovementInput(context.ReadValue<Vector2>());
@@ -24,5 +19,10 @@ public class PlayerInput : MonoBehaviour
 	public void Jump(InputAction.CallbackContext context)
 	{
 		playerScript.GetJumpInput(context.performed, context.canceled);
+	}
+
+	public void Escape(InputAction.CallbackContext context)
+	{
+		GameEvents.Instance.PauseButtonClicked();
 	}
 }

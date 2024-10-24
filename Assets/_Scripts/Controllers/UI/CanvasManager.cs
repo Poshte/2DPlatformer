@@ -15,9 +15,13 @@ public class CanvasManager : MonoBehaviour
 	private void OnEnable()
 	{
 		SceneManager.sceneLoaded += OnSceneLoaded;
-		GameEvents.Instance.OnBeforeSceneDestroyed += BeforeSceneDestroyed;
 	}
 
+	private void Start()
+	{
+		GameEvents.Instance.OnBeforeSceneDestroyed += BeforeSceneDestroyed;
+	}
+		
 	private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
 	{
 		StartCoroutine(screenFade.Fade(canvasGroup, 1f, 0f, SceneManager.GetActiveScene().buildIndex));
@@ -28,11 +32,9 @@ public class CanvasManager : MonoBehaviour
 		StartCoroutine(screenFade.Fade(canvasGroup, 0f, 1f, SceneManager.GetActiveScene().buildIndex));
 	}
 
-	private void OnDisable()
+	private void OnDestroy()
 	{
 		SceneManager.sceneLoaded -= OnSceneLoaded;
-
-		if (GameEvents.Instance != null)
-			GameEvents.Instance.OnBeforeSceneDestroyed -= BeforeSceneDestroyed;
+		GameEvents.Instance.OnBeforeSceneDestroyed -= BeforeSceneDestroyed;
 	}
 }

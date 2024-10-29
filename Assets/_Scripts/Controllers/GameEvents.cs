@@ -30,6 +30,10 @@ public class GameEvents : MonoBehaviour
 	public void BeforeSceneDestroyed() => OnBeforeSceneDestroyed?.Invoke();
 
 
+	public event Action OnJumpButtonPressed;
+	public void JumpButtonPressed() => OnJumpButtonPressed?.Invoke();
+
+
 	public event Action OnConversationEnded;
 	public void ConversationEnded() => OnConversationEnded?.Invoke();
 

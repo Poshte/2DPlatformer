@@ -19,6 +19,8 @@ public class PlayerInput : MonoBehaviour
 	public void Jump(InputAction.CallbackContext context)
 	{
 		playerScript.GetJumpInput(context.performed, context.canceled);
+
+		GameEvents.Instance.JumpButtonPressed();
 	}
 
 	public void Escape(InputAction.CallbackContext context)

@@ -1,10 +1,10 @@
 using Assets._Scripts.BaseInfos;
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-	[SerializeField] private CinemachineVirtualCamera roomCam;
+	[SerializeField] private CinemachineCamera roomCam;
 
 	private Controller2D controller2D;
 

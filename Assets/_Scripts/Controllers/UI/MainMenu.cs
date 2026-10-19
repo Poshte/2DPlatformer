@@ -26,6 +26,8 @@ public class MainMenu : MonoBehaviour
 
 		if (!hasSaveFile)
 			continueBtn.gameObject.SetActive(false);
+
+		AudioManager.Instance.InitializeMusic(FMODEvents.Instance.MainMenu, 0);
 	}
 
 	public void OnNewGameClicked()
@@ -40,6 +42,7 @@ public class MainMenu : MonoBehaviour
 	{
 		DisableMainButtons();
 		LevelManager.Instance.LoadScene();
+		StopMusic();
 	}
 
 	public void OnYesClicked()
@@ -52,6 +55,7 @@ public class MainMenu : MonoBehaviour
 		DisableMainButtons();
 		DataPersistenceManager.Instance.NewGame();
 		LevelManager.Instance.LoadScene(1);
+		StopMusic();
 	}
 
 	public void OnCancelClicked()
@@ -76,5 +80,10 @@ public class MainMenu : MonoBehaviour
 	{
 		newGameBtn.interactable = true;
 		continueBtn.interactable = true;
+	}
+
+	private void StopMusic()
+	{
+		AudioManager.Instance.DisableAllSounds();
 	}
 }

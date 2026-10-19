@@ -1,4 +1,3 @@
-using Assets._Scripts.BaseInfos;
 using System;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ public class GameData
 	public GameData()
 	{
 		playerPosition = Vector3.zero;
-		sceneIndex = (int)Enumerations.Scenes.Forest;
+		sceneIndex = (int)Scenes.Forest;
 		activeDiaryPages = 0;
 		diaryEntries = new();
 	}

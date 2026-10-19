@@ -23,7 +23,7 @@ public class PlayerInput : MonoBehaviour
 		GameEvents.Instance.JumpButtonPressed();
 	}
 
-	public void Escape(InputAction.CallbackContext context)
+	public void Escape()
 	{
 		GameEvents.Instance.PauseButtonClicked();
 	}

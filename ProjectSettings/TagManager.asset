@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - Hollow
   - Solid
@@ -19,6 +19,9 @@ TagManager:
   - OrangePortalController
   - HollowSlope
   - DiaryController
+  - ViolinController
+  - RainMusic_1
+  - RainMusic_2
   layers:
   - Default
   - TransparentFX
@@ -62,3 +65,20 @@ TagManager:
   - name: Obstacle
     uniqueID: 1832075033
     locked: 0
+  - name: Effects
+    uniqueID: 3011041921
+    locked: 0
+  - name: UI
+    uniqueID: 875019353
+    locked: 0
+  m_RenderingLayers:
+  - Default
+  - Light Layer 1
+  - Light Layer 2
+  - Light Layer 3
+  - Light Layer 4
+  - Light Layer 5
+  - Light Layer 6
+  - Light Layer 7
+  m_MigratedRenderPipelines:
+  - UnityEngine.Rendering.Universal.UniversalRenderPipeline

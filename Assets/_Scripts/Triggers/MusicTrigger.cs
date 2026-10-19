@@ -9,12 +9,25 @@ public class MusicTrigger : MonoBehaviour
 		{
 			switch (gameObject.tag)
 			{
-				case nameof(Enumerations.MusicAreas_LevelOne.RockArea):
-					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)Enumerations.MusicAreas_LevelOne.RockArea);
+				case nameof(MusicAreas_LevelOne.RockArea):
+					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)MusicAreas_LevelOne.RockArea);
 					break;
 
-				case nameof(Enumerations.MusicAreas_LevelOne.ElectronicArea):
-					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)Enumerations.MusicAreas_LevelOne.ElectronicArea);
+				case nameof(MusicAreas_LevelOne.ElectronicArea):
+					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.TestMusic, (int)MusicAreas_LevelOne.ElectronicArea);
+					break;
+
+				//TODO
+				//case nameof(MusicAreas_LevelOne.RainTrigger):
+				//	AudioManager.Instance.InitializeAmbience(FMODEvents.Instance.ForestRain);
+				//	break;
+
+				case nameof(MusicAreas_LevelOne.RainMusic_1):
+					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.RainMusic_1);
+					break;
+
+				case nameof(MusicAreas_LevelOne.RainMusic_2):
+					AudioManager.Instance.InitializeMusic(FMODEvents.Instance.RainMusic_2);
 					break;
 
 				default:

@@ -14,10 +14,13 @@ public class FMODEvents : MonoBehaviour
 	[field: SerializeField] public EventReference Heartbeat { get; private set; }
 
 	[field: Header("Ambience")]
-	[field: SerializeField] public EventReference ForestRain { get; private set; }
+	[field: SerializeField] public EventReference Rain { get; private set; }
 
 	[field: Header("Music")]
 	[field: SerializeField] public EventReference TestMusic { get; private set; }
+	[field: SerializeField] public EventReference MainMenu { get; private set; }
+	[field: SerializeField] public EventReference RainMusic_1 { get; private set; }
+	[field: SerializeField] public EventReference RainMusic_2 { get; private set; }
 
 	[field: Header("Trigger SFX")]
 	[field: SerializeField] public EventReference DiaryAddedSound { get; private set; }

@@ -14,7 +14,7 @@ public class AmbienceTrigger : MonoBehaviour
 			switch (gameObject.tag)
 			{
 				case Constants.Tags.Rain:
-					AudioManager.Instance.InitializeAmbience(FMODEvents.Instance.ForestRain);
+					AudioManager.Instance.InitializeAmbience(FMODEvents.Instance.Rain);
 					break;
 
 				case Constants.Tags.RainIntensity:

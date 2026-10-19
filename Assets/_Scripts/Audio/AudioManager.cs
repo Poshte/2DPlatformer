@@ -49,10 +49,26 @@ public class AudioManager : MonoBehaviour
 		music.setParameterByName("MusicArea", musicEventIndex);
 	}
 
+	public void InitializeMusic(EventReference eventReference)
+	{
+		music.getPlaybackState(out PLAYBACK_STATE state);
+
+		if (state == PLAYBACK_STATE.STOPPED)
+		{
+			music = CreateEventInstance(eventReference);
+			music.start();
+		}
+	}
+
 	public void InitializeAmbience(EventReference eventReference)
 	{
 		ambience = CreateEventInstance(eventReference);
 		ambience.start();
+	}
+
+	public void SetMusicParameter(string paramName, float paramValue)
+	{
+		music.setParameterByName(paramName, paramValue);
 	}
 
 	public void SetAmbienceParameters(string paramName, float paramValue)
@@ -71,6 +87,12 @@ public class AudioManager : MonoBehaviour
 		eventInstances.Add(instance);
 		return instance;
 	}
+
+	//public void InitializeEventEmitter(StudioEventEmitter emitter, EventReference eventReference)
+	//{
+	//	emitter.EventReference = eventReference;
+	//	eventEmitters.Add(emitter);
+	//}
 
 	public StudioEventEmitter InitializeEventEmitter(EventReference eventReference, GameObject emitterObject)
 	{

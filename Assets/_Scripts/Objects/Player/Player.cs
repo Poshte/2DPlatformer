@@ -40,7 +40,7 @@ public class Player : NPC, ITalkable, IWalkable, IDataPersistence
 	private float commandButtonTimer;
 
 	//jump buffer
-	private const float jumpBuffer = 2f;
+	private const float jumpBuffer = 0.4f;
 	private float bufferCounter;
 
 	//coyote time
@@ -69,7 +69,7 @@ public class Player : NPC, ITalkable, IWalkable, IDataPersistence
 		//math calculations
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-		minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
+		minJumpVelocity = (Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight)) / timeToJumpApex;
 
 		//get sound instances
 		playerFootsteps = AudioManager.Instance.CreateEventInstance(FMODEvents.Instance.PlayerFootstepsSound);
@@ -167,10 +167,18 @@ public class Player : NPC, ITalkable, IWalkable, IDataPersistence
 
 		if (performed)
 			bufferCounter = jumpBuffer;
+		else
+		{
+			bufferCounter -= Time.deltaTime;
+		}
 
 		//regular jumping max
 		if (bufferCounter > 0f && coyoteCounter > 0f)
 		{
+
+			if (velocity.y > 0f)
+				return;
+
 			if (controller2D.info.slidingMaxSlope)
 			{
 				if (inputDirection != -Mathf.Sign(controller2D.info.slopeNormal.x))
@@ -187,8 +195,9 @@ public class Player : NPC, ITalkable, IWalkable, IDataPersistence
 			controller2D.info.bottomCollision = false;
 			bufferCounter = 0f;
 		}
+
 		//regular jumping min
-		else if (canceled && velocity.y > minJumpVelocity /*&& coyoteCounter > 0f*/)
+		if (canceled && velocity.y > minJumpVelocity /*&& coyoteCounter > 0f*/)
 		{
 			velocity.y = minJumpVelocity;
 

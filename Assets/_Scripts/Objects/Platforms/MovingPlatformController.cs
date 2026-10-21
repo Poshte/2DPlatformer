@@ -215,7 +215,7 @@ public class MovingPlatformController : RaycastController
 
 			if (hit)
 			{
-				var renderer = GetComponent<Renderer>();
+				var renderer = GetComponent<SpriteRenderer>();
 				var startColor = new Color32(159, 158, 11, 255);
 				var endColor = new Color32(93, 180, 26, 255);
 				isDormant = false;

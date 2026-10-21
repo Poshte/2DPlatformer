@@ -12,7 +12,7 @@ public abstract class RaycastController : MonoBehaviour
 
 	//rays
 	public const float skinWidth = 0.015f;
-	private const float spaceBetweenRays = 0.2f;
+	private const float spaceBetweenRays = 0.1f;
 
 	public int HorizontalRayCount { get; private set; }
 	public int VerticalRayCount { get; private set; }

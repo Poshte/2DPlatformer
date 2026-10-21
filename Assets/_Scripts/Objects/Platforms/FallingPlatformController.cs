@@ -3,6 +3,7 @@ using UnityEngine;
 public class FallingPlatformController : RaycastController
 {
 	[SerializeField] private LayerMask playerMask;
+	private bool playerDetected;
 
 	//falling
 	[SerializeField] private float fallDelay;
@@ -14,7 +15,7 @@ public class FallingPlatformController : RaycastController
 	[SerializeField] private float colorChangeSpeed;
 
 	//dependencies
-	private Renderer platformRenderer;
+	private SpriteRenderer platformRenderer;
 
 	//services
 	private IColorService colorService;
@@ -22,7 +23,7 @@ public class FallingPlatformController : RaycastController
 	public override void Start()
 	{
 		base.Start();
-		platformRenderer = GetComponent<Renderer>();
+		platformRenderer = GetComponent<SpriteRenderer>();
 		colorService = ServiceLocator.Instance.Get<IColorService>();
 	}
 
@@ -34,6 +35,9 @@ public class FallingPlatformController : RaycastController
 
 	private void DetectPlayer()
 	{
+		if (playerDetected)
+			return;
+
 		for (int i = 0; i < VerticalRayCount; i++)
 		{
 			var rayOrigin = RaycastOrigin.topLeft;
@@ -45,6 +49,7 @@ public class FallingPlatformController : RaycastController
 
 			if (hit)
 			{
+				playerDetected = true;
 				StartCoroutine(colorService.ChangeColor(platformRenderer, startColor, endColor, 1.5f));
 				Invoke(nameof(Fall), fallDelay);
 			}
@@ -54,7 +59,7 @@ public class FallingPlatformController : RaycastController
 	public void Fall()
 	{
 		gameObject.SetActive(false);
-		platformRenderer.material.color = startColor;
+		platformRenderer.color = startColor;
 		Invoke(nameof(Respawn), respawnDelay);
 	}
 
@@ -64,5 +69,6 @@ public class FallingPlatformController : RaycastController
 		//this approach simply activates and deactivates the game object.
 		//it could potentially be better to destroy the game object and reintialize it.
 		gameObject.SetActive(true);
+		playerDetected = false;
 	}
 }

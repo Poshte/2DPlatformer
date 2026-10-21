@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class ColorService : IColorService
 {
-	public IEnumerator ChangeColor(Renderer renderer, Color startColor, Color endColor, float colorChangeSpeed)
+	public IEnumerator ChangeColor(SpriteRenderer renderer, Color startColor, Color endColor, float colorChangeSpeed)
 	{
 		var tick = 0f;
-		while (renderer.material.color != endColor)
+		while (renderer.color != endColor)
 		{
 			tick += Time.deltaTime * colorChangeSpeed;
-			renderer.material.color = Color.Lerp(startColor, endColor, tick);
+			renderer.color = Color.Lerp(startColor, endColor, tick);
 			yield return null;
 		}
 	}

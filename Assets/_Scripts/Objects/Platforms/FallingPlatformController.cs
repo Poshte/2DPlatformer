@@ -20,11 +20,16 @@ public class FallingPlatformController : RaycastController
 	//services
 	private IColorService colorService;
 
+	private Player playerScript;
+
 	public override void Start()
 	{
 		base.Start();
 		platformRenderer = GetComponent<SpriteRenderer>();
 		colorService = ServiceLocator.Instance.Get<IColorService>();
+
+		playerScript = FindObjectOfType<Player>().GetComponent<Player>();
+
 	}
 
 	void Update()
@@ -42,16 +47,22 @@ public class FallingPlatformController : RaycastController
 		{
 			var rayOrigin = RaycastOrigin.topLeft;
 			rayOrigin += Vector2.right * (VerticalRaySpace * i);
-			
+
 			//another approach is to use raycastall
 			//and put the result in a loop
-			var hit = Physics2D.Raycast(rayOrigin, Vector2.up, skinWidth, playerMask);
+			var hit = Physics2D.Raycast(rayOrigin, Vector2.up, 0.1f, playerMask);
 
 			if (hit)
 			{
-				playerDetected = true;
-				StartCoroutine(colorService.ChangeColor(platformRenderer, startColor, endColor, 1.5f));
-				Invoke(nameof(Fall), fallDelay);
+				bool isFalling = playerScript.GetPlayerVelocity().y <= 0f;
+				bool isAbovePlatform = hit.collider.bounds.min.y >= rayOrigin.y;
+
+				if (isFalling && isAbovePlatform)
+				{
+					playerDetected = true;
+					StartCoroutine(colorService.ChangeColor(platformRenderer, startColor, endColor, 1.5f));
+					Invoke(nameof(Fall), fallDelay);
+				}
 			}
 		}
 	}
